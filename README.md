@@ -1,42 +1,52 @@
 # FullStack Bible
 
-FullStack Bible is a connected technical knowledge system for learning and building full-stack software.
+A connected technical knowledge system for learning and building full-stack software.
 
 ## Product model
 
-**Knowledge → Learn → Visualize → Code Lab → Build → Master**
+**Knowledge → Learn → Visualize → Code Lab → Practice → Build → Master**
 
-This is intentionally not an essay collection or a generic LMS. Concepts are connected to mental models, visual system maps, runnable code, practice checkpoints, projects and production architecture.
+FullStack Bible is a working browser application rather than a generic LMS or essay collection. The interface connects curriculum, mental models, executable examples, checkpoints, notes, projects and progress in one persistent technical workspace.
 
-## Included in the current web app
+## Curriculum
 
-- Home / Bible landing workspace
-- Knowledge path across 8 core domains
-- Web Foundations
-- CSS & Modern Styling
-- JavaScript & Runtime
-- React & Next.js
-- Backend & APIs
-- Databases
-- Cloud & DevOps
-- Systems & Architecture
-- Event Loop lesson with mental model and visualization
-- Browser JavaScript Code Lab with Run / Reset / Console
-- Practice completion checkpoint
-- Persistent local notes
-- Project build queue with milestone state
-- Architecture/system view
-- Progress/mastery view
-- Bible-wide concept search
-- Local workspace settings
-- Responsive desktop and mobile UI
+8 domains × 8 core lessons = **64 structured lessons**:
+
+1. Web Foundations
+2. CSS & Modern Styling
+3. JavaScript Essentials
+4. React & Next.js
+5. Node.js & APIs
+6. Databases
+7. Cloud & DevOps
+8. Systems & Architecture
+
+## Working features
+
+- Home / connected curriculum map
+- Learning Path with 64 lessons
+- Lesson reader
+- Visual system maps
+- Browser Code Lab
+- JavaScript execution sandbox for lesson examples
+- Run / Reset / console output
+- Lesson completion and mastery tracking
+- Previous / next lesson navigation
+- Per-lesson notes
+- Bible-wide lesson search
+- Project system with build milestones
+- Progress dashboard by domain
+- Local persistence with `localStorage`
+- Learning-data JSON export
+- AI Tutor interaction surface anchored to the active lesson
+- Local experience settings
+- Responsive desktop, tablet and mobile layouts
 - Reduced-motion support
-- No build step required for the current static app
 
 ## Run
 
-Open `index.html` in a modern browser.
+Open `index.html` in a modern browser. No build step is required for the current browser application.
 
 ## Engineering rule
 
-`main` is the single source of truth. New work must extend the existing system and preserve working behavior. Do not replace functional modules with disconnected prototypes, screenshots, or essay-style pages.
+The repository is the single source of truth. Existing working functionality must be preserved when extending the system. New curriculum should be added as structured lesson data and connected to the same Learn → Visualize → Code Lab → Practice → Build flow.
