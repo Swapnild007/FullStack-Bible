@@ -1,80 +1,108 @@
-# FullStack Bible Curriculum v1
+# FullStack Bible Curriculum v2
 
 ## Curriculum philosophy
 
-This curriculum is based primarily on official documentation and standards rather than tutorial popularity. The learning sequence is designed around the actual layers of a modern web application: platform fundamentals → frontend → application framework → backend → database → security → production.
+FullStack Bible follows a Zero → Hero progression: web platform fundamentals first, application engineering next, production engineering after that, and advanced engineering specializations last. Core concepts are taught before tools that depend on them. The curriculum is grounded in official documentation and standards rather than tutorial popularity.
 
 ## Core source map
 
-- **MDN Web Docs**: HTML, CSS, JavaScript, HTTP, browser APIs, accessibility and core web platform concepts.
-- **React official docs**: components, JSX, state, events, hooks, data flow and modern React application concepts.
-- **Next.js official docs**: App Router, Server Components, routing, data fetching, mutations, caching, metadata and deployment.
-- **TypeScript Handbook**: type system, narrowing, functions, objects, generics, modules and practical type safety.
-- **PostgreSQL documentation**: relational concepts, SQL, joins, constraints, transactions, indexes and database development.
-- **OWASP Top 10: 2025**: application security awareness and secure engineering topics.
-- **web.dev**: responsive design, performance, accessibility and modern browser capabilities.
+- **MDN Web Docs**: HTML, CSS, JavaScript, HTTP, browser APIs, accessibility and web-platform fundamentals.
+- **React official docs**: components, state, effects, hooks, data flow and modern React architecture.
+- **Next.js official docs**: App Router, Server Components, mutations, caching, metadata and full-stack application patterns.
+- **TypeScript Handbook**: types, narrowing, generics, modules and strict configuration.
+- **PostgreSQL documentation**: SQL, constraints, transactions, indexes and query planning.
+- **OWASP Top 10:2025 + ASVS 5.0**: secure application engineering.
+- **web.dev**: responsive design, accessibility and performance.
+- **Node.js documentation**: runtime, asynchronous work, streams and server-side execution.
+- **Redis documentation**: data structures, caching, streams and messaging patterns.
+- **GitHub documentation**: collaboration, pull requests and engineering workflow.
 
-## 12-stage curriculum
+## 17-stage curriculum
 
-### 01 — Web Foundations
-Browser architecture, DNS, URLs, HTTP/HTTPS, request-response, headers, status codes, cookies, caching, DevTools, command line basics and how a page becomes pixels.
+### 01 — Start here
+Computer basics, files, folders, terminal, browser architecture, URLs, HTTP, DevTools and how the web works.
 
-**Build:** HTTP inspector + static personal page.
+**Build:** environment + web inspection lab.
 
-### 02 — HTML & Accessibility
-Semantic HTML, document structure, links, media, forms, tables, validation, labels, keyboard access, accessible names, ARIA fundamentals and SEO foundations.
+### 02 — Build the web
+HTML5 semantics, forms, validation, CSS fundamentals, responsive layouts, JavaScript basics, accessibility, keyboard navigation and SEO foundations.
 
-**Build:** accessible multi-page documentation site.
+**Build:** accessible responsive website.
 
-### 03 — CSS & Responsive UI
-Cascade, inheritance, specificity, box model, positioning, Flexbox, Grid, responsive breakpoints, fluid typography, media queries, transitions and reduced-motion considerations.
+### 03 — Make it work
+JavaScript scope, closures, objects, DOM, events, event propagation, browser APIs, Fetch, promises, async/await, storage and network debugging.
 
-**Build:** responsive Apple-inspired product page.
+**Build:** persistent data-driven dashboard.
 
-### 04 — JavaScript Deep Dive
-Values, variables, control flow, functions, scope, closures, objects, arrays, prototypes, modules, DOM, events, forms, fetch, promises, async/await, errors, storage and browser APIs.
+### 04 — Work like a developer
+Git, GitHub, debugging, testing concepts, pull requests, package management and engineering workflow.
 
-**Build:** data-driven dashboard using a public API.
+**Build:** feature branch → PR → test → fix workflow.
 
-### 05 — Git & Engineering Workflow
-Git fundamentals, branching, merge/rebase concepts, pull requests, commit quality, debugging, npm/package management, environment variables and testing fundamentals.
+### 05 — Add TypeScript
+Types, inference, narrowing, interfaces, type aliases, generics, utility types, strict mode, modules and type-safe application boundaries.
 
-**Build:** collaborative-style feature workflow on the learning repo.
+**Build:** strict TypeScript application.
 
-### 06 — TypeScript
-Primitive and object types, unions, narrowing, functions, generics, utility types, interfaces, modules, type-safe APIs and strict configuration.
+### 06 — Build interfaces
+React components, JSX, state, events, effects, refs, reducers, custom Hooks, composition, forms, reusable UI and state architecture.
 
-**Build:** convert a JavaScript application to strict TypeScript.
+**Build:** reusable React learning interface.
 
-### 07 — React
-Component thinking, JSX, props, state, events, lists, conditional rendering, forms, effects, hooks, data flow, reusable components and accessibility.
-
-**Build:** interactive learning dashboard.
-
-### 08 — Next.js Full-Stack
-App Router, layouts, pages, navigation, Server Components, Client Components, server functions/actions where appropriate, data fetching, caching, metadata and deployment.
+### 07 — Build full-stack apps
+Next.js App Router, nested layouts, Server/Client Components, Server Actions, data fetching, caching, revalidation, rendering strategies, Route Handlers and application flows.
 
 **Build:** full-stack content application.
 
-### 09 — Backend Engineering
-HTTP API design, REST concepts, request validation, status codes, error handling, authentication, authorization, sessions/tokens, logging and service boundaries.
+### 08 — Work with data
+SQL, PostgreSQL, relational modelling, normalization, advanced queries, indexes, transactions, migrations, ORM/query builders, Redis and object storage.
 
-**Build:** authenticated CRUD API.
+**Build:** production-style data layer.
 
-### 10 — SQL & PostgreSQL
-Tables, primary/foreign keys, normalization, SELECT, WHERE, JOIN, GROUP BY, indexes, constraints, transactions, query planning and migrations.
+### 09 — Build the backend
+Node.js runtime, APIs, REST, validation, errors, authentication, sessions, JWT concepts, OAuth/OIDC, authorization, realtime communication and backend security.
 
-**Build:** production-style relational data layer for the capstone.
+**Build:** authenticated API + realtime feature.
 
-### 11 — Production Engineering
-OWASP risks, secrets, dependency hygiene, security headers, input validation, authorization, performance, caching, observability, CI/CD, environments and deployment.
+### 10 — Make it production-ready
+OWASP security, secrets, dependency security, performance, Core Web Vitals, automated testing, Docker, CI/CD, deployment, logging, metrics, tracing and recovery.
 
-**Build:** harden, test and deploy an application.
+**Build:** secure production deployment.
 
-### 12 — Capstone
-Requirements → architecture → UX → schema → components → APIs → authentication → tests → security review → performance review → deployment → documentation.
+### 11 — Build with AI
+Model APIs, streaming, structured outputs, embeddings, RAG, vector search, tools, agents, evaluation, prompt injection defenses, cost and latency control.
 
-**Build:** one original production-style full-stack application.
+**Build:** evaluated AI learning coach.
+
+### 12 — Build your product
+Problem definition, MVP scope, architecture, UX, implementation, testing, security review, performance review, launch and iteration.
+
+**Build:** original production-style product.
+
+### 13 — System Design & Distributed Systems
+Scalability, load balancing, reverse proxies, database scaling, caching, queues, workers, retries, idempotency, dead-letter queues, distributed failure and architecture patterns.
+
+**Build:** 10× growth architecture plan.
+
+### 14 — Advanced Developer Tooling
+Advanced Git, rebase, bisect, worktrees, monorepos, workspaces, shared packages, build orchestration, caching, linting, formatting and developer feedback loops.
+
+**Build:** production monorepo platform.
+
+### 15 — Product Engineering & Billing
+Payment architecture, Payment Intents, Checkout, verified webhooks, idempotency, subscriptions, usage billing, entitlements, refunds and billing state machines.
+
+**Build:** SaaS billing sandbox.
+
+### 16 — Data & Search
+Document modelling, MongoDB concepts, search engines, inverted indexes, analyzers, ranking, faceting, typo tolerance and database-to-search synchronization.
+
+**Build:** production search system design.
+
+### 17 — Professional Engineering
+ADRs, RFCs, graceful shutdown, feature flags, canary releases, incident response, postmortems, resilience, recovery objectives and operational ownership.
+
+**Build:** production-readiness review pack.
 
 ## Assessment model
 
@@ -86,17 +114,23 @@ Every stage should contain:
 4. Implementation challenge
 5. Mini-project
 6. Knowledge check
-7. Stage review
-8. Git commit milestone
+7. Completion checklist
+8. Stage review
+9. Git milestone
+10. Evidence that the learner can explain, implement and debug the concept
 
-Completion should mean the learner can explain the concept, implement it without copying a tutorial, debug a broken implementation, and connect it to the larger system.
+The advanced modules are intentionally treated as specialization layers. Payments, MongoDB/search and monorepos are valuable professional skills but are not prerequisites for understanding the core web stack.
 
 ## Current official references
 
-MDN: https://developer.mozilla.org/en-US/docs/Learn_web_development
+MDN: https://developer.mozilla.org/en-US/curriculum/
 React: https://react.dev/learn
 Next.js: https://nextjs.org/docs
 TypeScript: https://www.typescriptlang.org/docs/handbook/
-PostgreSQL: https://www.postgresql.org/docs/current/tutorial.html
-OWASP Top 10: https://owasp.org/Top10/
-web.dev responsive design: https://web.dev/learn/design/
+PostgreSQL: https://www.postgresql.org/docs/current/
+Node.js: https://nodejs.org/docs/latest/api/
+Redis: https://redis.io/docs/latest/
+OWASP Top 10: https://top10.owasp.org/2025/
+OWASP ASVS: https://owasp.org/projects/asvs
+Git: https://git-scm.com/doc
+GitHub: https://docs.github.com/
