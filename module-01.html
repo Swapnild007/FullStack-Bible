@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f5f7">
+<title>Module 01 — Start Here | FullStack Bible</title>
+<meta name="description" content="Module 01: Computer basics, how the web works, browser developer tools, files, folders and terminal basics.">
+<style>
+:root{--bg:#f5f5f7;--ink:#111113;--muted:#6e6e73;--blue:#007aff;--purple:#5856d6;--green:#34c759;--card:rgba(255,255,255,.74);--line:rgba(0,0,0,.07);--shadow:0 22px 70px rgba(0,0,0,.07);--ease:cubic-bezier(.22,1,.36,1);--spring:cubic-bezier(.175,.885,.32,1.275)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration:none}button{font:inherit}
+.page{min-height:100vh;background:radial-gradient(60% 35% at 90% 0%,rgba(88,86,214,.14),transparent 70%),radial-gradient(55% 35% at 0% 20%,rgba(0,122,255,.11),transparent 70%),var(--bg)}
+.nav{position:sticky;top:10px;z-index:30;width:min(1080px,calc(100% - 24px));margin:10px auto 0;padding:9px 10px 9px 17px;border:1px solid rgba(255,255,255,.88);border-radius:20px;background:rgba(255,255,255,.68);backdrop-filter:saturate(180%) blur(26px);-webkit-backdrop-filter:saturate(180%) blur(26px);box-shadow:0 12px 38px rgba(0,0,0,.06);display:flex;align-items:center;justify-content:space-between}.brand{font-weight:800;letter-spacing:-.055em}.brand span{color:var(--blue)}.back{padding:10px 14px;border-radius:999px;background:rgba(118,118,128,.10);font-size:13px;font-weight:650;transition:.35s var(--spring)}.back:active{transform:scale(.94)}
+.wrap{width:min(920px,calc(100% - 30px));margin:auto}.hero{padding:105px 0 55px}.kicker{color:#8a8a8f;font-size:11px;font-weight:750;letter-spacing:.15em;text-transform:uppercase}.hero h1{font-size:clamp(48px,8vw,82px);line-height:.95;letter-spacing:-.075em;margin:15px 0 22px;max-width:820px}.hero h1 span{background:linear-gradient(105deg,#111 8%,#007aff 54%,#5856d6 92%);background-clip:text;-webkit-background-clip:text;color:transparent}.hero p{max-width:700px;color:var(--muted);font-size:19px;line-height:1.65;margin:0}.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:25px}.pill{padding:8px 11px;border-radius:999px;background:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.9);font-size:12px;color:#626268}
+.progress{position:sticky;top:78px;z-index:20;margin:0 auto 24px;width:min(920px,calc(100% - 30px));padding:12px 14px;border:1px solid rgba(255,255,255,.86);border-radius:17px;background:rgba(255,255,255,.72);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:flex;align-items:center;gap:12px;box-shadow:0 10px 35px rgba(0,0,0,.05)}.bar{height:6px;flex:1;background:#e4e4e7;border-radius:99px;overflow:hidden}.bar i{display:block;width:0;height:100%;background:linear-gradient(90deg,#007aff,#5856d6);border-radius:99px;transition:width .6s var(--ease)}.progress strong{font-size:12px;white-space:nowrap}
+.section{padding:45px 0}.section h2{font-size:clamp(30px,5vw,48px);line-height:1;letter-spacing:-.065em;margin:0 0 15px}.section>p{color:var(--muted);font-size:16px;line-height:1.75;max-width:780px}.card{margin:18px 0;padding:28px;border:1px solid rgba(255,255,255,.92);border-radius:28px;background:var(--card);box-shadow:var(--shadow)}.card h3{font-size:24px;letter-spacing:-.045em;margin:0 0 13px}.card h4{font-size:18px;letter-spacing:-.03em;margin:28px 0 9px}.card p,.card li{font-size:15px;line-height:1.78;color:#444449}.card ul,.card ol{padding-left:23px}.card li{margin:7px 0}.note{padding:17px 18px;border-left:3px solid var(--blue);background:rgba(0,122,255,.055);border-radius:0 16px 16px 0;color:#45454a;line-height:1.7;font-size:14px;margin:18px 0}.success{border-left-color:var(--green);background:rgba(52,199,89,.06)}.warn{border-left-color:#ff9500;background:rgba(255,149,0,.06)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.mini{padding:22px;border:1px solid rgba(255,255,255,.9);border-radius:23px;background:rgba(255,255,255,.62)}.mini h3{margin:0 0 8px;font-size:18px;letter-spacing:-.035em}.mini p{margin:0;color:#5d5d63;line-height:1.65;font-size:14px}
+pre{margin:16px 0;overflow:auto;padding:18px;border-radius:17px;background:#1c1c1e;color:#f5f5f7;font-size:13px;line-height:1.65}code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}p code,li code{background:#ececef;border-radius:6px;padding:2px 5px;color:#333}
+.checks{display:grid;gap:8px}.check{display:flex;gap:10px;align-items:flex-start;padding:14px;border-radius:15px;background:rgba(255,255,255,.58);font-size:14px;line-height:1.55}.check input{width:18px;height:18px;accent-color:var(--blue);margin-top:1px;flex:0 0 auto}.check.done{opacity:.58;text-decoration:line-through}
+.sources a{color:#006edb;text-decoration:underline;text-decoration-color:rgba(0,110,219,.25);text-underline-offset:3px}.footer{padding:60px 0 80px;text-align:center;color:#999;font-size:13px}.footer strong{color:#555}
+@media(max-width:650px){.nav{top:7px}.hero{padding:85px 0 35px}.hero p{font-size:16px}.progress{top:67px}.card{padding:22px;border-radius:23px}.grid{grid-template-columns:1fr}.section{padding:35px 0}}
+</style>
+</head>
+<body>
+<main class="page">
+<nav class="nav"><a class="brand" href="index.html">FullStack<span>Bible</span></a><a class="back" href="roadmap.html">Roadmap</a></nav>
+<header class="wrap hero">
+  <div class="kicker">Module 01 · Start here</div>
+  <h1>Start with the computer.<br><span>Finish with confidence.</span></h1>
+  <p>This module gives you the complete foundation you need before serious web development begins: how your computer works, how files are organised, how a browser gets a website, how to investigate a page, and how to work confidently with the terminal.</p>
+  <div class="meta"><span class="pill">Beginner → confident</span><span class="pill">4 core areas</span><span class="pill">Hands-on labs</span><span class="pill">Official sources</span></div>
+</header>
+<div class="progress"><strong id="progressText">0% complete</strong><div class="bar"><i id="progressBar"></i></div></div>
+
+<section class="wrap section">
+<h2>What this module is really teaching</h2>
+<p>Before you learn HTML, CSS, JavaScript, React or a server framework, you need to be comfortable with the place where all of that work happens. MDN's beginner curriculum explicitly places computer basics, file systems, web browsing, command-line basics and code editors in the environment-setup stage. This module follows that foundation rather than jumping straight into frameworks. <a class="sources" href="https://developer.mozilla.org/en-US/curriculum/getting-started/environment-setup/" target="_blank">Read the MDN curriculum</a>.</p>
+<div class="grid"><div class="mini"><h3>You will understand</h3><p>What your computer, operating system, applications, files, folders and browser are doing when you build and use a website.</p></div><div class="mini"><h3>You will be able to do</h3><p>Create a clean project folder, move around it with the terminal, open files, inspect a web page and find common mistakes without guessing.</p></div><div class="mini"><h3>You will stop fearing</h3><p>Folders, file extensions, paths, browser errors, developer tools and terminal commands. Each will become a normal working tool.</p></div><div class="mini"><h3>You will be ready for</h3><p>The next module, where you start building the web with HTML, CSS and JavaScript.</p></div></div>
+</section>
+
+<section class="wrap section" id="computer">
+<div class="kicker">01 · Computer basics</div><h2>Understand the machine you work on.</h2>
+<p>A developer does not need to be a computer engineer. You do need to know where your work lives, which program opens it, how programs communicate with the operating system, and what the computer is doing when you run something.</p>
+<div class="card"><h3>The four things to keep separate in your mind</h3>
+<h4>1. Hardware</h4><p>Hardware is the physical equipment: processor, memory, storage, screen, keyboard, mouse, network hardware and so on. Your programs ultimately run on this physical machine. You do not need to memorise every component. What matters is the practical distinction: hardware is the physical machine; software is the instructions and programs that run on it.</p>
+<h4>2. Operating system</h4><p>The operating system is the main software layer that manages the computer and gives other programs a standard way to use it. Windows, macOS and Linux are examples. On a phone, Android and iOS play the same broad role. The operating system manages things such as files, applications, memory, devices, networking and user permissions.</p>
+<h4>3. Application</h4><p>An application is a program you use for a particular job. Your browser is an application. Your code editor is an application. A terminal is an application that lets you communicate with the operating system by typing commands. The same file can often be opened by different applications because the file is separate from the application that edits it.</p>
+<h4>4. Your project</h4><p>A web project is simply a collection of files organised so that they belong together. At first this may be a folder containing an HTML file. Later it may contain styles, scripts, images, configuration files and many other folders. The project is yours; the editor, browser and terminal are tools you use to work on it.</p></div>
+<div class="card"><h3>What you should be able to do before moving on</h3><ol><li>Install and remove an application without being confused by the process.</li><li>Find where an application is installed or where your personal files are stored.</li><li>Create a folder and a text file.</li><li>Rename, copy, move and delete a file.</li><li>Recognise that a file has a name and usually an ending such as <code>.html</code>, <code>.css</code>, <code>.js</code>, <code>.png</code> or <code>.pdf</code>.</li><li>Open the same file in the appropriate application and understand that the file itself is not the application.</li><li>Know how to connect your machine to the internet and confirm that the browser can reach a website.</li></ol></div>
+<div class="note success"><strong>Professional habit:</strong> learn what each tool is responsible for. If a file is wrong, inspect the file. If the page looks wrong, inspect the browser. If a command fails, inspect the terminal message. Do not randomly change five things at once.</div>
+</section>
+
+<section class="wrap section" id="files">
+<div class="kicker">02 · Files, folders & paths</div><h2>Learn where everything lives.</h2>
+<p>MDN describes a website as a collection of files that must be assembled into a sensible structure. Learning to handle those files well is not optional: every web project you build will depend on it. <a class="sources" href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Environment_setup/Dealing_with_files" target="_blank">MDN: Dealing with files</a>.</p>
+<div class="card"><h3>File, folder, path: three ideas you must own</h3>
+<h4>A file</h4><p>A file is a named piece of stored information. An HTML file contains web-page structure. A CSS file contains visual rules. A JavaScript file contains instructions that can make a page interactive. An image file contains image data. The file's ending helps the operating system and applications understand what kind of file it is.</p>
+<h4>A folder</h4><p>A folder is a container used to organise files and other folders. Think of it as a drawer. A project folder should contain the things that belong to that project rather than mixing them into your general downloads or desktop.</p>
+<h4>A path</h4><p>A path tells you where something is. An absolute path starts from a known starting point on the computer. A relative path describes a location from where you currently are. In web development you will use paths constantly because one file often needs to point to another file.</p>
+<pre><code>my-first-site/
+  index.html
+  images/
+    profile.jpg
+  styles/
+    style.css
+  scripts/
+    app.js</code></pre>
+<p>In this example, <code>index.html</code> is at the project root. The image is inside the <code>images</code> folder. The stylesheet is inside <code>styles</code>. The names are deliberately simple and predictable.</p></div>
+<div class="card"><h3>File names that will save you trouble</h3><p>Use names that tell you what the file contains. Keep names short enough to read and consistent enough to recognise. For beginner projects, lowercase names with hyphens are easy to work with: <code>about.html</code>, <code>contact-page.html</code>, <code>hero-image.jpg</code>. Avoid names that differ only by capital letters, avoid unnecessary spaces, and avoid mysterious names such as <code>final-final-new2.html</code>.</p><p>Do not hide the file ending while you are learning. If you intend to create <code>index.html</code> but your editor or file manager secretly creates <code>index.html.txt</code>, the browser will not see the file as an HTML document. Knowing the actual file name prevents hours of unnecessary confusion.</p></div>
+<div class="card"><h3>Relative paths: the idea you will use everywhere</h3><p>Suppose <code>index.html</code> is in the project folder and <code>style.css</code> is inside <code>styles</code>. From <code>index.html</code>, the stylesheet is found at <code>styles/style.css</code>. If a file is one folder deeper and needs to reach its parent folder, <code>..</code> means “go up one folder”.</p>
+<pre><code>project/
+  index.html
+  styles/style.css
+  pages/about.html
+
+From index.html → styles/style.css
+From pages/about.html → ../styles/style.css</code></pre>
+<p>Do not memorise paths as magic symbols. Read them literally: “start here, enter this folder, then open this file.”</p></div>
+<div class="card"><h3>Build a clean first project</h3><p>Create this exact structure using your file manager before you write serious code:</p><pre><code>fullstack-practice/
+  module-01/
+    first-page/
+      index.html
+      images/
+      styles/
+      scripts/
+      notes/</code></pre><p>Keeping practice work separate from the learning application itself will make later lessons easier to understand. You will know exactly which files you created and why they exist.</p></div>
+</section>
+
+<section class="wrap section" id="web">
+<div class="kicker">03 · How the web works</div><h2>From tapping a link to seeing a page.</h2>
+<p>MDN's explanation of the web is the foundation used here: a browser acts as a client, a server provides resources, DNS helps find the server, HTTP carries requests and responses, and the browser assembles the returned files into the experience you see. <a class="sources" href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Web_standards/How_the_web_works" target="_blank">MDN: How the web works</a>.</p>
+<div class="card"><h3>First: the internet and the web are not the same thing</h3><p>The internet is the global network that lets computers and other devices communicate. The web is one service that uses that network. Websites use web technologies to exchange pages, images, scripts, styles and data. Email, online games and other services can use the internet without being websites.</p></div>
+<div class="card"><h3>Client and server</h3><p>Your browser is normally the client in this conversation. A server is a computer or service that receives requests and sends back resources or performs work. When you open a website, your browser asks for something and a server answers. The server might return an HTML document, an image, a CSS file, JavaScript, or data.</p><div class="note">Think of it as a restaurant: your browser is the customer placing an order; the server is the kitchen handling the order; the response is what comes back. This analogy is only for intuition. Real web communication has many more details.</div></div>
+<div class="card"><h3>What a web address contains</h3><p>A web address is called a URL. You will see URLs constantly, so learn to read them rather than treating them as mysterious strings.</p><pre><code>https://learn.example.com/courses/start?lesson=1#files
+│      │              │       │             │
+│      │              │       │             └─ page position
+│      │              │       └─ extra information
+│      │              └─ path to a resource
+│      └─ website name
+└─ secure web communication</code></pre><p>The exact pieces vary, but the important beginner idea is that the URL tells the browser how to communicate and where the requested resource is located.</p></div>
+<div class="card"><h3>DNS: finding the computer behind a website name</h3><p>People prefer names such as <code>developer.mozilla.org</code>. Computers communicate using network addresses. DNS, the Domain Name System, helps translate a website name into the network address needed to contact the right service. You do not manually perform this lookup every time; your device and network software handle it for you.</p><p>If DNS cannot resolve a name, the browser may not know where to send the request. That is why a website can fail before any page code is even delivered.</p></div>
+<div class="card"><h3>HTTP: the conversation between browser and server</h3><p>HTTP is the set of rules used for web requests and responses. A browser can send a request asking for a resource. The server answers with a response that includes a status and, when appropriate, the requested content.</p><p>For example, <code>GET</code> commonly means “give me this resource”. A response such as <code>200</code> means the request succeeded. <code>404</code> means the requested resource was not found. <code>500</code> indicates a problem on the server side. These numbers are not random; they give software and developers a standard way to understand what happened.</p></div>
+<div class="card"><h3>HTTPS: why you see the lock</h3><p>HTTPS is HTTP protected by encryption. It helps prevent people on the network from simply reading or changing the communication between your browser and the website. It also helps your browser verify that it is communicating with the intended website through a trusted certificate system. You should treat secure communication as the normal expectation for modern websites, especially when accounts, payments or private information are involved.</p></div>
+<div class="card"><h3>What happens when you press Enter</h3><ol><li>You enter a URL or choose a link.</li><li>The browser determines where it needs to connect.</li><li>DNS may be used to find the network address associated with the website name.</li><li>The browser establishes the network connection and sends an HTTP request.</li><li>The server receives the request and decides what response to send.</li><li>The browser receives the response, which may contain HTML and references to other files.</li><li>The browser requests additional resources such as CSS, JavaScript, images and fonts.</li><li>The browser processes those resources and builds the page you can see and interact with.</li></ol><p>This sequence is simplified, but it is the mental model you need at this stage. MDN's browser-loading guide goes deeper into how the returned files become the rendered page. <a class="sources" href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Web_standards/How_browsers_load_websites" target="_blank">Read it here</a>.</p></div>
+<div class="note warn"><strong>Important distinction:</strong> a website can be reachable while its application is broken. DNS, the network connection, the server, the returned files and the browser are different parts of the journey. Good developers learn to identify which part failed instead of calling everything “the website”.</div>
+</section>
+
+<section class="wrap section" id="devtools">
+<div class="kicker">04 · Browser & developer tools</div><h2>Turn the browser into an investigation tool.</h2>
+<p>Every modern browser includes developer tools. MDN describes them as tools for inspecting loaded HTML, CSS and JavaScript, seeing requested resources and debugging code. Chrome's official documentation also provides dedicated DevTools documentation and debugging guidance. <a class="sources" href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Tools_and_setup/What_are_browser_developer_tools" target="_blank">MDN DevTools guide</a> · <a class="sources" href="https://developer.chrome.com/docs/devtools/" target="_blank">Chrome DevTools</a>.</p>
+<div class="card"><h3>Open developer tools</h3><p>On a desktop browser, common options include right-clicking a page and choosing an inspection option, using the browser menu, or using a keyboard shortcut. The exact shortcut differs by browser and operating system. The important thing is not the shortcut; it is knowing that the browser has a built-in workspace for examining what the page is doing.</p><p>On mobile browsers, the full developer tools experience is usually provided by connecting the phone to a computer running a desktop browser, or by using a browser-specific remote debugging workflow. You do not need to master remote debugging yet.</p></div>
+<div class="card"><h3>The Elements / Inspector area</h3><p>This area lets you inspect the HTML structure currently loaded in the browser. You can select a visible part of a page and see the corresponding HTML. You can also inspect the visual rules affecting it.</p><p>Use it to answer questions such as: “Which element contains this text?”, “Why is this box this wide?”, “Which rule changed this color?”, or “Is this element actually present on the page?”</p><p>Changes you make here are normally temporary. They help you investigate and experiment; they do not automatically rewrite your project files.</p></div>
+<div class="card"><h3>The Styles area</h3><p>When you select an element, the browser can show the visual rules currently affecting it. You can temporarily change a value, such as a margin or font size, and immediately see the result. This is one of the fastest ways to learn what a visual rule actually does.</p><p>Professional workflow: experiment in the browser first, understand the change, then make the intentional change in your real CSS file. Do not assume a browser experiment has been saved to your project.</p></div>
+<div class="card"><h3>The Console</h3><p>The Console is a place where the browser reports messages and where you can run small JavaScript expressions. It is especially useful when a script fails. Errors often tell you what went wrong and where the browser noticed it.</p><pre><code>console.log("Hello from the browser");</code></pre><p>If you see an error, read the first useful line carefully. Look for the file name, line number and description. Do not immediately copy the whole error into a search engine without first understanding what the browser is telling you.</p></div>
+<div class="card"><h3>The Network area</h3><p>The Network area shows requests made by the page. This is where you investigate “the browser asked for something, but what happened?” You can see resources such as documents, stylesheets, scripts and images, their status codes, and timing information.</p><p>A missing image might show a failed request. A stylesheet that was requested from the wrong location may return a not-found response. A server error may return a 500-series status. This makes Network one of the most useful tools for understanding the path between your files and the browser.</p></div>
+<div class="card"><h3>Responsive testing</h3><p>Desktop browsers can emulate different screen sizes so you can inspect how a page behaves at smaller widths. This is useful because modern websites must work across phones, tablets and computers. Treat this as a testing aid, not proof that a page works perfectly on every physical device.</p></div>
+<div class="card"><h3>Your first DevTools investigation</h3><ol><li>Open any simple website you are allowed to inspect.</li><li>Open developer tools.</li><li>Select a heading in the page.</li><li>Find the HTML element that represents it.</li><li>Temporarily change its font size.</li><li>Change its color.</li><li>Open the Console and run <code>2 + 2</code>.</li><li>Open Network and reload the page.</li><li>Find the main document request.</li><li>Find at least one image, stylesheet or script request.</li></ol><div class="note success"><strong>Goal:</strong> after this exercise, the browser should no longer feel like a black box. You should be able to look inside and ask useful questions.</div></div>
+</section>
+
+<section class="wrap section" id="terminal">
+<div class="kicker">05 · Files, folders & terminal</div><h2>Control your project with typed commands.</h2>
+<p>The terminal is a text-based way to interact with your computer. Instead of clicking through folders, you type instructions. Git's official book also teaches its command-line tools because the command line exposes the full set of Git operations and builds transferable skills. <a class="sources" href="https://git-scm.com/book/en/v2/Getting-Started-The-Command-Line" target="_blank">Git: The Command Line</a>.</p>
+<div class="card"><h3>What you are looking at</h3><p>When you open Terminal on macOS/Linux or PowerShell/Command Prompt on Windows, you see a prompt. The prompt is simply the computer waiting for your instruction. The location shown by the prompt tells you which folder your next command will operate in.</p><p>Different operating systems use slightly different commands. That is normal. The ideas are the same: see where you are, list what is there, move to another folder, create something, inspect it, and remove or move it when necessary.</p></div>
+<div class="card"><h3>The essential commands</h3><div class="grid"><div class="mini"><h3>Where am I?</h3><p>macOS/Linux: <code>pwd</code><br>PowerShell: <code>Get-Location</code></p></div><div class="mini"><h3>What is here?</h3><p>macOS/Linux: <code>ls</code><br>PowerShell: <code>Get-ChildItem</code><br>Windows Command Prompt: <code>dir</code></p></div><div class="mini"><h3>Move into a folder</h3><p><code>cd folder-name</code><br>Go up one level with <code>cd ..</code>.</p></div><div class="mini"><h3>Create a folder</h3><p><code>mkdir practice</code><br>Creates a folder named <code>practice</code>.</p></div></div></div>
+<div class="card"><h3>Read commands as sentences</h3><p>Do not memorise commands as magic spells. Read them as short instructions.</p><pre><code>mkdir fullstack-practice
+cd fullstack-practice
+mkdir module-01
+cd module-01</code></pre><p>That means: “make a folder called fullstack-practice; go into it; make a folder called module-01; go into it.” This way of thinking will scale to much more advanced work.</p></div>
+<div class="card"><h3>Create and inspect a first HTML file</h3><p>On macOS/Linux, a simple way to create an empty file is:</p><pre><code>touch index.html</code></pre><p>On PowerShell:</p><pre><code>New-Item index.html</code></pre><p>Then list the folder contents and confirm that <code>index.html</code> exists. Open the file in your code editor and put this inside:</p><pre><code>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;title&gt;My first page&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Hello, web.&lt;/h1&gt;
+    &lt;p&gt;I built my first page.&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre><p>Save it and open it in your browser. You have now completed the first full loop: create a folder, create a file, write content, save it, and ask a browser to display it.</p></div>
+<div class="card"><h3>Moving, copying and deleting</h3><p>These operations are powerful, so understand them before using them.</p><pre><code># macOS / Linux
+cp index.html copy.html
+mv copy.html old-index.html
+rm old-index.html</code></pre><p>PowerShell uses different command names, including <code>Copy-Item</code>, <code>Move-Item</code> and <code>Remove-Item</code>. Windows Command Prompt uses commands such as <code>copy</code>, <code>move</code> and <code>del</code>.</p><div class="note warn"><strong>Safety rule:</strong> never run a delete command against a folder you do not fully understand. Before deleting, use a listing command and confirm your current location. The terminal does exactly what you tell it to do; it does not know what you meant.</div></div>
+<div class="card"><h3>Five terminal habits that make you faster</h3><ol><li><strong>Use Tab completion.</strong> Start typing a file or folder name and press Tab when your terminal supports it. This reduces typing and spelling mistakes.</li><li><strong>Use the Up Arrow.</strong> It recalls previous commands so you can edit and run them again.</li><li><strong>Use clear output when needed.</strong> <code>clear</code> is common on macOS/Linux; <code>Clear-Host</code> is available in PowerShell. Windows Command Prompt commonly uses <code>cls</code>.</li><li><strong>Read before pressing Enter.</strong> Especially when moving or deleting files.</li><li><strong>Work from a known project folder.</strong> The fewer random locations you use, the fewer path mistakes you make.</li></ol></div>
+</section>
+
+<section class="wrap section" id="lab">
+<div class="kicker">06 · Capstone lab</div><h2>Build your first complete workspace.</h2>
+<p>This is the point where the separate ideas become one workflow. Do it yourself. Do not copy the finished result and call it complete.</p>
+<div class="card"><h3>Part A — Create the project</h3><ol><li>Create a folder named <code>fullstack-module-01</code>.</li><li>Open a terminal in that folder or navigate to it with <code>cd</code>.</li><li>Create <code>index.html</code>.</li><li>Create folders named <code>images</code>, <code>styles</code>, <code>scripts</code> and <code>notes</code>.</li><li>Open the project in your code editor.</li></ol></div>
+<div class="card"><h3>Part B — Build a simple page</h3><p>Your page should contain a meaningful title, one main heading, two paragraphs, an unordered list and at least one link. Keep the content about yourself as a learner. Do not worry about visual design yet.</p><p>Use semantic HTML elements for their meaning rather than choosing elements because they happen to look a certain way. MDN's HTML module explains that meaningful structure helps browsers, accessibility tools and other systems understand the page. <a class="sources" href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content" target="_blank">MDN: Structuring content with HTML</a>.</p></div>
+<div class="card"><h3>Part C — Investigate your own page</h3><ol><li>Open the page in your browser.</li><li>Open developer tools.</li><li>Inspect your main heading.</li><li>Temporarily change its appearance in the browser.</li><li>Open Console and run a simple calculation.</li><li>Reload with Network visible and find the main document.</li><li>Resize the page using the responsive device controls.</li></ol></div>
+<div class="card"><h3>Part D — Break it on purpose</h3><p>Professional developers do not learn only by making things work. They learn by understanding failure.</p><ol><li>Change the name of your HTML file temporarily and try to open the old address. Observe what happens.</li><li>Change a link so it points to a file that does not exist. Inspect the result.</li><li>Put a file in the wrong folder and observe the effect of an incorrect path.</li><li>Add a small JavaScript error only if you know how to remove it, then inspect the Console.</li><li>Fix each problem one at a time.</li></ol><p>For every failure, write down: <strong>What I expected → What happened → What evidence I found → What I changed → What fixed it.</strong></p></div>
+</section>
+
+<section class="wrap section" id="assessment">
+<div class="kicker">07 · Knowledge check</div><h2>Can you explain it without notes?</h2>
+<p>If you can answer these in your own words, you are ready for Module 02. If you cannot, return to the relevant section rather than memorising an answer.</p>
+<div class="card"><ol><li>What is the difference between hardware, an operating system and an application?</li><li>What is a file? What is a folder?</li><li>Why does a file ending such as <code>.html</code> matter?</li><li>What is a path?</li><li>What is the difference between the internet and the web?</li><li>What does a browser do?</li><li>What is a server?</li><li>Why does DNS exist?</li><li>What does HTTP do?</li><li>What does HTTPS add?</li><li>What does a 404 response tell you?</li><li>What is the difference between changing a page in DevTools and changing your actual project file?</li><li>What is the Console useful for?</li><li>What is the Network panel useful for?</li><li>What does <code>cd ..</code> mean?</li><li>Why should you check your current folder before deleting something from a terminal?</li><li>Can you create a project folder and an HTML file without a graphical file manager?</li><li>Can you explain the journey from entering a URL to seeing a page?</li></ol></div>
+</section>
+
+<section class="wrap section">
+<div class="kicker">08 · Completion checklist</div><h2>Module 01 is complete when you can do these.</h2>
+<div class="card"><div class="checks" id="checks">
+<label class="check"><input type="checkbox"> I can explain what my operating system does in practical terms.</label>
+<label class="check"><input type="checkbox"> I can create, rename, move, copy and delete files safely.</label>
+<label class="check"><input type="checkbox"> I understand folders and can read a file path.</label>
+<label class="check"><input type="checkbox"> I can create a clean project folder from scratch.</label>
+<label class="check"><input type="checkbox"> I can explain browser, client, server, DNS and HTTP in plain language.</label>
+<label class="check"><input type="checkbox"> I understand what happens when I enter a web address.</label>
+<label class="check"><input type="checkbox"> I can open browser developer tools and inspect a page.</label>
+<label class="check"><input type="checkbox"> I can use the Console to investigate a simple problem.</label>
+<label class="check"><input type="checkbox"> I can use the Network panel to inspect page requests.</label>
+<label class="check"><input type="checkbox"> I can navigate folders with a terminal.</label>
+<label class="check"><input type="checkbox"> I can create and inspect a file from the terminal.</label>
+<label class="check"><input type="checkbox"> I completed the capstone lab without copying the finished result.</label>
+</div></div>
+</section>
+
+<section class="wrap section sources">
+<div class="kicker">09 · Authentic reference library</div><h2>Use the sources that teach the platform.</h2>
+<p>This module is based on official or primary documentation rather than random tutorials. The goal is to learn concepts from sources maintained by the organisations responsible for the tools and standards.</p>
+<div class="card"><h3>MDN Web Docs</h3><p>Use MDN as the primary learning reference for web-platform concepts, beginner web development, browsers, HTML and the web itself.</p><p><a href="https://developer.mozilla.org/en-US/curriculum/getting-started/environment-setup" target="_blank">MDN Curriculum — Environment setup</a><br><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Environment_setup/Dealing_with_files" target="_blank">MDN — Dealing with files</a><br><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Environment_setup/Browsing_the_web" target="_blank">MDN — Browsing the web</a><br><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Web_standards/How_the_web_works" target="_blank">MDN — How the web works</a><br><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Getting_started/Web_standards/How_browsers_load_websites" target="_blank">MDN — How browsers load websites</a><br><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Howto/Tools_and_setup/What_are_browser_developer_tools" target="_blank">MDN — Browser developer tools</a></p></div>
+<div class="card"><h3>Chrome for Developers</h3><p>Use the official Chrome documentation when you want browser-specific DevTools instructions, debugging workflows and performance tools.</p><p><a href="https://developer.chrome.com/docs/devtools/" target="_blank">Chrome DevTools documentation</a></p></div>
+<div class="card"><h3>Git documentation</h3><p>Git is introduced here only as a working tool around the command line. Its official book explains the command line, repositories and the basic workflow you will use later in the curriculum.</p><p><a href="https://git-scm.com/book/en/v2/Getting-Started-The-Command-Line" target="_blank">Git — The Command Line</a><br><a href="https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository" target="_blank">Git — Getting a Git Repository</a><br><a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git" target="_blank">Git — Installing Git</a></p></div>
+</section>
+
+<footer class="wrap footer"><strong>Module 01 · Start here</strong><br>Learn the environment. Understand the web. Investigate problems. Build with confidence.<br><br><a href="roadmap.html">← Back to roadmap</a></footer>
+</main>
+<script>
+const key='fullstack-module-01-progress';
+const boxes=[...document.querySelectorAll('#checks input')];
+try{const saved=JSON.parse(localStorage.getItem(key)||'[]');boxes.forEach((b,i)=>{b.checked=!!saved[i]});}catch(e){}
+function update(){const done=boxes.filter(b=>b.checked).length;const pct=Math.round(done/boxes.length*100);document.getElementById('progressText').textContent=pct+'% complete';document.getElementById('progressBar').style.width=pct+'%';boxes.forEach(b=>b.closest('.check').classList.toggle('done',b.checked));try{localStorage.setItem(key,JSON.stringify(boxes.map(b=>b.checked)))}catch(e){}}
+boxes.forEach(b=>b.addEventListener('change',update));update();
+</script>
+</body>
+</html>
