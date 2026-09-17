@@ -6,7 +6,11 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:mobile": "playwright test --project=mobile-chrome",
+    "test:report": "playwright show-report"
   },
   "dependencies": {
     "next": "latest",
@@ -15,6 +19,7 @@
     "lucide-react": "latest"
   },
   "devDependencies": {
+    "@playwright/test": "latest",
     "@types/node": "latest",
     "@types/react": "latest",
     "@types/react-dom": "latest",
