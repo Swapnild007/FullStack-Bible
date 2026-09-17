@@ -1,5 +1,4 @@
-document.write('<script src="curriculum-data.js"><\/script>');
-document.addEventListener('DOMContentLoaded',()=>{
+(()=>{
 const css=`
 :root{--bg:#f4f7fb;--panel:#ffffff;--panel2:#eef3f8;--line:rgba(20,38,58,.10);--line2:rgba(35,151,214,.24);--text:#132238;--muted:#66768a;--blue:#1689c7;--green:#159a6a;--purple:#7765d8}
 html,body{background:#f4f7fb!important;color:#132238!important}body{background:linear-gradient(135deg,#f8fbff 0%,#eef4f9 55%,#f7faff 100%)!important}.app{background:radial-gradient(900px 650px at 82% 0,rgba(75,174,236,.13),transparent 65%),radial-gradient(700px 600px at 8% 90%,rgba(126,102,222,.09),transparent 70%)!important}
@@ -9,4 +8,11 @@ html,body{background:#f4f7fb!important;color:#132238!important}body{background:l
 .dashboard h2{color:#162a40}.intro{color:#68798d}.eyebrow2{color:#1689c7}.continue{background:linear-gradient(110deg,rgba(40,168,232,.09),rgba(119,101,216,.06));border-color:rgba(22,137,199,.18)}.continueIcon{background:rgba(22,137,199,.08);border-color:rgba(22,137,199,.15);color:#1689c7}.continueText small,.sectionHead p,.pathNode small{color:#7b8b9d}.continueText span{color:#718196}
 .summary .box,.domain,.lessonPanel,.mapCard,.concept,.step{background:rgba(255,255,255,.78)!important;border-color:rgba(25,53,78,.10)!important;box-shadow:0 6px 22px rgba(45,75,101,.045)}.box small{color:#758599}.box b,.sectionHead h3,.panelTitle h3,.domain h3,.lessoninfo b,.concept h3{color:#18304a}.pathDot{background:#fff;color:#1689c7;border-color:rgba(22,137,199,.22)}.pathNode.active .pathDot{background:rgba(22,137,199,.10);box-shadow:0 0 22px rgba(22,137,199,.14)}.pathNode b{color:#405b74}.pathNode:not(:last-child):after{background:linear-gradient(90deg,rgba(22,137,199,.42),rgba(22,137,199,.08))}.domain{background:linear-gradient(145deg,rgba(255,255,255,.92),rgba(242,247,251,.88))!important}.domain:hover{border-color:rgba(22,137,199,.28)}.domain .num,.domain footer{color:#718196}.domain footer span:last-child{color:#1689c7}.domain p{color:#718196}.lessonrow{border-color:rgba(25,53,78,.08)}.lessonnum{background:#eef4f8;border-color:rgba(25,53,78,.10);color:#6e8194}.lessoninfo small{color:#77889a}.open{background:#fff;color:#1473a8;border-color:rgba(22,137,199,.16)}
 .readerBack{color:#64788d}.reader h2{color:#162b42}.reader .sub{color:#718196}.lessonProgress{background:#dfe8ef}.concept p,.concept li{color:#5e7084}.concept code{color:#087cae}.concept.accent{background:linear-gradient(145deg,rgba(40,168,232,.08),rgba(255,255,255,.84))!important;border-color:rgba(22,137,199,.16)!important}.step{background:#f8fbfd!important}.step b{background:#e9f3f8;color:#1689c7}.step span{color:#65788c}.readerActions button{background:#fff;color:#53677c;border-color:rgba(25,53,78,.11)}.readerActions .next{background:#152b43;color:#fff;border-color:#152b43}.toast{background:#fff;color:#263b51;border-color:rgba(25,53,78,.12);box-shadow:0 10px 30px rgba(45,75,101,.15)}
-`;const s=document.createElement('style');s.id='fullstack-light-theme';s.textContent=css;document.head.appendChild(s);});
+`;
+function apply(){
+  if(document.getElementById('fullstack-light-theme')) return;
+  const s=document.createElement('style');s.id='fullstack-light-theme';s.textContent=css;document.head.appendChild(s);
+  const meta=document.querySelector('meta[name="theme-color"]');if(meta)meta.setAttribute('content','#f4f7fb');
+}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});else apply();
+})();
