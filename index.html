@@ -2,46 +2,178 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f5f5f7">
 <title>FullStack Bible — Learning Hub</title>
-<meta name="description" content="A complete path to learn full-stack web development from zero to advanced.">
+<meta name="description" content="FullStack Bible — a focused learning hub for full-stack development.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
 <style>
-:root{--bg:#f5f5f7;--ink:#111113;--muted:#6e6e73;--line:rgba(0,0,0,.08);--card:rgba(255,255,255,.72);--blue:#0071e3;--purple:#5e5ce6;--shadow:0 24px 70px rgba(0,0,0,.07)}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}
-.page{min-height:100vh;overflow:hidden;background:radial-gradient(circle at 82% 2%,rgba(94,92,230,.14),transparent 27%),radial-gradient(circle at 12% 18%,rgba(0,113,227,.10),transparent 25%),var(--bg)}
-.nav{position:sticky;top:12px;z-index:30;width:min(1160px,calc(100% - 28px));margin:12px auto 0;padding:11px 13px 11px 18px;border:1px solid rgba(255,255,255,.86);background:rgba(255,255,255,.66);backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);border-radius:22px;box-shadow:0 12px 40px rgba(0,0,0,.055);display:flex;align-items:center;justify-content:space-between}.brand{font-family:Manrope;font-weight:800;letter-spacing:-.055em}.brand span{color:var(--blue)}.navlinks{display:flex;gap:28px;color:#666;font-size:14px}.navlinks a{transition:color .25s}.navlinks a:hover{color:#111}.navcta{background:#111;color:#fff;border-radius:999px;padding:10px 17px;font-size:13px;font-weight:700;transition:.3s}.navcta:hover{transform:translateY(-1px);background:#222}
-.hero{width:min(1040px,calc(100% - 32px));margin:0 auto;padding:122px 0 82px;text-align:center}.eyebrow{display:inline-flex;gap:9px;align-items:center;border:1px solid rgba(0,0,0,.07);background:rgba(255,255,255,.58);padding:8px 13px;border-radius:999px;color:#555;font-size:13px;box-shadow:0 8px 30px rgba(0,0,0,.035)}.dot{width:7px;height:7px;border-radius:50%;background:#34c759;box-shadow:0 0 0 5px rgba(52,199,89,.12)}h1{font-family:Manrope;font-size:clamp(52px,8.7vw,104px);line-height:.94;letter-spacing:-.085em;margin:25px auto 24px;max-width:1000px}h1 em,.future-card h2 em{font-style:normal;background:linear-gradient(100deg,#111 15%,#0071e3 52%,#5e5ce6 82%);background-clip:text;-webkit-background-clip:text;color:transparent}.hero-copy{max-width:680px;margin:0 auto;color:var(--muted);font-size:18px;line-height:1.65}.actions{display:flex;justify-content:center;gap:11px;margin-top:32px;flex-wrap:wrap}.primary,.secondary{display:inline-flex;align-items:center;gap:8px;padding:14px 21px;border-radius:999px;font-weight:700;font-size:14px;transition:.3s}.primary{background:#111;color:#fff;box-shadow:0 10px 25px rgba(0,0,0,.12)}.primary:hover,.secondary:hover{transform:translateY(-2px)}.secondary{background:rgba(255,255,255,.75);border:1px solid var(--line)}.hero-note{display:flex;justify-content:center;align-items:center;gap:13px;margin-top:28px;color:#888;font-size:12px}.hero-note i{width:3px;height:3px;background:#aaa;border-radius:50%}
-.shell{width:min(1160px,calc(100% - 32px));margin:auto}.section{padding:60px 0}.sectionhead{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-bottom:25px}.label{display:block;color:#888;font-size:10px;font-weight:700;letter-spacing:.14em;margin-bottom:8px}.section h2{font-family:Manrope;font-size:clamp(32px,4vw,48px);letter-spacing:-.065em;line-height:1;margin:0}.sectionhead p{color:var(--muted);margin:0;max-width:510px;line-height:1.6;font-size:15px}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{position:relative;background:var(--card);border:1px solid rgba(255,255,255,.92);box-shadow:var(--shadow);border-radius:27px;padding:24px;min-height:210px;overflow:hidden;transition:.45s}.card:hover{transform:translateY(-6px);box-shadow:0 30px 80px rgba(0,0,0,.11)}.num{font-size:11px;color:#999;font-weight:700;letter-spacing:.08em}.card h3{font-family:Manrope;font-size:21px;letter-spacing:-.045em;margin:38px 0 10px}.card p{color:var(--muted);font-size:14px;line-height:1.6;margin:0;max-width:285px}.arrow{position:absolute;right:22px;bottom:21px;color:#aaa;font-size:20px}
-.dark-section{width:min(1160px,calc(100% - 32px));margin:70px auto 0;padding:58px 48px;border-radius:38px;background:#111113;color:#fff;box-shadow:0 30px 90px rgba(0,0,0,.15)}.dark-head{margin-bottom:32px}.dark-head p{color:#a7a7aa}.dark-section .label{color:#777}.principles{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(255,255,255,.10);border:1px solid rgba(255,255,255,.08);border-radius:25px;overflow:hidden}.principle{padding:25px;background:#151517;min-height:190px}.principle span{color:#666;font-size:11px}.principle h3{font-family:Manrope;font-size:22px;letter-spacing:-.04em;margin:48px 0 9px}.principle p{color:#999;font-size:13px;line-height:1.55;margin:0}
-.future{padding:95px 0 65px}.future-card{text-align:center;padding:75px 28px;border:1px solid rgba(255,255,255,.9);border-radius:38px;background:linear-gradient(135deg,rgba(255,255,255,.9),rgba(244,245,250,.74));box-shadow:var(--shadow)}.future-card h2{font-family:Manrope;font-size:clamp(38px,6vw,66px);line-height:.98;letter-spacing:-.075em;margin:15px auto 20px}.future-card p{max-width:650px;margin:0 auto 29px;color:var(--muted);font-size:16px;line-height:1.65}.footer{text-align:center;padding:45px 20px 60px;color:#888;font-size:13px}.footer-brand{font-family:Manrope;font-weight:800;font-size:20px}.footer-brand span{color:var(--blue)}.footer p{margin:10px 0 5px}.footer small{color:#aaa}
-@media(max-width:800px){.navlinks{display:none}.nav{top:8px}.hero{padding:88px 0 65px}h1{font-size:clamp(48px,14vw,70px)}.hero-copy{font-size:16px}.hero-note{gap:8px;flex-wrap:wrap}.section{padding:45px 0}.sectionhead{display:block}.sectionhead p{margin-top:11px}.grid{grid-template-columns:1fr 1fr}.card{min-height:205px}.dark-section{padding:45px 24px;border-radius:30px}.principles{grid-template-columns:1fr 1fr}.future{padding:65px 0 40px}.future-card{padding:55px 22px;border-radius:30px}}
-@media(max-width:520px){.grid,.principles{grid-template-columns:1fr}.card{min-height:185px}.card h3{margin-top:30px}.hero-note i{display:none}.hero-note span{margin:0 5px}.dark-section{margin-top:40px}.future-card h2{font-size:42px}.footer{padding-bottom:45px}}
+:root{
+  --bg:#f5f5f7;
+  --ink:#111113;
+  --muted:#6e6e73;
+  --blue:#007aff;
+  --purple:#5856d6;
+  --green:#34c759;
+  --glass:rgba(255,255,255,.62);
+  --glass-strong:rgba(255,255,255,.78);
+  --hairline:rgba(255,255,255,.82);
+  --ease:cubic-bezier(.22,1,.36,1);
+  --spring:cubic-bezier(.175,.885,.32,1.275);
+}
+*{box-sizing:border-box}
+html{height:100%;scroll-behavior:smooth}
+body{min-height:100%;margin:0;background:var(--bg);color:var(--ink);font-family:'DM Sans',-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',sans-serif;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body.locked{overflow:hidden}
+a{text-decoration:none;color:inherit}
+button{font:inherit;color:inherit}
+button,a{-webkit-tap-highlight-color:transparent}
+
+.page{position:relative;min-height:100svh;overflow:hidden;background:
+  radial-gradient(75% 55% at 82% 0%,rgba(88,86,214,.16),transparent 68%),
+  radial-gradient(65% 55% at 0% 34%,rgba(0,122,255,.13),transparent 68%),
+  radial-gradient(55% 45% at 65% 95%,rgba(255,177,130,.09),transparent 70%),
+  var(--bg)}
+.page:before,.page:after{content:"";position:absolute;pointer-events:none;filter:blur(1px);opacity:.72;border-radius:50%}
+.page:before{width:46vw;height:46vw;max-width:560px;max-height:560px;right:-18vw;bottom:-18vw;background:linear-gradient(135deg,rgba(255,255,255,.9),rgba(124,159,255,.12));border:1px solid rgba(255,255,255,.72);box-shadow:inset 0 0 80px rgba(255,255,255,.55),0 30px 90px rgba(79,96,180,.08);animation:float 12s ease-in-out infinite}
+.page:after{width:28vw;height:28vw;max-width:360px;max-height:360px;left:-12vw;top:24%;background:rgba(255,255,255,.36);border:1px solid rgba(255,255,255,.7);animation:float 15s ease-in-out -4s infinite reverse}
+
+.nav-wrap{position:relative;z-index:20;padding:env(safe-area-inset-top) 14px 0}
+.nav{width:min(1160px,100%);height:56px;margin:10px auto 0;padding:7px 8px 7px 17px;border:1px solid rgba(255,255,255,.78);border-radius:18px;background:rgba(255,255,255,.58);backdrop-filter:saturate(180%) blur(28px);-webkit-backdrop-filter:saturate(180%) blur(28px);box-shadow:0 8px 28px rgba(0,0,0,.055),inset 0 1px 0 rgba(255,255,255,.85);display:flex;align-items:center;justify-content:space-between}
+.brand{font-family:Manrope,-apple-system,sans-serif;font-size:16px;font-weight:800;letter-spacing:-.055em}
+.brand span{color:var(--blue)}
+.menu-button{width:42px;height:42px;padding:0;border:1px solid rgba(255,255,255,.72);border-radius:50%;background:rgba(255,255,255,.68);display:grid;place-content:center;gap:5px;cursor:pointer;box-shadow:0 5px 16px rgba(0,0,0,.07),inset 0 1px 0 rgba(255,255,255,.9);transition:transform .45s var(--spring),background .25s ease}
+.menu-button:hover{transform:scale(1.04);background:rgba(255,255,255,.84)}
+.menu-button:active{transform:scale(.9)}
+.menu-button span{display:block;width:15px;height:1.7px;border-radius:2px;background:#161618;transition:transform .42s var(--ease),opacity .25s ease}
+.menu-button.is-open span:first-child{transform:translateY(3.35px) rotate(45deg)}
+.menu-button.is-open span:last-child{transform:translateY(-3.35px) rotate(-45deg)}
+
+.hero{position:relative;z-index:1;min-height:calc(100svh - 66px);width:min(900px,calc(100% - 32px));margin:0 auto;padding:clamp(120px,20vh,210px) 0 100px;display:flex;flex-direction:column;align-items:center;text-align:center;justify-content:center}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:7px 12px;border:1px solid rgba(255,255,255,.78);border-radius:999px;background:rgba(255,255,255,.5);color:#636366;font-size:12px;box-shadow:0 8px 28px rgba(0,0,0,.035),inset 0 1px 0 rgba(255,255,255,.9);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);animation:rise .9s var(--ease) both}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 4px rgba(52,199,89,.12)}
+h1{margin:25px auto 20px;max-width:850px;font-family:Manrope,-apple-system,sans-serif;font-size:clamp(50px,8vw,94px);line-height:.93;letter-spacing:-.09em;font-weight:800;animation:rise .9s .08s var(--ease) both}
+h1 em{font-style:normal;background:linear-gradient(105deg,#111 5%,#007aff 54%,#5856d6 90%);background-clip:text;-webkit-background-clip:text;color:transparent}
+.hero-copy{margin:0 auto;max-width:500px;color:var(--muted);font-size:16px;line-height:1.55;animation:rise .9s .16s var(--ease) both}
+.primary{display:inline-flex;align-items:center;justify-content:center;gap:13px;margin-top:30px;padding:15px 17px 15px 21px;border:0;border-radius:999px;background:#111113;color:#fff;font-size:14px;font-weight:700;box-shadow:0 14px 30px rgba(0,0,0,.16),inset 0 1px 0 rgba(255,255,255,.14);transition:transform .45s var(--spring),box-shadow .35s ease;animation:rise .9s .24s var(--ease) both}
+.primary span{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:rgba(255,255,255,.13);font-size:17px;transition:transform .45s var(--spring)}
+.primary:hover{transform:translateY(-2px) scale(1.015);box-shadow:0 20px 38px rgba(0,0,0,.2)}
+.primary:hover span{transform:translateX(3px)}
+.primary:active{transform:scale(.96)}
+.footer-mark{position:absolute;bottom:25px;left:50%;transform:translateX(-50%);font-size:11px;color:#a1a1a6;letter-spacing:.04em;animation:rise .9s .32s var(--ease) both}
+
+/* iOS-style menu sheet */
+.menu-overlay{position:fixed;inset:0;z-index:100;padding:calc(env(safe-area-inset-top) + 10px) 10px calc(env(safe-area-inset-bottom) + 10px);background:rgba(28,28,30,.12);opacity:0;visibility:hidden;pointer-events:none;backdrop-filter:blur(0);-webkit-backdrop-filter:blur(0);transition:opacity .35s ease,visibility .35s ease,backdrop-filter .5s ease,-webkit-backdrop-filter .5s ease}
+.menu-overlay.open{opacity:1;visibility:visible;pointer-events:auto;backdrop-filter:saturate(150%) blur(18px);-webkit-backdrop-filter:saturate(150%) blur(18px)}
+.menu-sheet{position:absolute;right:10px;top:calc(env(safe-area-inset-top) + 10px);width:min(430px,calc(100% - 20px));height:calc(100svh - env(safe-area-inset-top) - env(safe-area-inset-bottom) - 20px);padding:13px;border:1px solid rgba(255,255,255,.86);border-radius:30px;background:rgba(248,248,250,.78);backdrop-filter:saturate(180%) blur(34px);-webkit-backdrop-filter:saturate(180%) blur(34px);box-shadow:0 30px 90px rgba(0,0,0,.19),inset 0 1px 0 rgba(255,255,255,.95);transform:translateX(calc(100% + 30px)) scale(.97);opacity:.7;transition:transform .6s var(--spring),opacity .35s ease}
+.menu-overlay.open .menu-sheet{transform:translateX(0) scale(1);opacity:1}
+.menu-head{height:56px;padding:0 6px 0 9px;display:flex;align-items:center;justify-content:space-between}
+.menu-title{font-family:Manrope;font-size:17px;font-weight:800;letter-spacing:-.045em}
+.close-button{width:40px;height:40px;border:0;border-radius:50%;background:rgba(118,118,128,.12);display:grid;place-items:center;cursor:pointer;transition:transform .45s var(--spring),background .2s ease}
+.close-button:hover{background:rgba(118,118,128,.18)}
+.close-button:active{transform:scale(.86) rotate(8deg)}
+.close-button svg{width:18px;height:18px;stroke:#555;stroke-width:2;fill:none;stroke-linecap:round}
+.profile{margin:8px 3px 14px;padding:12px;border:1px solid rgba(255,255,255,.72);border-radius:20px;background:rgba(255,255,255,.42);display:flex;align-items:center;gap:12px;box-shadow:inset 0 1px 0 rgba(255,255,255,.72)}
+.avatar{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(145deg,#dfe8ff,#f5eaff);font-family:Manrope;font-weight:800;color:#4b4b54}
+.profile small{display:block;color:#8a8a90;font-size:11px;margin-bottom:2px}.profile strong{font-family:Manrope;font-size:15px;letter-spacing:-.035em}
+.menu-items{display:grid;gap:5px;overflow:auto;padding:2px 3px;scrollbar-width:none}.menu-items::-webkit-scrollbar{display:none}
+.menu-item{--delay:0ms;position:relative;display:flex;align-items:center;gap:13px;min-height:53px;padding:0 13px;border-radius:17px;color:#34343a;font-family:Manrope;font-size:15px;font-weight:650;letter-spacing:-.025em;transform:translateX(18px);opacity:0;transition:background .2s ease,transform .2s ease,color .2s ease}
+.menu-overlay.open .menu-item{animation:itemIn .48s var(--ease) var(--delay) forwards}
+.menu-item:hover{background:rgba(255,255,255,.62);transform:translateX(3px)}
+.menu-item:active{background:rgba(255,255,255,.78);transform:scale(.985)}
+.menu-icon{width:25px;height:25px;display:grid;place-items:center;color:#6a6a72}.menu-icon svg{width:21px;height:21px;stroke:currentColor;stroke-width:1.8;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.menu-item .chevron{margin-left:auto;color:#a0a0a5;font-size:19px;font-weight:400}
+.menu-item.featured{background:rgba(0,122,255,.11);color:#075ec0}.menu-item.featured .menu-icon{color:var(--blue)}
+.menu-divider{height:1px;margin:10px 8px;background:rgba(0,0,0,.07)}
+.menu-foot{margin-top:auto;padding:10px 8px 3px;color:#a1a1a6;font-size:10px;text-align:center;letter-spacing:.02em}
+
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes itemIn{from{opacity:0;transform:translateX(18px)}to{opacity:1;transform:translateX(0)}}
+@keyframes float{0%,100%{transform:translate3d(0,0,0) rotate(0deg)}50%{transform:translate3d(0,-18px,0) rotate(3deg)}}
+@media(max-width:600px){
+  .nav-wrap{padding-left:10px;padding-right:10px}.nav{margin-top:7px;height:54px;border-radius:19px}.brand{font-size:15px}
+  .hero{width:calc(100% - 30px);padding:100px 0 90px;min-height:calc(100svh - 61px)}
+  h1{font-size:clamp(49px,14vw,70px);line-height:.94;letter-spacing:-.085em}
+  .hero-copy{font-size:15px;max-width:330px}.primary{margin-top:26px}
+  .footer-mark{bottom:18px}
+  .menu-overlay{padding:0}.menu-sheet{right:0;top:0;width:min(430px,100%);height:100svh;border-radius:0 0 0 30px;padding:calc(env(safe-area-inset-top) + 9px) 13px calc(env(safe-area-inset-bottom) + 10px);transform:translateX(105%) scale(.98)}
+}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
 </style>
 </head>
 <body>
 <main class="page">
-<nav class="nav"><a class="brand" href="#top">FullStack<span>Bible</span></a><div class="navlinks"><a href="#path">Learning path</a><a href="#how">How it works</a></div><a class="navcta" href="#path">Start learning</a></nav>
-<section id="top" class="hero"><div class="eyebrow"><span class="dot"></span>Learning Hub</div><h1>Start from zero.<br><em>Build for what comes next.</em></h1><p class="hero-copy">A complete path to learn full-stack web development from the ground up, with modern tools, real projects and AI included at the right stage.</p><div class="actions"><a class="primary" href="#path">Start from the beginning <span>→</span></a><a class="secondary" href="#path">View the path</a></div><div class="hero-note"><span>12 stages</span><i></i><span>Beginner to advanced</span><i></i><span>Built around projects</span></div></section>
-<section id="path" class="section shell"><div class="sectionhead"><div><span class="label">THE LEARNING PATH</span><h2>One step at a time.</h2></div><p>Start with the web itself. Then learn to build interfaces, connect data, create full applications and add AI to your toolkit.</p></div><div class="grid">
-<article class="card"><span class="num">01</span><h3>Start here</h3><p>Your computer, the web, browsers, files and the tools you need to begin.</p><span class="arrow">→</span></article>
-<article class="card"><span class="num">02</span><h3>Build the web</h3><p>HTML, CSS and JavaScript. Learn the basics by making real pages.</p><span class="arrow">→</span></article>
-<article class="card"><span class="num">03</span><h3>Make it work</h3><p>JavaScript in depth, browser APIs, forms, data and asynchronous code.</p><span class="arrow">→</span></article>
-<article class="card"><span class="num">04</span><h3>Work like a developer</h3><p>Git, GitHub, debugging, testing and a clean way to work.</p><span class="arrow">→</span></article>
-<article class="card"><span class="num">05</span><h3>Add TypeScript</h3><p>Write clearer, safer JavaScript for larger applications.</p><span class="arrow">→</span></article>
-<article class="card"><span class="num">06</span><h3>Build interfaces</h3><p>React, components, state, forms and reusable UI.</p><span class="arrow">→</span></article>
-<article class="card"><span class="num">07</span><h3>Build full-stack apps</h3><p>Next.js, pages, server code, data and real application flows.</p><span class="arrow">→</span></article>
-<article class="card"><span class="num">08</span><h3>Work with data</h3><p>SQL, PostgreSQL, data models, queries and relationships.</p><span class="arrow">→</span></article>
-<article class="card"><span class="num">09</span><h3>Build the backend</h3><p>APIs, users, login, permissions, validation and errors.</p><span class="arrow">→</span></article>
-<article class="card"><span class="num">10</span><h3>Make it production-ready</h3><p>Security, performance, testing, deployment and monitoring.</p><span class="arrow">→</span></article>
-<article class="card"><span class="num">11</span><h3>Build with AI</h3><p>AI-assisted development, APIs, AI features and responsible use.</p><span class="arrow">→</span></article>
-<article class="card"><span class="num">12</span><h3>Build your product</h3><p>Plan, build and launch one complete full-stack application.</p><span class="arrow">→</span></article>
-</div></section>
-<section id="how" class="section dark-section"><div class="sectionhead dark-head"><div><span class="label">HOW YOU LEARN</span><h2>Learn by building.</h2></div><p>You will write code, solve problems and build projects as your skills grow.</p></div><div class="principles"><article class="principle"><span>01</span><h3>Learn</h3><p>Understand the idea before using the tool.</p></article><article class="principle"><span>02</span><h3>Build</h3><p>Every stage ends with something you can actually use.</p></article><article class="principle"><span>03</span><h3>Practice</h3><p>Write code, break it, fix it and try again.</p></article><article class="principle"><span>04</span><h3>Grow</h3><p>Move from simple pages to complete applications.</p></article></div></section>
-<section class="future shell"><div class="future-card"><span class="label">BUILT FOR THE YEARS AHEAD</span><h2>Learn the foundations.<br><em>Then learn the new tools.</em></h2><p>AI changes how developers work. The fundamentals still matter. This path keeps both together.</p><a class="primary" href="#path">Begin the journey <span>→</span></a></div></section>
-<footer class="footer"><div class="footer-brand">FullStack<span>Bible</span></div><p>A personal learning hub for full-stack development.</p><small>Learn the foundations. Build real things. Keep learning.</small></footer>
+  <div class="nav-wrap">
+    <nav class="nav" aria-label="Primary navigation">
+      <a class="brand" href="#top">FullStack<span>Bible</span></a>
+      <button class="menu-button" id="menuButton" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="menuOverlay"><span></span><span></span></button>
+    </nav>
+  </div>
+
+  <section class="hero" id="top">
+    <div class="eyebrow"><span class="dot"></span>Learning Hub</div>
+    <h1>Start from zero.<br><em>Build for what comes next.</em></h1>
+    <p class="hero-copy">Full-stack development, learned step by step.</p>
+    <a class="primary" href="roadmap.html">Start learning <span>→</span></a>
+    <div class="footer-mark">Learn&nbsp;&nbsp;·&nbsp;&nbsp;Build&nbsp;&nbsp;·&nbsp;&nbsp;Grow</div>
+  </section>
+
+  <div class="menu-overlay" id="menuOverlay" aria-hidden="true">
+    <aside class="menu-sheet" role="dialog" aria-modal="true" aria-label="Learning Hub menu">
+      <div class="menu-head">
+        <span class="menu-title">Learning Hub</span>
+        <button class="close-button" id="closeButton" type="button" aria-label="Close menu">
+          <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+      <div class="profile"><div class="avatar">S</div><div><small>Welcome back</small><strong>Keep building.</strong></div></div>
+      <nav class="menu-items" aria-label="Learning Hub sections">
+        <a class="menu-item featured" style="--delay:40ms" href="roadmap.html"><span class="menu-icon"><svg viewBox="0 0 24 24"><path d="M5 5.5c3-2 5.5 0 7 1.2 1.5-1.2 4-3.2 7-1.2v13c-3-2-5.5 0-7 1.2-1.5-1.2-4-3.2-7-1.2z"/><path d="M12 6.8v12.9"/></svg></span><span>Roadmap</span><span class="chevron">›</span></a>
+        <a class="menu-item" style="--delay:80ms" href="roadmap.html"><span class="menu-icon"><svg viewBox="0 0 24 24"><path d="M7 3h10a2 2 0 0 1 2 2v14l-7-3-7 3V5a2 2 0 0 1 2-2z"/></svg></span><span>Curriculum</span><span class="chevron">›</span></a>
+        <a class="menu-item" style="--delay:120ms" href="roadmap.html"><span class="menu-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="M10 8.8l5 3.2-5 3.2z"/></svg></span><span>Lessons</span><span class="chevron">›</span></a>
+        <a class="menu-item" style="--delay:160ms" href="roadmap.html"><span class="menu-icon"><svg viewBox="0 0 24 24"><path d="M8 4.5h8l3.5 3.5v10.5H4.5V8z"/><path d="M8 4.5V8h11.5M8 12h8M8 15.5h5"/></svg></span><span>Projects</span><span class="chevron">›</span></a>
+        <a class="menu-item" style="--delay:200ms" href="roadmap.html"><span class="menu-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.5"/><path d="m8.5 12 2.3 2.4 4.8-5"/></svg></span><span>Practice</span><span class="chevron">›</span></a>
+        <a class="menu-item" style="--delay:240ms" href="roadmap.html"><span class="menu-icon"><svg viewBox="0 0 24 24"><path d="M12 3l1.3 5.1L18 6l-3 4.3 5 1.7-5 1.7 3 4.3-4.7-2.1L12 21l-1.3-5.1L6 18l3-4.3-5-1.7 5-1.7L6 6l4.7 2.1z"/></svg></span><span>AI</span><span class="chevron">›</span></a>
+        <a class="menu-item" style="--delay:280ms" href="roadmap.html"><span class="menu-icon"><svg viewBox="0 0 24 24"><path d="M5 19V11M12 19V5M19 19v-8"/></svg></span><span>Progress</span><span class="chevron">›</span></a>
+        <a class="menu-item" style="--delay:320ms" href="roadmap.html"><span class="menu-icon"><svg viewBox="0 0 24 24"><path d="M6 4h10a2 2 0 0 1 2 2v14l-7-3-7 3V6a2 2 0 0 1 2-2z"/><path d="M9 8h6M9 11h5"/></svg></span><span>Resources</span><span class="chevron">›</span></a>
+        <div class="menu-divider"></div>
+        <a class="menu-item" style="--delay:360ms" href="roadmap.html"><span class="menu-icon"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1.1l2-1.5-2-3.4-2.4 1a7.4 7.4 0 0 0-1.9-1.1L14.3 3h-4.6l-.4 2.9a7.4 7.4 0 0 0-1.9 1.1l-2.4-1-2 3.4 2 1.5A7 7 0 0 0 5 12c0 .4 0 .8.1 1.1l-2 1.5 2 3.4 2.4-1a7.4 7.4 0 0 0 1.9 1.1l.4 2.9h4.6l.4-2.9a7.4 7.4 0 0 0 1.9-1.1l2.4 1 2-3.4-2-1.5c.1-.3.1-.7.1-1.1z"/></svg></span><span>Settings</span><span class="chevron">›</span></a>
+      </nav>
+      <div class="menu-foot">FullStack Bible</div>
+    </aside>
+  </div>
 </main>
+<script>
+const button=document.getElementById('menuButton');
+const overlay=document.getElementById('menuOverlay');
+const close=document.getElementById('closeButton');
+let lastFocus=null;
+function openMenu(){
+  lastFocus=document.activeElement;
+  overlay.classList.add('open');
+  overlay.setAttribute('aria-hidden','false');
+  button.classList.add('is-open');
+  button.setAttribute('aria-expanded','true');
+  button.setAttribute('aria-label','Close menu');
+  document.body.classList.add('locked');
+  setTimeout(()=>close.focus(),80);
+}
+function closeMenu(){
+  overlay.classList.remove('open');
+  overlay.setAttribute('aria-hidden','true');
+  button.classList.remove('is-open');
+  button.setAttribute('aria-expanded','false');
+  button.setAttribute('aria-label','Open menu');
+  document.body.classList.remove('locked');
+  if(lastFocus) lastFocus.focus();
+}
+button.addEventListener('click',()=>overlay.classList.contains('open')?closeMenu():openMenu());
+close.addEventListener('click',closeMenu);
+overlay.addEventListener('click',e=>{if(e.target===overlay)closeMenu()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&overlay.classList.contains('open'))closeMenu()});
+document.querySelectorAll('.menu-item').forEach(item=>item.addEventListener('click',()=>setTimeout(closeMenu,40)));
+</script>
 </body>
 </html>
