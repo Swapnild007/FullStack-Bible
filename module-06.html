@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#f5f5f7">
+<title>Module 06 — Build Interfaces | FullStack Bible</title>
+<meta name="description" content="Module 06: React, components, state, events, and reusable UI.">
+<style>
+:root{--bg:#f5f5f7;--ink:#111113;--muted:#6e6e73;--blue:#007aff;--purple:#5856d6;--green:#34c759;--orange:#ff9500;--card:rgba(255,255,255,.76);--shadow:0 22px 70px rgba(0,0,0,.07);--ease:cubic-bezier(.22,1,.36,1);--spring:cubic-bezier(.175,.885,.32,1.275)}*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:95px}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}a{color:inherit;text-decoration:none}.page{min-height:100vh;background:radial-gradient(60% 35% at 90% 0,rgba(88,86,214,.14),transparent 70%),radial-gradient(55% 35% at 0 20%,rgba(0,122,255,.11),transparent 70%),var(--bg)}.nav{position:sticky;top:10px;z-index:30;width:min(1080px,calc(100% - 24px));margin:10px auto 0;padding:9px 10px 9px 17px;border:1px solid rgba(255,255,255,.88);border-radius:20px;background:rgba(255,255,255,.68);backdrop-filter:saturate(180%) blur(26px);-webkit-backdrop-filter:saturate(180%) blur(26px);box-shadow:0 12px 38px rgba(0,0,0,.06);display:flex;align-items:center;justify-content:space-between}.brand{font-weight:800;letter-spacing:-.055em}.brand span{color:var(--blue)}.back{padding:10px 14px;border-radius:999px;background:rgba(118,118,128,.10);font-size:13px;font-weight:650;transition:.35s var(--spring)}.back:active{transform:scale(.94)}.wrap{width:min(920px,calc(100% - 30px));margin:auto}.hero{padding:105px 0 55px}.kicker{color:#8a8a8f;font-size:11px;font-weight:750;letter-spacing:.15em;text-transform:uppercase}.hero h1{font-size:clamp(48px,8vw,82px);line-height:.95;letter-spacing:-.075em;margin:15px 0 22px;max-width:820px}.hero h1 span{background:linear-gradient(105deg,#111 8%,#007aff 52%,#5856d6 92%);background-clip:text;-webkit-background-clip:text;color:transparent}.hero p{max-width:760px;color:var(--muted);font-size:19px;line-height:1.65;margin:0}.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:25px}.pill{padding:8px 11px;border-radius:999px;background:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.9);font-size:12px;color:#626268}.progress{position:sticky;top:78px;z-index:20;margin:0 auto 24px;width:min(920px,calc(100% - 30px));padding:12px 14px;border:1px solid rgba(255,255,255,.86);border-radius:17px;background:rgba(255,255,255,.72);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:flex;align-items:center;gap:12px;box-shadow:0 10px 35px rgba(0,0,0,.05)}.bar{height:6px;flex:1;background:#e4e4e7;border-radius:99px;overflow:hidden}.bar i{display:block;width:0;height:100%;background:linear-gradient(90deg,#007aff,#5856d6);border-radius:99px;transition:width .6s var(--ease)}.progress strong{font-size:12px;white-space:nowrap}.section{padding:45px 0}.section h2{font-size:clamp(30px,5vw,48px);line-height:1;letter-spacing:-.065em;margin:0 0 15px}.section>p{color:var(--muted);font-size:16px;line-height:1.75;max-width:800px}.card{margin:18px 0;padding:28px;border:1px solid rgba(255,255,255,.92);border-radius:28px;background:var(--card);box-shadow:var(--shadow)}.card h3{font-size:24px;letter-spacing:-.045em;margin:0 0 13px}.card h4{font-size:18px;letter-spacing:-.03em;margin:28px 0 9px}.card p,.card li{font-size:15px;line-height:1.78;color:#444449}.card ul,.card ol{padding-left:23px}.card li{margin:7px 0}.note{padding:17px 18px;border-left:3px solid var(--blue);background:rgba(0,122,255,.055);border-radius:0 16px 16px 0;color:#45454a;line-height:1.7;font-size:14px;margin:18px 0}.success{border-left-color:var(--green);background:rgba(52,199,89,.06)}.warn{border-left-color:var(--orange);background:rgba(255,149,0,.06)}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.mini{padding:22px;border:1px solid rgba(255,255,255,.9);border-radius:23px;background:rgba(255,255,255,.62)}.mini h3{margin:0 0 8px;font-size:18px;letter-spacing:-.035em}.mini p{margin:0;color:#5d5d63;line-height:1.65;font-size:14px}pre{margin:16px 0;overflow:auto;padding:18px;border-radius:17px;background:#1c1c1e;color:#f5f5f7;font-size:13px;line-height:1.65}code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}p code,li code{background:#ececef;border-radius:6px;padding:2px 5px;color:#333}.checks{display:grid;gap:8px}.check{display:flex;gap:10px;align-items:flex-start;padding:14px;border-radius:15px;background:rgba(255,255,255,.58);font-size:14px;line-height:1.55}.check input{width:18px;height:18px;accent-color:var(--blue);margin-top:1px;flex:0 0 auto}.check.done{opacity:.58;text-decoration:line-through}.sources a{color:#006edb;text-decoration:underline;text-decoration-color:rgba(0,110,219,.25);text-underline-offset:3px}.footer{padding:60px 0 80px;text-align:center;color:#999;font-size:13px}.footer strong{color:#555}.toc{display:flex;gap:7px;flex-wrap:wrap;margin-top:20px}.toc a{padding:9px 12px;border-radius:999px;background:rgba(255,255,255,.68);border:1px solid rgba(255,255,255,.9);font-size:12px;color:#555}.demo{border:1px dashed rgba(0,122,255,.28);padding:18px;border-radius:18px;background:rgba(0,122,255,.035)}@media(max-width:650px){.nav{top:7px}.hero{padding:85px 0 35px}.hero p{font-size:16px}.progress{position:relative;top:auto;margin-top:0}.card{padding:22px;border-radius:23px}.grid{grid-template-columns:1fr}.section{padding:35px 0}.toc{overflow:auto;flex-wrap:nowrap;padding-bottom:4px}.toc a{white-space:nowrap}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.back,.bar i{transition:none}}
+</style></head>
+<body><main class="page">
+<nav class="nav"><a class="brand" href="index.html">FullStack<span>Bible</span></a><a class="back" href="roadmap.html">Roadmap</a></nav>
+<header class="wrap hero"><div class="kicker">Module 06 · Build interfaces</div><h1>Stop thinking in pages.<br><span>Think in components.</span></h1><p>You already know JavaScript, TypeScript, the DOM and browser behaviour. Now learn React's model for building interfaces from small pieces, passing data between them, responding to events, managing state and composing reusable UI.</p><div class="meta"><span class="pill">React</span><span class="pill">Components</span><span class="pill">State & events</span><span class="pill">Reusable UI</span><span class="pill">TypeScript + React</span></div><div class="toc"><a href="#react">React</a><a href="#components">Components</a><a href="#props">Props & JSX</a><a href="#state">State & events</a><a href="#reuse">Reusable UI</a><a href="#lab">Capstone</a></div></header>
+<div class="progress"><strong id="progressText">0% complete</strong><div class="bar"><i id="progressBar"></i></div></div>
+<section class="wrap section"><div class="kicker">The mental model</div><h2>React is a way to describe an interface as a tree of components.</h2><p>React's current documentation describes components as pieces of UI with their own logic and appearance. A component is commonly a JavaScript function that returns JSX. React then updates the rendered interface when the data that drives it changes. <a href="https://react.dev/learn" target="_blank">React Quick Start</a>.</p><div class="grid"><div class="mini"><h3>Component</h3><p>A reusable piece of UI with a defined job. It can be as small as a button or as large as a page section.</p></div><div class="mini"><h3>Props</h3><p>Inputs passed from a parent to a child. They let the same component display different data or behaviour.</p></div><div class="mini"><h3>State</h3><p>Information a component needs to remember between interactions, such as a selected tab or input value.</p></div><div class="mini"><h3>Events</h3><p>User actions such as clicks, typing and submitting forms can trigger state updates and therefore new UI.</p></div></div><div class="note success"><strong>Core idea:</strong> describe what the UI should look like for the current data. Do not build your React app by manually finding DOM nodes and changing them one by one.</div></section>
+<section class="wrap section" id="react"><div class="kicker">01 · React</div><h2>Understand what React adds.</h2><div class="card"><h3>React is not a replacement for JavaScript</h3><p>React is a JavaScript library for user interfaces. You still use JavaScript or TypeScript, functions, arrays, objects, conditions and modules. React adds a component model and a way to describe UI with JSX.</p><p>That is why the earlier modules matter: React becomes much easier when you already understand functions, objects, arrays, events, browser behaviour and TypeScript.</p></div><div class="card"><h3>JSX: markup inside your component logic</h3><p>JSX lets you write HTML-like markup in JavaScript or TypeScript. It is not HTML copied into a string. It is syntax that React tooling transforms into JavaScript expressions.</p><pre><code>function Greeting() {
+  const name = "Swapnil";
+
+  return (
+    &lt;section&gt;
+      &lt;h1&gt;Hello, {name}&lt;/h1&gt;
+      &lt;p&gt;Welcome to React.&lt;/p&gt;
+    &lt;/section&gt;
+  );
+}</code></pre><p>Curly braces let you insert JavaScript expressions into JSX. Keep the returned UI readable; extract a component when a section develops its own meaningful responsibility.</p></div><div class="card"><h3>Rendering lists and conditions</h3><p>React uses normal JavaScript for conditions and commonly uses <code>map()</code> to turn data into lists. Each rendered list item needs a stable key that identifies the item among its siblings.</p><pre><code>const lessons = [
+  { id: 1, title: "React basics", done: true },
+  { id: 2, title: "State", done: false }
+];
+
+function LessonList() {
+  return (
+    &lt;ul&gt;
+      {lessons.map(lesson =&gt; (
+        &lt;li key={lesson.id}&gt;
+          {lesson.title} {lesson.done ? "✓" : ""}
+        &lt;/li&gt;
+      ))}
+    &lt;/ul&gt;
+  );
+}</code></pre><p>Do not use array indexes as keys when the list can be reordered, inserted into or deleted from. Prefer an identifier belonging to the data.</p></div></section>
+<section class="wrap section" id="components"><div class="kicker">02 · Components</div><h2>Build UI from small, understandable pieces.</h2><div class="card"><h3>Your first component</h3><p>A function component receives inputs and returns UI. Component names begin with a capital letter so JSX can distinguish your component from built-in HTML elements.</p><pre><code>type BadgeProps = {
+  label: string;
+  tone: "blue" | "green" | "gray";
+};
+
+function Badge({ label, tone }: BadgeProps) {
+  return &lt;span data-tone={tone}&gt;{label}&lt;/span&gt;;
+}</code></pre><p>Because this module follows TypeScript, props should be typed deliberately. React's official TypeScript guide recommends describing component props with object types such as a <code>type</code> or <code>interface</code>. <a href="https://react.dev/learn/typescript" target="_blank">React: Using TypeScript</a>.</p></div><div class="card"><h3>Component boundaries</h3><p>A good component boundary usually appears when a piece of UI has its own responsibility, repeated structure, data contract, state, or interaction. Do not split every <code>div</code> into a component. The goal is understandable composition, not maximum file count.</p><div class="grid"><div class="mini"><h3>Too small</h3><p>One component for a single decorative wrapper can make the code harder to follow.</p></div><div class="mini"><h3>Too large</h3><p>A 500-line component mixing data, forms, navigation and every visual detail is difficult to change safely.</p></div></div></div><div class="card"><h3>Component tree</h3><p>Think about the UI as a tree. A page may contain an app shell, navigation, dashboard, cards, buttons and list items. Data should flow through this tree in understandable directions.</p><pre><code>App
+├─ Header
+├─ Sidebar
+└─ Dashboard
+   ├─ ProgressCard
+   ├─ LessonList
+   │  └─ LessonItem
+   └─ EmptyState</code></pre></div></section>
+<section class="wrap section" id="props"><div class="kicker">03 · Props & composition</div><h2>Make components configurable without making them confusing.</h2><div class="card"><h3>Props are inputs</h3><p>Props let a parent provide information to a child. Treat props as read-only inputs: the child should not mutate them. If something needs to change, the parent can own the state and pass an event handler down.</p><pre><code>type LessonCardProps = {
+  title: string;
+  completed: boolean;
+  onOpen: () =&gt; void;
+};
+
+function LessonCard({ title, completed, onOpen }: LessonCardProps) {
+  return (
+    &lt;article&gt;
+      &lt;h3&gt;{title}&lt;/h3&gt;
+      &lt;p&gt;{completed ? "Completed" : "Not completed"}&lt;/p&gt;
+      &lt;button onClick={onOpen}&gt;Open&lt;/button&gt;
+    &lt;/article&gt;
+  );
+}</code></pre></div><div class="card"><h3>Children and composition</h3><p>Some components are useful because they provide a visual or behavioural container around arbitrary content. The <code>children</code> prop allows a parent to place JSX inside that component.</p><pre><code>type CardProps = {
+  title: string;
+  children: React.ReactNode;
+};
+
+function Card({ title, children }: CardProps) {
+  return (
+    &lt;section className="card"&gt;
+      &lt;h2&gt;{title}&lt;/h2&gt;
+      {children}
+    &lt;/section&gt;
+  );
+}</code></pre><p>Composition is often clearer than creating dozens of special-purpose variants. React's TypeScript documentation identifies <code>React.ReactNode</code> as a common type for children.</p></div><div class="card"><h3>Keep rendering predictable</h3><p>React's model works best when components behave like predictable functions of their inputs. Avoid hidden mutations during rendering. Calculate what you need, return the UI, and perform external side effects only through the appropriate React mechanisms.</p></div></section>
+<section class="wrap section" id="state"><div class="kicker">04 · State & events</div><h2>Interactivity comes from state changing over time.</h2><div class="card"><h3>State is remembered information</h3><p>Use <code>useState</code> when a component needs to remember information that can change because of interaction. Updating state asks React to render again using the new value.</p><pre><code>import { useState } from "react";
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  return (
+    &lt;button onClick={() =&gt; setCount(count + 1)}&gt;
+      Clicked {count} times
+    &lt;/button&gt;
+  );
+}</code></pre><p>React's documentation notes that state updates do not immediately change the current render's value. Think of each render as a snapshot of the UI at that moment.</p></div><div class="card"><h3>Events</h3><p>Event handlers are functions you pass to JSX props such as <code>onClick</code>, <code>onChange</code> and <code>onSubmit</code>. React calls the handler when the interaction occurs.</p><pre><code>function SaveButton() {
+  function handleClick() {
+    console.log("Saving...");
+  }
+
+  return &lt;button onClick={handleClick}&gt;Save&lt;/button&gt;;
+}</code></pre><p>Do not write <code>onClick={handleClick()}</code> when you mean “run this after the click”; that calls the function while rendering instead of passing the handler.</p></div><div class="card"><h3>Updating objects and arrays</h3><p>Do not mutate objects or arrays stored in state. Create a new value that represents the update.</p><pre><code>setProfile(current =&gt; ({
+  ...current,
+  displayName: "Swapnil"
+}));
+
+setLessons(current =&gt;
+  current.map(lesson =&gt;
+    lesson.id === id
+      ? { ...lesson, completed: true }
+      : lesson
+  )
+);</code></pre><p>This makes changes explicit and gives React a new value to work with.</p></div><div class="card"><h3>Controlled inputs</h3><p>A controlled input gets its current value from React state and reports user changes through an event handler. This is especially useful for forms, validation, filtering and search.</p><pre><code>const [query, setQuery] = useState("");
+
+return (
+  &lt;input
+    value={query}
+    onChange={event =&gt; setQuery(event.target.value)}
+    placeholder="Search lessons"
+  /&gt;
+);</code></pre></div><div class="card"><h3>Lifting state up</h3><p>When two components need to stay in sync, move their shared state to their closest common parent and pass the current value and event handlers down as props. React calls this <strong>lifting state up</strong>. It creates a clear owner for that piece of state. <a href="https://react.dev/learn/sharing-state-between-components" target="_blank">React: Sharing State Between Components</a>.</p><pre><code>function Accordion() {
+  const [activeId, setActiveId] = useState&lt;number | null&gt;(null);
+
+  return (
+    &lt;&gt;
+      &lt;Panel
+        active={activeId === 1}
+        onShow={() =&gt; setActiveId(1)}
+      /&gt;
+      &lt;Panel
+        active={activeId === 2}
+        onShow={() =&gt; setActiveId(2)}
+      /&gt;
+    &lt;/&gt;
+  );
+}</code></pre></div></section>
+<section class="wrap section" id="reuse"><div class="kicker">05 · Reusable UI</div><h2>Reuse behaviour, not just markup.</h2><div class="card"><h3>Design a component API</h3><p>A reusable component needs a small, understandable contract. Ask: what data must the parent provide? What actions can the user take? Which visual choices are intentional variants? What should the component own internally?</p><div class="grid"><div class="mini"><h3>Good contract</h3><p><code>Button</code> accepts a label/children, disabled state, variant and click handler.</p></div><div class="mini"><h3>Hidden coupling</h3><p><code>Button</code> secretly reads global variables, changes unrelated state and assumes a particular page.</p></div></div></div><div class="card"><h3>Variants with union types</h3><p>TypeScript can make reusable component APIs explicit. Literal unions prevent callers from inventing arbitrary variant names.</p><pre><code>type ButtonProps = {
+  variant: "primary" | "secondary" | "danger";
+  disabled?: boolean;
+  children: React.ReactNode;
+  onClick: () =&gt; void;
+};</code></pre></div><div class="card"><h3>Derived data should usually stay derived</h3><p>Do not create state for information you can calculate from existing state. If <code>completedCount</code> is always the number of completed lessons, calculate it from <code>lessons</code> rather than maintaining two values that can drift apart.</p><pre><code>const completedCount = lessons.filter(
+  lesson =&gt; lesson.completed
+).length;</code></pre><p>React's state-management guidance specifically warns that redundant or duplicate state is a common source of bugs. <a href="https://react.dev/learn/managing-state" target="_blank">React: Managing State</a>.</p></div><div class="card"><h3>Accessibility remains part of reusable UI</h3><p>A reusable component is not truly reusable if every consumer must repair its accessibility. Prefer native HTML elements where possible, preserve keyboard behaviour, label controls, expose meaningful names and keep focus behaviour understandable. React does not remove the accessibility responsibilities you learned in Module 02.</p></div></section>
+<section class="wrap section" id="lab"><div class="kicker">Capstone lab</div><h2>Build a React learning dashboard.</h2><p>Convert the ideas from Module 03 and the type-safe data model from Module 05 into a component-driven interface. The goal is not a giant app. The goal is learning how to design a clean React component tree and data flow.</p><div class="card"><h3>Project structure</h3><pre><code>react-learning-dashboard/
+├─ src/
+│  ├─ components/
+│  │  ├─ Header.tsx
+│  │  ├─ ProgressCard.tsx
+│  │  ├─ LessonList.tsx
+│  │  ├─ LessonCard.tsx
+│  │  ├─ SearchInput.tsx
+│  │  └─ EmptyState.tsx
+│  ├─ data/
+│  │  └─ lessons.ts
+│  ├─ App.tsx
+│  └─ main.tsx
+└─ package.json</code></pre></div><div class="card"><h3>Build requirements</h3><ol><li>Create typed lesson data with stable IDs.</li><li>Render lessons through a reusable <code>LessonCard</code>.</li><li>Add search using controlled state.</li><li>Add a completed/uncompleted interaction.</li><li>Show empty, populated and filtered states.</li><li>Calculate progress from lesson data instead of duplicating it in state.</li><li>Lift state to the appropriate common parent.</li><li>Create reusable Button, Card and Badge components with typed props.</li><li>Use keyboard-accessible native controls.</li><li>Use React DevTools and browser DevTools to inspect and debug the app.</li></ol></div><div class="card"><h3>Architecture challenge</h3><p>Before coding, draw your component tree. Then mark which component owns each piece of state. If a child needs to change parent-owned state, pass an event handler down. If several siblings need the same state, move ownership to their closest useful common parent.</p><div class="demo"><strong>Completion test:</strong> You should be able to explain why every state value lives where it does, what each component receives through props, and what causes each visible UI change.</div></div><div class="note warn"><strong>Do not add a state-management library yet.</strong> First learn React's built-in data flow, state and composition model. More advanced state tools make much more sense after you understand what problem they are solving.</div></section>
+<section class="wrap section"><div class="kicker">Knowledge check</div><h2>Prove you understand the model.</h2><div class="card"><ol><li>What problem does a React component solve?</li><li>What is JSX?</li><li>Why should list items have stable keys?</li><li>What is the difference between props and state?</li><li>Why should a child normally treat props as read-only?</li><li>What does <code>useState</code> provide?</li><li>Why do event handlers receive functions rather than the result of calling those functions?</li><li>Why should state objects and arrays normally be replaced rather than mutated?</li><li>What is a controlled input?</li><li>What does “lifting state up” mean?</li><li>When should a piece of information be derived instead of stored as state?</li><li>What makes a component reusable?</li><li>Why are TypeScript union types useful for component variants?</li><li>What is the purpose of <code>children</code>?</li><li>Why should accessibility be part of a reusable component's design?</li><li>When would you split a large component?</li><li>What does a component tree represent?</li><li>Why is React knowledge easier after learning JavaScript and TypeScript first?</li></ol></div></section>
+<section class="wrap section"><div class="kicker">Completion</div><h2>Module 06 checklist.</h2><div class="card"><div class="checks" id="checks"></div></div></section>
+<section class="wrap section"><div class="kicker">Authentic reference library</div><h2>Use the source.</h2><div class="card sources"><ul><li><a href="https://react.dev/learn" target="_blank">React — Learn / Quick Start</a></li><li><a href="https://react.dev/learn/your-first-component" target="_blank">React — Your First Component</a></li><li><a href="https://react.dev/learn/describing-the-ui" target="_blank">React — Describing the UI</a></li><li><a href="https://react.dev/learn/adding-interactivity" target="_blank">React — Adding Interactivity</a></li><li><a href="https://react.dev/learn/managing-state" target="_blank">React — Managing State</a></li><li><a href="https://react.dev/learn/sharing-state-between-components" target="_blank">React — Sharing State Between Components</a></li><li><a href="https://react.dev/learn/typescript" target="_blank">React — Using TypeScript</a></li><li><a href="https://react.dev/reference/react" target="_blank">React API Reference</a></li><li><a href="https://react.dev/" target="_blank">React official site</a></li></ul></div></section>
+<footer class="footer wrap">FullStack Bible · <strong>Learn → Build → Practice → Grow</strong></footer>
+</main><script>
+const items=["Explain React's component model in your own words","Create and nest function components","Write JSX and use JavaScript expressions","Render lists with stable keys","Use conditional rendering","Define typed props with TypeScript","Use children and composition","Handle click and input events","Use useState for changing UI state","Update objects and arrays without mutation","Build controlled inputs","Lift shared state to a common parent","Keep derived values out of redundant state","Design reusable component APIs","Build the React learning-dashboard capstone","Explain the data flow and state ownership of your capstone"];
+const key="fsb-module-06-checks";const saved=JSON.parse(localStorage.getItem(key)||"[]");const checks=document.getElementById("checks");items.forEach((text,i)=>{const label=document.createElement("label");label.className="check";label.innerHTML=`<input type="checkbox" ${saved[i]?"checked":""}><span>${text}</span>`;const input=label.querySelector("input");if(saved[i])label.classList.add("done");input.addEventListener("change",()=>{saved[i]=input.checked;label.classList.toggle("done",input.checked);localStorage.setItem(key,JSON.stringify(saved));update();});checks.appendChild(label);});function update(){const done=saved.filter(Boolean).length;const pct=Math.round(done/items.length*100);document.getElementById("progressText").textContent=pct+"% complete";document.getElementById("progressBar").style.width=pct+"%";}update();
+</script></body></html>
