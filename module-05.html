@@ -1,0 +1,158 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f5f7">
+<title>Module 05 — Add TypeScript | FullStack Bible</title>
+<meta name="description" content="Module 05: TypeScript types, functions and objects, generics, narrowing, and type-safe code.">
+<style>
+:root{--bg:#f5f5f7;--ink:#111113;--muted:#6e6e73;--blue:#007aff;--purple:#5856d6;--green:#34c759;--orange:#ff9500;--card:rgba(255,255,255,.76);--ease:cubic-bezier(.22,1,.36,1);--spring:cubic-bezier(.175,.885,.32,1.275)}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:95px}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}.page{min-height:100vh;background:radial-gradient(60% 35% at 90% 0,rgba(88,86,214,.14),transparent 70%),radial-gradient(55% 35% at 0 20%,rgba(0,122,255,.11),transparent 70%),var(--bg)}a{color:inherit}.nav{position:sticky;top:10px;z-index:30;width:min(1080px,calc(100% - 24px));margin:10px auto 0;padding:9px 10px 9px 17px;border:1px solid rgba(255,255,255,.88);border-radius:20px;background:rgba(255,255,255,.68);backdrop-filter:saturate(180%) blur(26px);-webkit-backdrop-filter:saturate(180%) blur(26px);box-shadow:0 12px 38px rgba(0,0,0,.06);display:flex;align-items:center;justify-content:space-between}.brand{font-weight:800;letter-spacing:-.055em;text-decoration:none}.brand span{color:var(--blue)}.back{padding:10px 14px;border-radius:999px;background:rgba(118,118,128,.10);font-size:13px;font-weight:650;text-decoration:none;transition:.35s var(--spring)}.back:active{transform:scale(.94)}.wrap{width:min(920px,calc(100% - 30px));margin:auto}.hero{padding:105px 0 55px}.kicker{color:#8a8a8f;font-size:11px;font-weight:750;letter-spacing:.15em;text-transform:uppercase}.hero h1{font-size:clamp(48px,8vw,82px);line-height:.95;letter-spacing:-.075em;margin:15px 0 22px;max-width:820px}.hero h1 span{background:linear-gradient(105deg,#111 8%,#007aff 52%,#5856d6 92%);background-clip:text;-webkit-background-clip:text;color:transparent}.hero p{max-width:760px;color:var(--muted);font-size:19px;line-height:1.65;margin:0}.meta,.toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:25px}.pill,.toc a{padding:8px 11px;border-radius:999px;background:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.9);font-size:12px;color:#626268}.toc{margin-top:20px}.toc a{text-decoration:none}.progress{position:sticky;top:78px;z-index:20;margin:0 auto 24px;width:min(920px,calc(100% - 30px));padding:12px 14px;border:1px solid rgba(255,255,255,.86);border-radius:17px;background:rgba(255,255,255,.72);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:flex;align-items:center;gap:12px;box-shadow:0 10px 35px rgba(0,0,0,.05)}.bar{height:6px;flex:1;background:#e4e4e7;border-radius:99px;overflow:hidden}.bar i{display:block;width:0;height:100%;background:linear-gradient(90deg,#007aff,#5856d6);border-radius:99px;transition:width .6s var(--ease)}.progress strong{font-size:12px;white-space:nowrap}.section{padding:45px 0}.section h2{font-size:clamp(30px,5vw,48px);line-height:1;letter-spacing:-.065em;margin:0 0 15px}.section>p{color:var(--muted);font-size:16px;line-height:1.75;max-width:820px}.card{margin:18px 0;padding:28px;border:1px solid rgba(255,255,255,.92);border-radius:28px;background:var(--card);box-shadow:0 22px 70px rgba(0,0,0,.07)}.card h3{font-size:24px;letter-spacing:-.045em;margin:0 0 13px}.card h4{font-size:18px;margin:27px 0 9px}.card p,.card li{font-size:15px;line-height:1.78;color:#444449}.card ul,.card ol{padding-left:23px}.card li{margin:7px 0}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.mini{padding:22px;border:1px solid rgba(255,255,255,.9);border-radius:23px;background:rgba(255,255,255,.62)}.mini h3{margin:0 0 8px;font-size:18px;letter-spacing:-.035em}.mini p{margin:0;color:#5d5d63;line-height:1.65;font-size:14px}pre{margin:16px 0;overflow:auto;padding:18px;border-radius:17px;background:#1c1c1e;color:#f5f5f7;font-size:13px;line-height:1.65}code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}p code,li code{background:#ececef;border-radius:6px;padding:2px 5px;color:#333}.note{padding:17px 18px;border-left:3px solid var(--blue);background:rgba(0,122,255,.055);border-radius:0 16px 16px 0;color:#45454a;line-height:1.7;font-size:14px;margin:18px 0}.success{border-left-color:var(--green);background:rgba(52,199,89,.06)}.warn{border-left-color:var(--orange);background:rgba(255,149,0,.06)}.checks{display:grid;gap:8px}.check{display:flex;gap:10px;align-items:flex-start;padding:14px;border-radius:15px;background:rgba(255,255,255,.58);font-size:14px;line-height:1.55}.check input{width:18px;height:18px;accent-color:var(--blue);margin-top:1px;flex:0 0 auto}.check.done{opacity:.58;text-decoration:line-through}.sources a{color:#006edb;text-decoration:underline;text-underline-offset:3px}.footer{padding:60px 0 80px;text-align:center;color:#999;font-size:13px}.footer strong{color:#555}@media(max-width:650px){.nav{top:7px}.hero{padding:85px 0 35px}.hero p{font-size:16px}.progress{position:relative;top:auto;margin-top:0}.card{padding:22px;border-radius:23px}.grid{grid-template-columns:1fr}.section{padding:35px 0}.toc{overflow:auto;flex-wrap:nowrap;padding-bottom:4px}.toc a{white-space:nowrap}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.back,.bar i{transition:none}}
+</style>
+</head>
+<body><main class="page">
+<nav class="nav"><a class="brand" href="index.html">FullStack<span>Bible</span></a><a class="back" href="roadmap.html">Roadmap</a></nav>
+<header class="wrap hero"><div class="kicker">Module 05 · Add TypeScript</div><h1>Make JavaScript easier to <span>reason about.</span></h1><p>You already know JavaScript. TypeScript adds a static type system that checks your code before it runs. The goal is not to replace JavaScript; it is to make the shape of your data and the contracts between pieces of code clearer, earlier, and easier for tools to verify.</p><div class="meta"><span class="pill">Types</span><span class="pill">Functions & objects</span><span class="pill">Generics</span><span class="pill">Type-safe code</span><span class="pill">Hands-on lab</span></div><div class="toc"><a href="#mental">Mental model</a><a href="#types">Types</a><a href="#functions">Functions & objects</a><a href="#narrowing">Narrowing</a><a href="#generics">Generics</a><a href="#safe">Type-safe code</a><a href="#lab">Capstone</a></div></header>
+<div class="progress"><strong id="progressText">0% complete</strong><div class="bar"><i id="progressBar"></i></div></div>
+<section class="wrap section" id="mental"><div class="kicker">The mental model</div><h2>TypeScript checks your JavaScript before runtime.</h2><p>The official TypeScript Handbook describes TypeScript as a static typechecker for JavaScript programs. That means the type system analyzes source code before the program runs. It can report that a function is being called with the wrong kind of value, that a property may not exist, or that a case has not been handled. It does not make JavaScript runtime validation disappear: data coming from users, files, databases, APIs, or network responses still has to be treated as runtime data.</p><div class="grid"><div class="mini"><h3>JavaScript</h3><p>The language that executes at runtime. TypeScript builds on JavaScript rather than replacing its runtime model.</p></div><div class="mini"><h3>Types</h3><p>Descriptions of the values your program expects: strings, numbers, objects, arrays, unions, functions and more.</p></div><div class="mini"><h3>Inference</h3><p>TypeScript can often work out a value's type without an annotation, reducing unnecessary typing.</p></div><div class="mini"><h3>Narrowing</h3><p>Runtime checks such as <code>typeof</code>, equality, <code>in</code>, and discriminated unions let TypeScript refine a broader type.</p></div></div><div class="note success"><strong>Core idea:</strong> TypeScript is most useful when types describe real boundaries in your program. Do not add annotations simply to make the file look “typed”.</div></section>
+<section class="wrap section" id="types"><div class="kicker">01 · Types</div><h2>Describe the values your program can work with.</h2><p>Start with the types you already met in JavaScript, then learn how TypeScript combines them. TypeScript can infer many types automatically, so explicit annotations should be used where they improve clarity or define an important contract. <a class="sources" href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html" target="_blank">Official Handbook: Everyday Types</a>.</p><div class="card"><h3>Primitive types</h3><p>Common primitives include <code>string</code>, <code>number</code>, <code>boolean</code>, <code>bigint</code>, <code>symbol</code>, <code>null</code> and <code>undefined</code>. The type describes what operations are valid for that value.</p><pre><code>let learnerName: string = "Swapnil";
+let completed: boolean = false;
+let score: number = 92;</code></pre><p>If a variable is initialized directly, TypeScript can usually infer the type:</p><pre><code>const moduleNumber = 5; // number
+const title = "Add TypeScript"; // string</code></pre></div><div class="card"><h3>Arrays and tuples</h3><p>An array type describes what every item in the collection can be. A tuple describes a fixed-position structure where each position has a known type.</p><pre><code>const scores: number[] = [80, 91, 88];
+const tags: Array&lt;string&gt; = ["web", "typescript"];
+
+const result: [boolean, number] = [true, 94];</code></pre><p>Use tuples when the positions have meaning. Use arrays when you have a collection of similarly shaped values.</p></div><div class="card"><h3>Union types</h3><p>A union says that a value can be one of several types. Your code must handle the possibilities before using an operation that only works for one member.</p><pre><code>function formatId(id: string | number): string {
+  if (typeof id === "number") {
+    return id.toString();
+  }
+  return id.toUpperCase();
+}</code></pre><p>This is the beginning of <strong>narrowing</strong>: the declared type is broad, while the code path can establish a more specific type.</p></div><div class="card"><h3>Literal types</h3><p>A type can describe specific allowed values rather than every value of a primitive type. This is useful for states, options, and small controlled vocabularies.</p><pre><code>type Status = "idle" | "loading" | "success" | "error";
+
+let status: Status = "idle";
+status = "success";
+// status = "finished"; // TypeScript error</code></pre></div><div class="card"><h3>Aliases and interfaces</h3><p>A type alias gives a reusable name to a type. Interfaces are another way to describe object shapes and can be extended or merged in ways that are useful in larger codebases.</p><pre><code>type Lesson = {
+  id: string;
+  title: string;
+  completed: boolean;
+};
+
+interface User {
+  id: string;
+  name: string;
+}</code></pre><p>Do not turn the choice between <code>type</code> and <code>interface</code> into a rule you memorize blindly. Learn the capabilities of both and follow the conventions of the codebase you join.</p></div><div class="card"><h3><code>unknown</code> versus <code>any</code></h3><p><code>unknown</code> means “we do not know the type yet” and forces you to check before using the value. <code>any</code> effectively opts out of type checking for that value. For data crossing an untrusted or dynamic boundary, <code>unknown</code> is usually the safer starting point.</p><pre><code>function printValue(value: unknown) {
+  if (typeof value === "string") {
+    console.log(value.toUpperCase());
+  }
+}</code></pre></div></section>
+<section class="wrap section" id="functions"><div class="kicker">02 · Functions & objects</div><h2>Make the contracts between pieces of code explicit.</h2><div class="card"><h3>Typed function parameters and returns</h3><p>A function type describes its parameters and return value. This makes incorrect calls visible during development and documents the function's contract for editors and future readers.</p><pre><code>function calculateProgress(done: number, total: number): number {
+  if (total === 0) return 0;
+  return Math.round((done / total) * 100);
+}</code></pre><p>TypeScript can infer a return type from the implementation, but explicit return types can be valuable at important boundaries and for public functions because they make an intended contract visible.</p></div><div class="card"><h3>Optional and default parameters</h3><pre><code>function greet(name: string, prefix = "Hello"): string {
+  return `${prefix}, ${name}`;
+}
+
+function findLesson(id: string, includeArchived?: boolean) {
+  // includeArchived is boolean | undefined
+}</code></pre><p>An optional parameter can be absent, so its type includes <code>undefined</code>. Treat that possibility intentionally.</p></div><div class="card"><h3>Object shapes</h3><p>Objects are where TypeScript becomes especially useful. You can describe exactly which properties exist, their types, and whether they are optional or read-only.</p><pre><code>type Lesson = {
+  readonly id: string;
+  title: string;
+  completed?: boolean;
+};
+
+const lesson: Lesson = {
+  id: "js-05",
+  title: "TypeScript"
+};</code></pre><p><code>readonly</code> is a compile-time restriction. It does not freeze the JavaScript object at runtime.</p></div><div class="card"><h3>Function types</h3><pre><code>type Formatter = (value: number) =&gt; string;
+
+const formatScore: Formatter = score =&gt; `${score}%`;
+
+function applyFormat(value: number, formatter: Formatter) {
+  return formatter(value);
+}</code></pre><p>Functions are values in JavaScript, so TypeScript can describe them just as it describes objects and primitives.</p></div></section>
+<section class="wrap section" id="narrowing"><div class="kicker">03 · Narrowing</div><h2>Let the code prove which type you have.</h2><p>TypeScript uses control-flow analysis to refine union types. The official Handbook calls this process narrowing. Checks such as <code>typeof</code>, <code>in</code>, <code>instanceof</code>, equality comparisons, and user-defined type predicates can provide evidence about the value's actual shape. <a class="sources" href="https://www.typescriptlang.org/docs/handbook/2/narrowing.html" target="_blank">Official Handbook: Narrowing</a>.</p><div class="card"><h3><code>typeof</code> and equality checks</h3><pre><code>function display(value: string | number) {
+  if (typeof value === "string") {
+    return value.toUpperCase();
+  }
+
+  return value.toFixed(2);
+}</code></pre><p>Inside the first branch, TypeScript knows the value is a string. After the branch, it can reason about the remaining possibility.</p></div><div class="card"><h3>Discriminated unions</h3><p>A shared literal property can identify which member of a union you have. This pattern scales well for application state and event-like data.</p><pre><code>type State =
+  | { status: "loading" }
+  | { status: "success"; data: string[] }
+  | { status: "error"; message: string };
+
+function render(state: State) {
+  switch (state.status) {
+    case "loading": return "Loading…";
+    case "success": return state.data.join(", ");
+    case "error": return state.message;
+  }
+}</code></pre></div><div class="card"><h3>Exhaustiveness</h3><p>When every member of a union must be handled, an exhaustive check can make future changes safer. If a new state is added but not handled, the compiler can expose the missing case.</p><pre><code>function assertNever(value: never): never {
+  throw new Error(`Unexpected value: ${value}`);
+}</code></pre></div></section>
+<section class="wrap section" id="generics"><div class="kicker">04 · Generics</div><h2>Write reusable code without throwing away type information.</h2><p>Generics let a function, type, or component work with different types while preserving the relationship between its inputs and outputs. The TypeScript Handbook presents generics as a way to build reusable components with well-defined APIs. <a class="sources" href="https://www.typescriptlang.org/docs/handbook/2/generics.html" target="_blank">Official Handbook: Generics</a>.</p><div class="card"><h3>The simplest generic</h3><pre><code>function identity&lt;T&gt;(value: T): T {
+  return value;
+}
+
+const text = identity("hello"); // string
+const count = identity(42);      // number</code></pre><p>The important relationship is that the type accepted by the function is connected to the type returned by the function.</p></div><div class="card"><h3>Generic collections</h3><pre><code>function first&lt;T&gt;(items: T[]): T | undefined {
+  return items[0];
+}
+
+const firstLesson = first(["HTML", "CSS"]); // string | undefined
+const firstScore = first([90, 84]);           // number | undefined</code></pre><p>Notice that the result keeps the element type. A generic is not simply a fancy replacement for <code>any</code>.</p></div><div class="card"><h3>Constraints</h3><p>Sometimes a generic needs a known capability. An <code>extends</code> constraint limits which types can be supplied.</p><pre><code>function getLength&lt;T extends { length: number }&gt;(value: T): number {
+  return value.length;
+}
+
+getLength("hello");
+getLength([1, 2, 3]);</code></pre></div><div class="card"><h3>Generic object types</h3><pre><code>type ApiResponse&lt;T&gt; = {
+  data: T;
+  ok: boolean;
+  message?: string;
+};
+
+type LessonResponse = ApiResponse&lt;Lesson[]&gt;;</code></pre><p>This pattern becomes useful when several API responses share a wrapper but carry different data.</p></div></section>
+<section class="wrap section" id="safe"><div class="kicker">05 · Type-safe code</div><h2>Use the type system at the boundaries that matter.</h2><p>Type safety is not about covering every line with annotations. It is about making invalid states harder to express, catching mistakes before runtime, and making interfaces between modules easier to understand. Type inference, narrowing, utility types and compiler options are part of the practical TypeScript toolkit.</p><div class="grid"><div class="mini"><h3>Prefer inference</h3><p>Let TypeScript infer obvious local values. Add an annotation when it clarifies an API, variable boundary, or intended constraint.</p></div><div class="mini"><h3>Model real states</h3><p>Use unions and discriminated unions when a value has a finite set of meaningful states.</p></div><div class="mini"><h3>Protect boundaries</h3><p>Network data, user input and external JSON are runtime data. Types alone cannot prove that external data is valid.</p></div><div class="mini"><h3>Keep checks strict</h3><p>Use the compiler to expose unsafe assumptions instead of silencing errors with broad casts.</p></div></div><div class="card"><h3>Utility types</h3><p>TypeScript provides built-in utility types for common transformations. Examples include <code>Partial</code>, <code>Pick</code>, <code>Omit</code>, <code>Record</code>, <code>ReturnType</code> and <code>Awaited</code>. Learn them after you understand ordinary object and function types.</p><pre><code>type Lesson = {
+  id: string;
+  title: string;
+  completed: boolean;
+};
+
+type LessonUpdate = Partial&lt;Pick&lt;Lesson, "title" | "completed"&gt;&gt;;</code></pre><p><a class="sources" href="https://www.typescriptlang.org/docs/handbook/utility-types.html" target="_blank">Official Handbook: Utility Types</a></p></div><div class="card"><h3>Type assertions are not validation</h3><pre><code>const raw: unknown = getExternalData();
+
+// A cast does not check the runtime value:
+const lesson = raw as Lesson;</code></pre><p>A type assertion tells the compiler how you want to treat a value; it does not transform or validate that value at runtime. For external data, perform an actual runtime check or use a validation library when appropriate.</p></div><div class="card"><h3>Compiler thinking</h3><p>TypeScript's compiler options determine how aggressively the type checker protects your code. A strict configuration catches more unsafe assumptions. When you encounter an error, first understand what the checker is telling you; do not immediately suppress it.</p><pre><code>// tsconfig.json
+{
+  "compilerOptions": {
+    "strict": true
+  }
+}</code></pre><p>The exact project configuration can vary, but learning with strict checking gives you useful feedback about nullability, function parameters, and other assumptions.</p></div></section>
+<section class="wrap section" id="lab"><div class="kicker">Capstone lab</div><h2>Convert a small JavaScript app into TypeScript.</h2><p>Take the Module 03 learning dashboard and migrate the core logic to TypeScript. The point is not to mechanically rename files. You will identify the data your application actually handles, define its contracts, and make the compiler expose weak assumptions.</p><div class="card"><h3>Build: Typed Learning Dashboard</h3><ol><li>Create a new <code>module-05-capstone</code> project.</li><li>Move the application's lesson data into typed objects.</li><li>Create <code>Lesson</code>, <code>LessonState</code>, and API-response types.</li><li>Type the functions that create, update, remove, filter, and render lessons.</li><li>Use a discriminated union for loading, success, and error state.</li><li>Write one generic helper such as <code>first&lt;T&gt;</code> or a typed response wrapper.</li><li>Treat fetched JSON as untrusted runtime data rather than assuming a cast makes it safe.</li><li>Enable strict compiler checking and fix the errors without hiding them.</li><li>Run the application and compare its behaviour with the JavaScript version.</li></ol><pre><code>type Lesson = {
+  id: string;
+  title: string;
+  completed: boolean;
+};
+
+type LessonState =
+  | { status: "loading" }
+  | { status: "success"; lessons: Lesson[] }
+  | { status: "error"; message: string };
+
+function completedCount(lessons: Lesson[]): number {
+  return lessons.filter(lesson =&gt; lesson.completed).length;
+}</code></pre></div><div class="note warn"><strong>Challenge:</strong> deliberately introduce three type errors: pass the wrong argument to a function, misspell an object property, and add an impossible state. Read the compiler messages, fix the underlying model, then run the application to confirm that runtime behaviour still works.</div><div class="card"><h3>What you should be able to explain after the lab</h3><ul><li>Why TypeScript can catch a mistake before the program runs.</li><li>When inference is better than adding an explicit annotation.</li><li>Why a union type requires narrowing before certain operations.</li><li>Why generics preserve relationships between types.</li><li>Why <code>unknown</code> is different from <code>any</code>.</li><li>Why a type assertion does not validate external JSON.</li><li>How strict checking changes the feedback you get while developing.</li></ul></div></section>
+<section class="wrap section"><div class="kicker">Knowledge check</div><h2>Prove you understand the type system.</h2><div class="card"><ol><li>What problem does TypeScript's static type checker solve?</li><li>When can TypeScript infer a variable's type without an annotation?</li><li>What is the difference between <code>string | number</code> and <code>string[]</code>?</li><li>Why must a union often be narrowed before use?</li><li>What does an optional property mean?</li><li>What does <code>readonly</code> protect, and what does it not protect?</li><li>What is the relationship between a function's parameter types and return type?</li><li>What is a discriminated union?</li><li>Why is <code>unknown</code> safer than <code>any</code> for unknown input?</li><li>What does a generic type parameter preserve that <code>any</code> would lose?</li><li>What does <code>extends</code> do in a generic constraint?</li><li>Why does a type assertion not validate runtime data?</li><li>Why can strict checking expose bugs that JavaScript execution would not?</li><li>When would a utility type such as <code>Partial</code> be useful?</li><li>What should you do when a TypeScript error appears at an external-data boundary?</li></ol></div></section>
+<section class="wrap section"><div class="kicker">Completion</div><h2>Finish the module.</h2><div class="card"><div class="checks" id="checks"><label class="check"><input type="checkbox">I can explain what TypeScript adds to JavaScript.</label><label class="check"><input type="checkbox">I can use primitive, array, tuple, union and literal types.</label><label class="check"><input type="checkbox">I can define object shapes with type aliases or interfaces.</label><label class="check"><input type="checkbox">I can type function parameters and return values.</label><label class="check"><input type="checkbox">I understand type inference.</label><label class="check"><input type="checkbox">I can narrow a union with runtime checks.</label><label class="check"><input type="checkbox">I can model application states with discriminated unions.</label><label class="check"><input type="checkbox">I understand the difference between unknown and any.</label><label class="check"><input type="checkbox">I can write a generic function.</label><label class="check"><input type="checkbox">I can constrain a generic.</label><label class="check"><input type="checkbox">I understand why assertions are not runtime validation.</label><label class="check"><input type="checkbox">I can use common utility types.</label><label class="check"><input type="checkbox">I can work with strict compiler feedback.</label><label class="check"><input type="checkbox">I completed the Typed Learning Dashboard capstone.</label></div></div></section>
+<section class="wrap section"><div class="kicker">Authentic reference library</div><h2>Learn from the TypeScript project.</h2><div class="card sources"><ul><li><a href="https://www.typescriptlang.org/docs/handbook/intro.html" target="_blank">TypeScript Handbook — Introduction</a></li><li><a href="https://www.typescriptlang.org/docs/handbook/" target="_blank">TypeScript Documentation — Handbook</a></li><li><a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html" target="_blank">Everyday Types</a></li><li><a href="https://www.typescriptlang.org/docs/handbook/type-inference.html" target="_blank">Type Inference</a></li><li><a href="https://www.typescriptlang.org/docs/handbook/2/narrowing.html" target="_blank">Narrowing</a></li><li><a href="https://www.typescriptlang.org/docs/handbook/2/functions.html" target="_blank">More on Functions</a></li><li><a href="https://www.typescriptlang.org/docs/handbook/2/objects.html" target="_blank">Object Types</a></li><li><a href="https://www.typescriptlang.org/docs/handbook/2/generics.html" target="_blank">Generics</a></li><li><a href="https://www.typescriptlang.org/docs/handbook/utility-types.html" target="_blank">Utility Types</a></li></ul></div></section>
+<footer class="footer wrap"><strong>FullStack Bible</strong> · Module 05 · Learn → Build → Practice → Grow</footer>
+</main>
+<script>
+const key='fullstack-bible-module-05';
+const boxes=[...document.querySelectorAll('#checks input')];
+const text=document.getElementById('progressText');
+const bar=document.getElementById('progressBar');
+function update(){const done=boxes.filter(b=>b.checked).length;const pct=Math.round(done/boxes.length*100);text.textContent=pct+'% complete';bar.style.width=pct+'%';boxes.forEach(b=>b.closest('.check').classList.toggle('done',b.checked));localStorage.setItem(key,JSON.stringify(boxes.map(b=>b.checked)))}
+try{const saved=JSON.parse(localStorage.getItem(key)||'[]');boxes.forEach((b,i)=>b.checked=Boolean(saved[i]))}catch{}
+boxes.forEach(b=>b.addEventListener('change',update));update();
+</script>
+</body></html>
