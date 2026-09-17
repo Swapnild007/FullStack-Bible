@@ -1,0 +1,270 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f5f7">
+<title>Module 02 — Build the Web | FullStack Bible</title>
+<meta name="description" content="Module 02: HTML, CSS, JavaScript basics and accessibility, taught from zero to a practical first web project.">
+<style>
+:root{--bg:#f5f5f7;--ink:#111113;--muted:#6e6e73;--blue:#007aff;--purple:#5856d6;--green:#34c759;--orange:#ff9500;--card:rgba(255,255,255,.74);--shadow:0 22px 70px rgba(0,0,0,.07);--ease:cubic-bezier(.22,1,.36,1);--spring:cubic-bezier(.175,.885,.32,1.275)}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:25px}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","SF Pro Text","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}a{color:inherit}button,input,textarea,select{font:inherit}.page{min-height:100vh;background:radial-gradient(60% 35% at 90% 0,rgba(88,86,214,.14),transparent 70%),radial-gradient(55% 35% at 0 20%,rgba(0,122,255,.11),transparent 70%),var(--bg)}
+.nav{position:sticky;top:10px;z-index:30;width:min(1080px,calc(100% - 24px));margin:10px auto 0;padding:9px 10px 9px 17px;border:1px solid rgba(255,255,255,.88);border-radius:20px;background:rgba(255,255,255,.68);backdrop-filter:saturate(180%) blur(26px);-webkit-backdrop-filter:saturate(180%) blur(26px);box-shadow:0 12px 38px rgba(0,0,0,.06);display:flex;align-items:center;justify-content:space-between}.brand{font-weight:800;letter-spacing:-.055em;text-decoration:none}.brand span{color:var(--blue)}.back{padding:10px 14px;border-radius:999px;background:rgba(118,118,128,.10);font-size:13px;font-weight:650;text-decoration:none;transition:.35s var(--spring)}.back:active{transform:scale(.94)}
+.wrap{width:min(920px,calc(100% - 30px));margin:auto}.hero{padding:105px 0 55px}.kicker{color:#8a8a8f;font-size:11px;font-weight:750;letter-spacing:.15em;text-transform:uppercase}.hero h1{font-size:clamp(48px,8vw,82px);line-height:.95;letter-spacing:-.075em;margin:15px 0 22px;max-width:820px}.hero h1 span{background:linear-gradient(105deg,#111 8%,#007aff 54%,#5856d6 92%);background-clip:text;-webkit-background-clip:text;color:transparent}.hero p{max-width:740px;color:var(--muted);font-size:19px;line-height:1.65;margin:0}.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:25px}.pill{padding:8px 11px;border-radius:999px;background:rgba(255,255,255,.65);border:1px solid rgba(255,255,255,.9);font-size:12px;color:#626268}
+.progress{margin:0 auto 24px;width:min(920px,calc(100% - 30px));padding:12px 14px;border:1px solid rgba(255,255,255,.86);border-radius:17px;background:rgba(255,255,255,.72);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);display:flex;align-items:center;gap:12px;box-shadow:0 10px 35px rgba(0,0,0,.05)}.bar{height:6px;flex:1;background:#e4e4e7;border-radius:99px;overflow:hidden}.bar i{display:block;width:0;height:100%;background:linear-gradient(90deg,#007aff,#5856d6);border-radius:99px;transition:width .6s var(--ease)}.progress strong{font-size:12px;white-space:nowrap}
+.section{padding:45px 0}.section h2{font-size:clamp(30px,5vw,48px);line-height:1;letter-spacing:-.065em;margin:0 0 15px}.section>p{color:var(--muted);font-size:16px;line-height:1.75;max-width:800px}.card{margin:18px 0;padding:28px;border:1px solid rgba(255,255,255,.92);border-radius:28px;background:var(--card);box-shadow:var(--shadow)}.card h3{font-size:24px;letter-spacing:-.045em;margin:0 0 13px}.card h4{font-size:18px;letter-spacing:-.03em;margin:28px 0 9px}.card p,.card li{font-size:15px;line-height:1.78;color:#444449}.card ul,.card ol{padding-left:23px}.card li{margin:7px 0}.note{padding:17px 18px;border-left:3px solid var(--blue);background:rgba(0,122,255,.055);border-radius:0 16px 16px 0;color:#45454a;line-height:1.7;font-size:14px;margin:18px 0}.success{border-left-color:var(--green);background:rgba(52,199,89,.06)}.warn{border-left-color:var(--orange);background:rgba(255,149,0,.06)}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.mini{padding:22px;border:1px solid rgba(255,255,255,.9);border-radius:23px;background:rgba(255,255,255,.62)}.mini h3{margin:0 0 8px;font-size:18px;letter-spacing:-.035em}.mini p{margin:0;color:#5d5d63;line-height:1.65;font-size:14px}.steps{counter-reset:step}.step{position:relative;padding-left:48px;margin:20px 0}.step:before{counter-increment:step;content:counter(step);position:absolute;left:0;top:0;width:31px;height:31px;border-radius:50%;display:grid;place-items:center;background:#111;color:#fff;font-size:12px;font-weight:800}
+pre{margin:16px 0;overflow:auto;padding:18px;border-radius:17px;background:#1c1c1e;color:#f5f5f7;font-size:13px;line-height:1.65}code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}p code,li code{background:#ececef;border-radius:6px;padding:2px 5px;color:#333}.sources a{color:#006edb;text-decoration:underline;text-decoration-color:rgba(0,110,219,.25);text-underline-offset:3px}.checks{display:grid;gap:8px}.check{display:flex;gap:10px;align-items:flex-start;padding:14px;border-radius:15px;background:rgba(255,255,255,.58);font-size:14px;line-height:1.55}.check input{width:18px;height:18px;accent-color:var(--blue);margin-top:1px;flex:0 0 auto}.check.done{opacity:.58;text-decoration:line-through}.footer{padding:60px 0 70px;text-align:center;color:#999;font-size:13px}.footer strong{color:#555}.demo{border:1px solid rgba(0,0,0,.07);border-radius:20px;background:#fff;padding:20px}.demo h3{margin:0 0 8px}.demo button{border:0;border-radius:999px;background:#111;color:#fff;padding:10px 16px;cursor:pointer}.demo button:focus-visible{outline:3px solid rgba(0,122,255,.45);outline-offset:3px}.demo .message{margin-top:12px;color:#555}.skip{position:fixed;left:12px;top:8px;z-index:1000;transform:translateY(-150%);padding:10px 14px;background:#111;color:#fff;border-radius:10px}.skip:focus{transform:none}
+@media(max-width:650px){.nav{top:7px}.hero{padding:85px 0 35px}.hero p{font-size:16px}.progress{position:relative;top:auto}.card{padding:22px;border-radius:23px}.grid{grid-template-columns:1fr}.section{padding:35px 0}.hero h1{font-size:clamp(45px,13vw,65px)}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<main class="page" id="main">
+<nav class="nav"><a class="brand" href="index.html">FullStack<span>Bible</span></a><a class="back" href="roadmap.html">Roadmap</a></nav>
+<header class="wrap hero">
+<div class="kicker">Module 02 · Build the web</div>
+<h1>Give the web <span>structure, style and behaviour.</span></h1>
+<p>This is where you start building. You will learn HTML to describe what a page means, CSS to control how it looks and adapts, JavaScript to make it respond, and accessibility so people can actually use what you build.</p>
+<div class="meta"><span class="pill">HTML</span><span class="pill">CSS</span><span class="pill">JavaScript</span><span class="pill">Accessibility</span><span class="pill">Build a real page</span></div>
+</header>
+<div class="progress"><strong id="progressText">0% complete</strong><div class="bar"><i id="progressBar"></i></div></div>
+
+<section class="wrap section">
+<div class="kicker">The mental model</div><h2>Four layers. One web page.</h2>
+<p>A browser can display a page because different technologies have different jobs. HTML gives content and structure meaning. CSS controls presentation and layout. JavaScript can respond to user actions and change the page. Accessibility makes sure the structure and interaction remain usable by people with different abilities and different ways of accessing the web. MDN's core curriculum follows this same progression, beginning with semantic HTML, CSS fundamentals and accessibility. <a class="sources" href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core" target="_blank" rel="noreferrer">MDN Core learning modules</a>.</p>
+<div class="grid"><div class="mini"><h3>HTML</h3><p>“What is this?” A heading, paragraph, image, link, list, navigation area, article or form control.</p></div><div class="mini"><h3>CSS</h3><p>“How should this appear?” Color, type, spacing, size, layout, responsive behaviour and visual states.</p></div><div class="mini"><h3>JavaScript</h3><p>“What should happen?” Read information, make decisions, respond to actions and update the page.</p></div><div class="mini"><h3>Accessibility</h3><p>“Can different people use it?” Keyboard access, meaningful structure, labels, alternatives and understandable interaction.</p></div></div>
+<div class="note success"><strong>Core rule:</strong> do not use JavaScript to replace something HTML already provides. Do not use CSS to communicate meaning that belongs in HTML. Build the correct structure first, then style it, then add behaviour where it is genuinely needed.</div>
+</section>
+
+<section class="wrap section" id="html">
+<div class="kicker">01 · HTML</div><h2>Build the meaning of the page.</h2>
+<p>HTML is the technology used to define the content and structure of websites. Correct HTML is not just about making text appear on screen; it gives the content meaning that browsers, assistive technologies and other systems can understand. <a class="sources" href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content" target="_blank" rel="noreferrer">MDN: Structuring content with HTML</a>.</p>
+<div class="card"><h3>Start with the document</h3><p>An HTML document has a predictable foundation. The doctype tells the browser to use modern HTML parsing rules. The <code>html</code> element contains the document. The <code>head</code> contains information about the document that is not normally displayed as page content. The <code>body</code> contains the content people interact with.</p><pre><code>&lt;!doctype html&gt;
+&lt;html lang="en"&gt;
+  &lt;head&gt;
+    &lt;meta charset="utf-8"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+    &lt;title&gt;My first website&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;My first website&lt;/h1&gt;
+    &lt;p&gt;I am learning to build for the web.&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;</code></pre><p>The <code>lang</code> value tells browsers and assistive technologies what language the document uses. The viewport setting helps the page behave correctly on mobile screens. The title identifies the document in browser tabs, history and other browser interfaces.</p></div>
+<div class="card"><h3>Elements, tags and attributes</h3><p>An element is a piece of HTML with a particular meaning. Many elements have an opening tag, content and a closing tag. An attribute adds information to an element.</p><pre><code>&lt;a href="https://example.com"&gt;Visit the site&lt;/a&gt;
+
+&lt;img src="portrait.jpg" alt="A person standing outdoors"&gt;</code></pre><p>In the link, <code>href</code> says where the link goes. In the image, <code>src</code> identifies the image file and <code>alt</code> provides a text alternative. Learn to read markup from left to right: element, information about that element, then its content.</p></div>
+<div class="card"><h3>Headings create a content structure</h3><p>Use headings to describe the hierarchy of your content. A page normally has one main heading for its primary subject, followed by lower-level headings for sections and subsections. Choose a heading because of its meaning, not because a browser makes it look large.</p><pre><code>&lt;h1&gt;Learning web development&lt;/h1&gt;
+  &lt;h2&gt;HTML&lt;/h2&gt;
+  &lt;h2&gt;CSS&lt;/h2&gt;
+    &lt;h3&gt;Layout&lt;/h3&gt;
+  &lt;h2&gt;JavaScript&lt;/h2&gt;</code></pre><p>CSS can make any heading look large or small. The HTML should still describe the actual hierarchy.</p></div>
+<div class="card"><h3>Text, lists and links</h3><p>Use paragraphs for paragraphs. Use unordered lists when the order does not matter and ordered lists when sequence matters. Use links for navigation to another location or resource.</p><pre><code>&lt;p&gt;HTML describes the structure of a page.&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;HTML&lt;/li&gt;
+  &lt;li&gt;CSS&lt;/li&gt;
+  &lt;li&gt;JavaScript&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;a href="about.html"&gt;About this project&lt;/a&gt;</code></pre><p>Good link text tells people where the link goes. “Read the accessibility guide” is more useful than a page containing five links that all say “click here”.</p></div>
+<div class="card"><h3>Images and alternative text</h3><p>Images need a purpose. If an image communicates information, provide an appropriate text alternative. If an image is purely decorative and adds no useful information, its alternative text can be empty so assistive technology can ignore it.</p><pre><code>&lt;img src="team.jpg" alt="The product team standing together in the office.&gt;
+
+&lt;img src="decorative-line.svg" alt=""&gt;</code></pre><p>Do not write “image of” as a habit. Describe the useful meaning. For a photograph of a person giving a talk, “Priya explains the new product to the team” may be useful; “photo of Priya” may not be enough if the action matters.</p></div>
+<div class="card"><h3>Semantic HTML: choose the element that matches the job</h3><p>Semantic means that the element communicates what the content is. Common structural elements include <code>header</code>, <code>nav</code>, <code>main</code>, <code>section</code>, <code>article</code>, <code>aside</code> and <code>footer</code>. These are not magic styling boxes. They communicate the role of parts of a page.</p><p>For an action, use a <code>button</code>. For navigation to another location, use an <code>a</code> link. For a form control, use the appropriate native input element and label. Avoid making a generic <code>div</code> pretend to be a button with JavaScript when the browser already provides a real button.</p></div>
+<div class="card"><h3>Forms are part of the web's structure</h3><p>Forms collect information and provide controls for interaction. Start with the native controls before trying to customise them.</p><pre><code>&lt;form&gt;
+  &lt;label for="email"&gt;Email address&lt;/label&gt;
+  &lt;input id="email" name="email" type="email" required&gt;
+
+  &lt;button type="submit"&gt;Subscribe&lt;/button&gt;
+&lt;/form&gt;</code></pre><p>The label tells the user what the input is for. The input type communicates what kind of value is expected. The required attribute lets the browser participate in basic validation. The button is keyboard-accessible and behaves like a button without requiring JavaScript.</p><p>MDN's HTML documentation covers forms, validation and the broader HTML element set. <a class="sources" href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank" rel="noreferrer">MDN: HTML</a>.</p></div>
+<div class="card"><h3>HTML debugging</h3><p>When HTML behaves strangely, look for mismatched tags, incorrect nesting, missing quotes, incorrect attribute names and paths that point to files that do not exist. Use the browser inspector from Module 01 to compare the source you wrote with the structure the browser created.</p></div>
+</section>
+
+<section class="wrap section" id="css">
+<div class="kicker">02 · CSS</div><h2>Turn structure into an interface.</h2>
+<p>CSS controls presentation and layout: fonts, color, spacing, sizing, columns, positioning, responsive behaviour and more. MDN's CSS fundamentals begin with applying CSS to HTML, selectors, states, shorthand, functions and other core syntax. <a class="sources" href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics" target="_blank" rel="noreferrer">MDN: CSS styling basics</a>.</p>
+<div class="card"><h3>The basic CSS sentence</h3><pre><code>p {
+  color: #333;
+  font-size: 1rem;
+  line-height: 1.6;
+}</code></pre><p>The selector says which elements you want to affect. The declarations inside the braces say what should change. Each declaration has a property and a value. CSS contains many properties, but the important skill is learning how to reason from “which element?” to “which property?”</p></div>
+<div class="card"><h3>Selectors: choose what you mean</h3><p>Start with simple selectors: an element selector such as <code>p</code>, a class selector such as <code>.card</code>, and an ID selector such as <code>#profile</code>. Classes are generally the most reusable way to describe a visual pattern.</p><pre><code>p { color: #444; }
+.card { padding: 24px; }
+#profile { max-width: 700px; }</code></pre><p>You can also combine selectors when the relationship matters. Do not make selectors unnecessarily complicated. Simple rules are easier to understand, override and maintain.</p></div>
+<div class="card"><h3>The box model</h3><p>Every visible element can be understood as a box. The content sits inside padding. A border can surround the padding. Margin creates space outside the border. This model explains many beginner layout problems.</p><pre><code>.card {
+  width: 320px;
+  padding: 20px;
+  border: 1px solid #ddd;
+  margin: 20px;
+}</code></pre><p>A practical habit is to use <code>box-sizing: border-box</code> so declared widths include padding and borders. This makes many layouts easier to reason about.</p></div>
+<div class="card"><h3>Typography, color and spacing</h3><p>Good CSS is not a collection of random values. Establish a visual system. Choose readable type, a small set of colors, consistent spacing and sensible line lengths. Relative units such as <code>rem</code>, percentages and flexible layout values are often useful because they adapt better than fixed pixel measurements alone.</p><p>Do not use color as the only way to communicate meaning. A red field for an error should also have text or another clear indication. This matters for people who cannot distinguish the colors and for people using the page in difficult lighting.</p></div>
+<div class="card"><h3>Flexbox: arrange things in a row or column</h3><p>Flexbox is designed for arranging items along one direction at a time. It is useful for navigation bars, button groups, cards in a row and many other components.</p><pre><code>.actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}</code></pre><p>Learn the idea rather than memorising a recipe: the parent becomes the layout container and its direct children become the items being arranged.</p></div>
+<div class="card"><h3>Grid: build two-dimensional layouts</h3><p>CSS Grid is useful when rows and columns both matter. It can create cards, page regions and more structured layouts.</p><pre><code>.cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}</code></pre><p>Do not force Grid everywhere. Use the simplest layout tool that describes the relationship you need.</p></div>
+<div class="card"><h3>Responsive design</h3><p>A web page is not tied to one screen size. Responsive design lets the layout adapt to available space. Start with the content and let the layout change when the screen becomes too narrow.</p><pre><code>.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+@media (max-width: 700px) {
+  .cards {
+    grid-template-columns: 1fr;
+  }
+}</code></pre><p>Use your browser's responsive tools from Module 01 to test the transition. Then test with real devices later because emulation is useful but not identical to every physical environment. MDN's CSS layout curriculum covers responsive designs and modern layout tools. <a class="sources" href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout" target="_blank" rel="noreferrer">MDN: CSS layout</a>.</p></div>
+<div class="card"><h3>States and interaction</h3><p>CSS can respond to interaction without JavaScript. Common states include <code>:hover</code>, <code>:focus</code>, <code>:focus-visible</code>, <code>:active</code> and <code>:disabled</code>.</p><pre><code>button:focus-visible {
+  outline: 3px solid #007aff;
+  outline-offset: 3px;
+}</code></pre><p>Never remove focus indicators without replacing them with something equally clear. Keyboard users need to know which control is currently active.</p></div>
+<div class="note success"><strong>CSS rule:</strong> build a layout that works before decorating it. If removing every color, shadow and animation makes the page impossible to understand, the structure was doing too little work.</div>
+</section>
+
+<section class="wrap section" id="javascript">
+<div class="kicker">03 · JavaScript basics</div><h2>Make the page respond.</h2>
+<p>JavaScript is a programming language that can run in browsers and elsewhere. At this stage, you need the basic programming ideas and the ability to connect them to a web page. The goal is not to memorise hundreds of methods; it is to learn how data, decisions, reusable instructions and events fit together.</p>
+<div class="card"><h3>Values and variables</h3><p>A value is information such as text, a number, a true/false value, or a collection of values. A variable gives you a name you can use to refer to a value. Use <code>const</code> when the variable name will not be reassigned, and <code>let</code> when it needs to be reassigned.</p><pre><code>const learnerName = "Swapnil";
+let lessonsCompleted = 2;
+const isLearning = true;
+
+lessonsCompleted = lessonsCompleted + 1;</code></pre><p>JavaScript has more value types and rules than this simple example shows. Learn the distinction between the value itself and the name you use to refer to it.</p></div>
+<div class="card"><h3>Strings, numbers and true/false</h3><pre><code>const name = "Maya";
+const age = 30;
+const hasStarted = true;
+
+console.log(name);
+console.log(age + 1);
+console.log(hasStarted);</code></pre><p>Do not assume every value is text. A number can participate in arithmetic. A true/false value can control a decision. Understanding the type of your data prevents many beginner bugs.</p></div>
+<div class="card"><h3>Decisions with if</h3><p>Programs often need to choose what to do. An <code>if</code> statement runs code when a condition is true. An <code>else</code> block can handle the other case.</p><pre><code>const score = 82;
+
+if (score >= 50) {
+  console.log("Passed");
+} else {
+  console.log("Keep practising");
+}</code></pre><p>The condition is an expression that becomes true or false. Comparison operators such as <code>===</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code> and <code>&lt;=</code> help express those decisions.</p></div>
+<div class="card"><h3>Functions: give a task a name</h3><p>A function is a reusable piece of code. It can receive information, perform work and return a result.</p><pre><code>function greet(name) {
+  return `Hello, ${name}!`;
+}
+
+const message = greet("Maya");
+console.log(message);</code></pre><p>Functions help you avoid repeating the same instructions and make your program easier to break into understandable pieces.</p></div>
+<div class="card"><h3>Arrays and objects</h3><p>An array stores an ordered collection. An object groups related information using named properties.</p><pre><code>const topics = ["HTML", "CSS", "JavaScript"];
+console.log(topics[0]);
+
+const learner = {
+  name: "Maya",
+  completed: 3
+};
+
+console.log(learner.name);</code></pre><p>Arrays are useful when order matters. Objects are useful when several pieces of information describe one thing. You will use both constantly in later full-stack work.</p></div>
+<div class="card"><h3>Loops: repeat work without copying it</h3><pre><code>const topics = ["HTML", "CSS", "JavaScript"];
+
+for (const topic of topics) {
+  console.log(topic);
+}</code></pre><p>A loop lets a program perform an operation for each item in a collection. Learn to recognise when repetition is a problem your program should handle rather than something you should write manually three, ten or one hundred times.</p></div>
+<div class="card"><h3>The browser page and the DOM</h3><p>The browser turns your HTML into a live document that JavaScript can inspect and change. This document is commonly called the DOM. You do not need to memorise its entire API yet. Start with selecting an element, reading information from it, changing text, changing classes and responding to user actions.</p><pre><code>const heading = document.querySelector("h1");
+heading.textContent = "I changed this with JavaScript";</code></pre><p>This changes the current page in the browser. It does not automatically rewrite your HTML file on disk.</p></div>
+<div class="card"><h3>Events: react to what people do</h3><p>An event represents something that happened, such as a click, a key press, a form submission or a page loading. JavaScript can listen for an event and run a function when it occurs.</p><pre><code>const button = document.querySelector("button");
+const message = document.querySelector("#message");
+
+button.addEventListener("click", () =&gt; {
+  message.textContent = "Thanks for clicking.";
+});</code></pre><p>Prefer real HTML controls for interaction. A real button can receive keyboard input and has browser behaviour already built in. JavaScript should add the behaviour you need rather than recreate basic browser functionality badly.</p></div>
+<div class="card"><h3>Debug JavaScript like a developer</h3><p>When something fails, separate the possibilities: Did the script load? Did the selector find the element? Did the event happen? Did the function run? Did the data have the value you expected?</p><pre><code>console.log("Script started");
+console.log("Selected button:", button);
+console.log("Current value:", score);</code></pre><p>Use the Console and Sources/Debugger tools in your browser when appropriate. Read the error message, locate the file and line, reproduce the problem, then change one thing at a time.</p></div>
+<div class="note warn"><strong>Do not jump ahead yet:</strong> asynchronous JavaScript, promises, modules, APIs, advanced object behaviour and application architecture belong later in the roadmap. This module is about becoming comfortable writing small, understandable programs that control a page.</div>
+</section>
+
+<section class="wrap section" id="accessibility">
+<div class="kicker">04 · Accessibility</div><h2>Build so more people can use it.</h2>
+<p>Accessibility means designing and developing web content so people with disabilities can use it. W3C's Web Accessibility Initiative describes accessibility as a combination of content, browsers and other user agents, assistive technologies and the way people interact with the web. WCAG 2.2 provides an international technical standard organised around four principles: perceivable, operable, understandable and robust. <a class="sources" href="https://www.w3.org/WAI/fundamentals/accessibility-intro/" target="_blank" rel="noreferrer">W3C: Introduction to Web Accessibility</a> · <a class="sources" href="https://www.w3.org/WAI/standards-guidelines/wcag/" target="_blank" rel="noreferrer">W3C: WCAG overview</a>.</p>
+<div class="card"><h3>Accessibility starts in HTML</h3><p>Use the right element for the job. Semantic HTML gives browsers and assistive technologies information about the purpose and structure of content. A native button is already keyboard-accessible. A native link already communicates navigation. A labelled input already gives assistive technology a name for the control.</p><p>MDN specifically identifies semantic HTML, useful alternative text, good link text, form labels, keyboard accessibility and sensible source order as important accessibility practices. <a class="sources" href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility/HTML" target="_blank" rel="noreferrer">MDN: HTML as a good basis for accessibility</a>.</p></div>
+<div class="card"><h3>Keyboard access</h3><p>Some people navigate without a mouse. Every important interactive control should therefore be reachable and usable with a keyboard. Try your own page using only Tab, Shift+Tab, Enter and the relevant arrow keys.</p><p>Watch for three problems: an element cannot receive focus, the focus order makes no sense, or the focus indicator is too difficult to see. Do not create a custom interaction until you understand how the native equivalent behaves.</p></div>
+<div class="card"><h3>Labels and forms</h3><p>Every form control should have a clear accessible name. The simplest approach is usually a visible <code>label</code> connected to the input.</p><pre><code>&lt;label for="full-name"&gt;Full name&lt;/label&gt;
+&lt;input id="full-name" name="full-name" autocomplete="name"&gt;</code></pre><p>Placeholder text is not a replacement for a proper label. A placeholder can disappear when the user starts typing and can be difficult to perceive in some situations.</p></div>
+<div class="card"><h3>Images, icons and alternative text</h3><p>Ask what the user needs to know from the image. If the image carries information, provide that information in text. If it is decorative, do not force a meaningless description into the experience. If an icon is the only visible part of a button, make sure the button still has an accessible name.</p><pre><code>&lt;button type="button" aria-label="Open menu"&gt;
+  &lt;span aria-hidden="true"&gt;☰&lt;/span&gt;
+&lt;/button&gt;</code></pre><p>Use ARIA carefully. It can help when native HTML cannot express a required interface pattern, but adding ARIA does not automatically make a component accessible. Native HTML should be your first choice.</p></div>
+<div class="card"><h3>Color, contrast and visible states</h3><p>Text and controls must remain understandable. Do not make a link distinguishable only by color. Do not remove focus outlines just because they look less polished. Use sufficient contrast and make important states visible through more than one clue when needed.</p><p>WCAG 2.2 is organised under four broad principles: content should be perceivable, controls should be operable, information and operation should be understandable, and the implementation should remain compatible with current and future user agents. <a class="sources" href="https://www.w3.org/WAI/standards-guidelines/wcag/glance/" target="_blank" rel="noreferrer">W3C: WCAG 2 at a Glance</a>.</p></div>
+<div class="card"><h3>Motion should not become a barrier</h3><p>Animations can make an interface feel alive, but some people prefer reduced motion. Respect the user's operating-system preference with <code>prefers-reduced-motion</code> and avoid animation that is unnecessary for understanding or completing a task.</p><pre><code>@media (prefers-reduced-motion: reduce) {
+  * {
+    animation: none !important;
+    transition: none !important;
+  }
+}</code></pre></div>
+<div class="card"><h3>Test accessibility before calling a page finished</h3><ol><li>Navigate the whole page with a keyboard.</li><li>Confirm every important control has a visible focus state.</li><li>Check headings and page landmarks for a sensible structure.</li><li>Check every meaningful image for a useful alternative.</li><li>Check every form field has a clear label.</li><li>Check links describe their destination.</li><li>Zoom the page and confirm content remains usable.</li><li>Test a narrow viewport and a wide viewport.</li><li>Use browser accessibility tooling where available.</li><li>Fix the underlying HTML before reaching for complex ARIA solutions.</li></ol></div>
+<div class="note success"><strong>Accessibility is not a final polish step.</strong> Good HTML, clear content, keyboard-friendly controls and sensible structure should be built from the beginning. W3C treats accessibility as a shared system involving content, user agents and assistive technologies, not merely a visual checklist.</div>
+</section>
+
+<section class="wrap section" id="capstone">
+<div class="kicker">05 · Capstone</div><h2>Build one small site from scratch.</h2>
+<p>Do not treat this as a code-copying exercise. Build it in stages and use the browser to inspect your work. Your finished project should be a small, responsive, accessible learner profile site.</p>
+<div class="card"><h3>Part A — HTML first</h3><div class="steps"><div class="step"><strong>Create the project.</strong><p>Make a folder named <code>module-02-project</code> with <code>index.html</code>, <code>styles/style.css</code>, <code>scripts/app.js</code> and an <code>images</code> folder.</p></div><div class="step"><strong>Build meaningful structure.</strong><p>Add a header, navigation, main content, an introduction section, a learning list, an image, a contact form and a footer.</p></div><div class="step"><strong>Use native elements.</strong><p>Use headings, paragraphs, lists, links, a real button, labelled inputs and the correct form elements.</p></div><div class="step"><strong>Make the page understandable without CSS.</strong><p>Temporarily disable CSS. The document should still have a sensible reading order and meaningful content.</p></div></div></div>
+<div class="card"><h3>Part B — CSS second</h3><div class="steps"><div class="step"><strong>Set a foundation.</strong><p>Choose readable typography, line height, page width, background and text colors.</p></div><div class="step"><strong>Build spacing.</strong><p>Use consistent padding, margin and gaps instead of random values on every element.</p></div><div class="step"><strong>Build the layout.</strong><p>Use Flexbox and/or Grid where the relationships call for them. Avoid absolute positioning for the entire page.</p></div><div class="step"><strong>Make it responsive.</strong><p>Test narrow and wide widths. Let the layout adapt rather than forcing desktop content into a tiny screen.</p></div></div></div>
+<div class="card"><h3>Part C — JavaScript third</h3><p>Add one useful interactive feature: for example, a button that switches a learning status, a small character counter for a message field, or a menu that opens and closes.</p><p>The interaction must work with keyboard input and must have a clear visible state. Do not build a custom control if a native HTML control already does the job.</p><pre><code>const button = document.querySelector("#status-button");
+const status = document.querySelector("#status");
+
+button.addEventListener("click", () =&gt; {
+  const complete = status.dataset.complete === "true";
+  status.dataset.complete = String(!complete);
+  status.textContent = complete ? "In progress" : "Complete";
+});</code></pre></div>
+<div class="card"><h3>Part D — Accessibility pass</h3><p>Use the keyboard only. Tab through every interactive element. Can you tell where you are? Can you activate every control? Are labels clear? Are images described appropriately? Does the page still make sense when zoomed? Does it remain understandable when color is not enough to communicate a state?</p></div>
+<div class="card"><h3>Part E — Break and repair</h3><ol><li>Remove an image's <code>alt</code> and explain what changed.</li><li>Remove a form label and inspect the difference.</li><li>Change a real button into a generic <code>div</code> and observe what you have lost.</li><li>Break a CSS file path and diagnose it using Network.</li><li>Break a JavaScript selector and diagnose it using Console.</li><li>Make a heading hierarchy confusing and then restore it.</li><li>Fix each problem and write down the evidence that led you to the solution.</li></ol></div>
+</section>
+
+<section class="wrap section" id="assessment">
+<div class="kicker">06 · Knowledge check</div><h2>Explain the web you just built.</h2>
+<p>Answer these without copying definitions. If you can explain them in plain language and demonstrate them in your capstone, the module has done its job.</p>
+<div class="card"><ol><li>What job does HTML perform?</li><li>What makes HTML semantic?</li><li>Why does the <code>lang</code> attribute matter?</li><li>When should you use a link instead of a button?</li><li>Why should images have appropriate alternative text?</li><li>What is a CSS selector?</li><li>Explain the box model in your own words.</li><li>When would you choose Flexbox?</li><li>When would Grid be useful?</li><li>What does responsive design mean?</li><li>What is a JavaScript variable?</li><li>What does an <code>if</code> statement do?</li><li>Why are functions useful?</li><li>What is an array? What is an object?</li><li>What is an event?</li><li>What does <code>querySelector()</code> do?</li><li>Why should JavaScript not replace native HTML controls?</li><li>What does accessibility mean?</li><li>How would you test a page using only a keyboard?</li><li>Why is a visible focus state important?</li><li>Why is placeholder text not a complete replacement for a label?</li><li>What are the four broad WCAG principles?</li></ol></div>
+</section>
+
+<section class="wrap section">
+<div class="kicker">07 · Completion checklist</div><h2>Module 02 is complete when you can do these.</h2>
+<div class="card"><div class="checks" id="checks">
+<label class="check"><input type="checkbox"> I can create a valid basic HTML document from memory.</label>
+<label class="check"><input type="checkbox"> I can structure a page with meaningful semantic HTML.</label>
+<label class="check"><input type="checkbox"> I can create links, lists, images and basic forms.</label>
+<label class="check"><input type="checkbox"> I can explain and use CSS selectors and common properties.</label>
+<label class="check"><input type="checkbox"> I understand the box model.</label>
+<label class="check"><input type="checkbox"> I can build a simple layout with Flexbox or Grid.</label>
+<label class="check"><input type="checkbox"> I can make a layout adapt to a narrow screen.</label>
+<label class="check"><input type="checkbox"> I can use variables, conditions and functions in JavaScript.</label>
+<label class="check"><input type="checkbox"> I can work with arrays and objects at a basic level.</label>
+<label class="check"><input type="checkbox"> I can select an HTML element and respond to a user event.</label>
+<label class="check"><input type="checkbox"> I can use Console and browser tools to diagnose a simple JavaScript problem.</label>
+<label class="check"><input type="checkbox"> I can explain why semantic HTML helps accessibility.</label>
+<label class="check"><input type="checkbox"> I can test my page with a keyboard.</label>
+<label class="check"><input type="checkbox"> I can build and test the Module 02 capstone from scratch.</label>
+</div></div>
+</section>
+
+<section class="wrap section">
+<div class="kicker">08 · Authentic reference library</div><h2>Learn from the standards and platform documentation.</h2>
+<p>This module uses primary sources for the web platform and accessibility rather than treating random tutorials as the authority.</p>
+<div class="card"><h3>MDN Web Docs</h3><p><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Structuring_content" target="_blank" rel="noreferrer">Structuring content with HTML</a><br><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Styling_basics" target="_blank" rel="noreferrer">CSS styling basics</a><br><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout" target="_blank" rel="noreferrer">CSS layout</a><br><a href="https://developer.mozilla.org/en-US/docs/Web/HTML" target="_blank" rel="noreferrer">HTML reference</a><br><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility" target="_blank" rel="noreferrer">Accessibility on the web</a><br><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/Accessibility/HTML" target="_blank" rel="noreferrer">HTML: A good basis for accessibility</a></p></div>
+<div class="card"><h3>W3C Web Accessibility Initiative</h3><p><a href="https://www.w3.org/WAI/fundamentals/" target="_blank" rel="noreferrer">Accessibility Fundamentals</a><br><a href="https://www.w3.org/WAI/fundamentals/accessibility-intro/" target="_blank" rel="noreferrer">Introduction to Web Accessibility</a><br><a href="https://www.w3.org/WAI/standards-guidelines/wcag/" target="_blank" rel="noreferrer">WCAG overview</a><br><a href="https://www.w3.org/WAI/standards-guidelines/wcag/glance/" target="_blank" rel="noreferrer">WCAG 2 at a Glance</a></p></div>
+</section>
+
+<footer class="wrap footer"><strong>Module 02 · Build the web</strong><br>Structure it. Style it. Make it respond. Make it usable.<br><br><a href="roadmap.html">← Back to roadmap</a></footer>
+</main>
+<script>
+const key='fullstack-module-02-progress';
+const boxes=[...document.querySelectorAll('#checks input')];
+try{const saved=JSON.parse(localStorage.getItem(key)||'[]');boxes.forEach((b,i)=>{b.checked=!!saved[i]});}catch(e){}
+function update(){const done=boxes.filter(b=>b.checked).length;const pct=Math.round(done/boxes.length*100);document.getElementById('progressText').textContent=pct+'% complete';document.getElementById('progressBar').style.width=pct+'%';boxes.forEach(b=>b.closest('.check').classList.toggle('done',b.checked));try{localStorage.setItem(key,JSON.stringify(boxes.map(b=>b.checked)))}catch(e){}}
+boxes.forEach(b=>b.addEventListener('change',update));update();
+</script>
+</body>
+</html>
