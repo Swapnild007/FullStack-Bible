@@ -1,16 +1,268 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#f5f5f7"><title>Module 13 — System Design & Distributed Systems | FullStack Bible</title><style>:root{--bg:#f5f5f7;--ink:#111113;--muted:#6e6e73;--blue:#007aff;--purple:#5856d6;--card:#ffffffbd}*{box-sizing:border-box}body{margin:0;background:radial-gradient(60% 35% at 90% 0,#5856d622,transparent 70%),radial-gradient(55% 35% at 0 20%,#007aff18,transparent 70%),var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif}.nav,.wrap{width:min(920px,calc(100% - 28px));margin:auto}.nav{position:sticky;top:10px;z-index:5;margin-top:10px;padding:9px 12px 9px 17px;border:1px solid #fff;border-radius:20px;background:#ffffffb0;backdrop-filter:blur(25px);display:flex;justify-content:space-between}.brand{font-weight:800;letter-spacing:-.06em;text-decoration:none;color:inherit}.brand span{color:var(--blue)}.back{padding:10px 14px;border-radius:999px;background:#111;color:#fff;text-decoration:none;font-size:12px;font-weight:700}.hero{padding:85px 0 38px}.eyebrow{font-size:11px;letter-spacing:.16em;color:#999;font-weight:800}.hero h1{font-size:clamp(46px,8vw,82px);line-height:.94;letter-spacing:-.085em;margin:14px 0}.hero h1 span{background:linear-gradient(105deg,#111,#007aff,#5856d6);background-clip:text;-webkit-background-clip:text;color:transparent}.hero p,.card p,.card li{color:#505057;line-height:1.75}.card{margin:14px 0;padding:25px;border:1px solid #fff;border-radius:25px;background:var(--card);box-shadow:0 18px 55px #00000009}.card h2{margin:0 0 12px;font-size:25px;letter-spacing:-.05em}.card h3{font-size:18px}.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.flow div{padding:16px 10px;border-radius:16px;background:#f0f0f2;text-align:center;font-size:12px;font-weight:700}.flow b{display:block;color:var(--blue);font-size:18px;margin-bottom:5px}pre{background:#1c1c1e;color:#f5f5f7;padding:17px;border-radius:16px;overflow:auto;line-height:1.65}.checks{display:grid;gap:7px}.check{padding:12px;border-radius:14px;background:#ffffffa8}.check input{margin-right:8px}.sources a{color:#007aff}.footer{text-align:center;color:#999;padding:55px 0 70px;font-size:11px}@media(max-width:650px){.flow{grid-template-columns:1fr 1fr}.card{padding:20px}}</style></head><body><nav class="nav"><a class="brand" href="index.html">FullStack<span>Bible</span></a><a class="back" href="roadmap.html">Roadmap</a></nav><header class="wrap hero"><div class="eyebrow">MODULE 13 · ADVANCED ENGINEERING</div><h1>Design systems that survive <span>growth.</span></h1><p>Move from building one application to reasoning about systems under traffic, failure, latency, concurrency, and organizational growth.</p></header><main class="wrap"><section class="card"><h2>1. Scalability mental model</h2><p>Start with workload, not infrastructure. Measure requests per second, concurrency, latency, payload size, storage growth, read/write ratio and failure tolerance. Vertical scaling adds resources to one machine; horizontal scaling adds instances. Horizontal designs usually require stateless application processes so requests can move between instances.</p><div class="flow"><div><b>01</b>Measure</div><div><b>02</b>Find bottleneck</div><div><b>03</b>Scale boundary</div><div><b>04</b>Verify</div></div></section><section class="card"><h2>2. Traffic & reverse proxies</h2><p>Understand DNS, CDN, reverse proxy, load balancer and application-server roles. Compare round-robin, least-connections and client-affinity approaches. Learn why TLS termination, request limits, health checks and graceful draining matter when traffic is distributed across instances.</p><pre><code>Client → CDN → Reverse Proxy → Load Balancer
-                         ↓
-                App A / App B / App C
-                         ↓
-                    PostgreSQL</code></pre></section><section class="card"><h2>3. Database scaling</h2><p>Before adding replicas or shards, fix inefficient queries, missing indexes, excessive round trips and connection misuse. Then learn read replicas, connection pooling, PgBouncer, partitioning and sharding. Understand the tradeoff: more distribution creates more operational complexity and consistency considerations.</p></section><section class="card"><h2>4. Caching</h2><p>Learn cache-aside, TTL, invalidation, cache stampedes, negative caching and stale data. A cache is not automatically correct just because it is fast. Define the source of truth and the acceptable freshness window.</p></section><section class="card"><h2>5. Queues & background work</h2><p>Move slow, retryable, or bursty work away from synchronous requests. Learn producers, consumers, visibility, retries, exponential backoff and dead-letter queues. BullMQ is useful in Node.js ecosystems; RabbitMQ and Kafka teach broader messaging patterns.</p><pre><code>Request → enqueue job → respond
-                    ↓
-                  worker
-                    ↓
-             external service
-                    ↓
-             success / retry / DLQ</code></pre></section><section class="card"><h2>6. Distributed-systems failure modes</h2><ul><li>Timeouts are inevitable; every network call needs a bounded timeout.</li><li>Retries can multiply load; use backoff and idempotency.</li><li>Two successful writes can still leave systems temporarily inconsistent.</li><li>Distributed locks require careful ownership and expiry.</li><li>Exactly-once processing is usually an application-level illusion built from idempotency and durable state.</li></ul></section><section class="card"><h2>7. Architecture patterns</h2><p>Compare monolith, modular monolith, microservices and event-driven architecture. Learn to define boundaries around business capabilities rather than creating a service for every database table.</p><pre><code>Modular monolith
-├── identity
-├── learning
-├── billing
-├── notifications
-└── analytics</code></pre></section><section class="card"><h2>8. Capstone — design a 10× growth plan</h2><p>Take the FullStack Bible Learning Hub. Assume traffic, database size and background work each increase by 10×. Produce a bottleneck model, cache plan, database plan, queue plan, failure strategy and observability plan. Explain what you would change now, what you would defer, and why.</p></section><section class="card"><h2>Stage checklist</h2><div class="checks" id="checks"></div></section><section class="card"><h2>Knowledge check</h2><ol><li>Why should application servers generally be stateless before horizontal scaling?</li><li>When does a queue improve reliability?</li><li>Why can retries make an outage worse?</li><li>What problem does connection pooling solve?</li><li>What is the difference between replication and sharding?</li><li>Why is cache invalidation a correctness problem?</li><li>When is a modular monolith preferable to microservices?</li><li>What makes an operation idempotent?</li></ol></section><section class="card sources"><h2>Authoritative references</h2><ul><li><a href="https://nodejs.org/en/learn/asynchronous-work/event-loop-timers-and-nexttick">Node.js event loop</a></li><li><a href="https://www.postgresql.org/docs/current/transaction-iso.html">PostgreSQL transaction isolation</a></li><li><a href="https://www.postgresql.org/docs/current/using-explain.html">PostgreSQL EXPLAIN</a></li><li><a href="https://redis.io/docs/latest/develop/data-types/">Redis data types</a></li></ul></section></main><footer class="wrap footer">FullStack Bible · Module 13</footer><script>const key='fullstack-module-13-progress';const labels=['Explain vertical vs horizontal scaling','Model application traffic and bottlenecks','Explain reverse proxies and load balancing','Design a stateless application tier','Use caching deliberately','Understand database replicas and pooling','Explain partitioning and sharding','Design a background job flow','Design retries with backoff and idempotency','Compare monolith, modular monolith and microservices','Model failure and recovery paths','Complete the 10× growth capstone'];const old=JSON.parse(localStorage.getItem(key)||'[]');document.getElementById('checks').innerHTML=labels.map((x,i)=>`<label class="check"><input type="checkbox" ${old[i]?'checked':''}>${x}</label>`).join('');document.querySelectorAll('#checks input').forEach((el,i)=>el.onchange=()=>{const a=[...document.querySelectorAll('#checks input')].map(x=>x.checked);localStorage.setItem(key,JSON.stringify(a));});</script></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f5f5f7">
+<title>Module 13 — System Design & Distributed Systems | FullStack Bible</title>
+<style>
+:root{--bg:#f5f5f7;--ink:#111113;--muted:#6e6e73;--blue:#007aff;--purple:#5856d6;--green:#34c759;--orange:#ff9500;--red:#ff3b30;--card:rgba(255,255,255,.76);--shadow:0 22px 70px rgba(0,0,0,.07);--ease:cubic-bezier(.22,1,.36,1)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(60% 35% at 90% 0,#5856d622,transparent 70%),radial-gradient(55% 35% at 0 20%,#007aff18,transparent 70%),var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif}.nav,.wrap{width:min(980px,calc(100% - 28px));margin:auto}.nav{position:sticky;top:10px;z-index:10;margin-top:10px;padding:9px 12px 9px 17px;border:1px solid #fff;border-radius:20px;background:#ffffffb0;backdrop-filter:blur(25px);display:flex;justify-content:space-between;align-items:center;box-shadow:0 8px 30px #00000008}.brand{font-weight:800;letter-spacing:-.06em;text-decoration:none;color:inherit}.brand span{color:var(--blue)}.back{padding:10px 14px;border-radius:999px;background:#111;color:#fff;text-decoration:none;font-size:12px;font-weight:700}.hero{padding:82px 0 36px}.eyebrow{font-size:11px;letter-spacing:.16em;color:#999;font-weight:800}.hero h1{font-size:clamp(46px,8vw,86px);line-height:.94;letter-spacing:-.085em;margin:14px 0 20px;max-width:850px}.hero h1 span{background:linear-gradient(105deg,#111,#007aff,#5856d6);background-clip:text;-webkit-background-clip:text;color:transparent}.hero p{font-size:18px;max-width:760px;color:#505057;line-height:1.7}.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}.pill{padding:8px 12px;border-radius:999px;background:#ffffffb5;border:1px solid #fff;font-size:12px;font-weight:700;color:#555}.toc{position:sticky;top:72px;z-index:4;margin:12px 0 18px;padding:12px 14px;border:1px solid #fff;border-radius:18px;background:#ffffffa8;backdrop-filter:blur(20px);overflow:auto;white-space:nowrap}.toc a{color:#555;text-decoration:none;font-size:12px;font-weight:700;margin-right:16px}.toc a:hover{color:var(--blue)}.card{margin:14px 0;padding:28px;border:1px solid #fff;border-radius:25px;background:var(--card);box-shadow:var(--shadow)}.card h2{margin:0 0 12px;font-size:28px;letter-spacing:-.055em}.card h3{font-size:18px;letter-spacing:-.03em;margin-top:26px}.card p,.card li{color:#505057;line-height:1.78}.card ul,.card ol{padding-left:22px}.lead{font-size:16px}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.mini{padding:19px;border-radius:18px;background:#f0f0f2}.mini h3{margin:0 0 7px}.mini p{margin:0;font-size:14px}.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:20px 0}.flow div{padding:16px 10px;border-radius:16px;background:#f0f0f2;text-align:center;font-size:12px;font-weight:700}.flow b{display:block;color:var(--blue);font-size:18px;margin-bottom:5px}.diagram{padding:20px;border-radius:18px;background:#1c1c1e;color:#f5f5f7;overflow:auto;line-height:1.7;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px;white-space:pre}.note{padding:17px 18px;border-left:4px solid var(--blue);background:#007aff0b;border-radius:12px;margin:18px 0}.warn{border-left-color:var(--orange);background:#ff95000d}.danger{border-left-color:var(--red);background:#ff3b300d}pre{background:#1c1c1e;color:#f5f5f7;padding:18px;border-radius:16px;overflow:auto;line-height:1.65}code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:13px}.checks{display:grid;gap:8px}.check{padding:13px 14px;border-radius:15px;background:#ffffffa8;color:#404047;line-height:1.5}.check input{margin-right:9px;accent-color:var(--blue)}.progress{height:8px;background:#e5e5e7;border-radius:99px;overflow:hidden;margin:15px 0}.bar{height:100%;width:0;background:linear-gradient(90deg,var(--blue),var(--purple));transition:width .35s var(--ease)}.score{font-size:13px;color:#666}.sources a{color:var(--blue);text-decoration:none}.sources li{margin:9px 0}.footer{text-align:center;color:#999;padding:55px 0 70px;font-size:11px}.top{display:inline-block;margin-top:14px;color:#777;text-decoration:none;font-size:12px}@media(max-width:700px){.hero{padding-top:60px}.hero p{font-size:16px}.grid{grid-template-columns:1fr}.flow{grid-template-columns:1fr 1fr}.flow div:last-child{grid-column:1/-1}.card{padding:21px}.toc{top:65px}.card h2{font-size:24px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.bar{transition:none}}
+</style>
+</head>
+<body id="top">
+<nav class="nav"><a class="brand" href="index.html">FullStack<span>Bible</span></a><a class="back" href="roadmap.html">Roadmap</a></nav>
+<header class="wrap hero">
+<div class="eyebrow">MODULE 13 · SYSTEM DESIGN & DISTRIBUTED SYSTEMS</div>
+<h1>Design systems that survive <span>growth and failure.</span></h1>
+<p>Move from building a single application to reasoning about complete systems: traffic, bottlenecks, state, caching, databases, asynchronous work, consistency, failure, recovery and operational trade-offs.</p>
+<div class="meta"><span class="pill">Advanced</span><span class="pill">System Design</span><span class="pill">Distributed Systems</span><span class="pill">Hands-on</span><span class="pill">18 Knowledge Checks</span></div>
+</header>
+<main class="wrap">
+<nav class="toc"><a href="#mental">Mental model</a><a href="#traffic">Traffic</a><a href="#stateless">Statelessness</a><a href="#cache">Caching</a><a href="#data">Data scale</a><a href="#async">Queues</a><a href="#failure">Failure</a><a href="#architecture">Architecture</a><a href="#lab">Lab</a><a href="#capstone">Capstone</a></nav>
+<section class="card" id="mental">
+<h2>1. The system-design mental model</h2>
+<p class="lead">System design is not a contest to name the most technologies. It is the discipline of turning requirements and workload into explicit boundaries, data flows, capacity assumptions, failure behavior and measurable trade-offs.</p>
+<div class="flow"><div><b>01</b>Requirements</div><div><b>02</b>Workload</div><div><b>03</b>Architecture</div><div><b>04</b>Failure</div><div><b>05</b>Verify</div></div>
+<div class="grid"><div class="mini"><h3>Functional requirements</h3><p>What must the system do? Example: learners can open a course, save progress, search lessons and receive an AI-generated explanation.</p></div><div class="mini"><h3>Non-functional requirements</h3><p>How well must it work? Define latency, availability, durability, security, throughput, freshness and recovery expectations.</p></div><div class="mini"><h3>Workload</h3><p>Estimate requests per second, concurrent users, read/write ratio, payload size, storage growth and peak-to-average traffic.</p></div><div class="mini"><h3>Constraints</h3><p>Budget, team size, existing infrastructure, compliance, operational maturity and time-to-market are architecture inputs.</p></div></div>
+<div class="note"><strong>Rule:</strong> Do not scale a component before identifying the bottleneck. A faster application tier cannot fix an exhausted database connection pool.</div>
+</section>
+<section class="card">
+<h2>2. Capacity planning without pretending to know the future</h2>
+<p>Start with assumptions and label them. A useful first model is:</p>
+<pre><code>requests_per_second = daily_requests / 86,400
+peak_rps = average_rps × peak_factor
+concurrency ≈ throughput × average_latency_seconds</code></pre>
+<p>If a learning platform receives 4.32 million requests per day, the average is 50 requests/second. If traffic peaks at 6× average, the planning peak is 300 requests/second. This is a planning assumption, not a measured fact.</p>
+<h3>Measure before multiplying</h3>
+<ul><li>Measure real request rate and latency distributions.</li><li>Separate average latency from p95/p99 latency.</li><li>Identify CPU, memory, network, database and external-service saturation.</li><li>Load-test the actual critical path instead of testing an isolated function and assuming the result represents the system.</li></ul>
+<div class="note warn"><strong>Do not confuse capacity with availability.</strong> A system can have enough CPU and still fail because a dependency is unavailable, a connection pool is exhausted or a queue is growing without bound.</div>
+</section>
+<section class="card" id="traffic">
+<h2>3. Traffic flow: DNS, CDN, proxy and load balancer</h2>
+<p>A request often crosses several boundaries before application code runs. Each boundary has a job and a failure mode.</p>
+<div class="diagram">Browser
+   │
+   ▼
+DNS ──► CDN / edge cache
+            │
+            ▼
+       Reverse proxy
+            │
+            ▼
+       Load balancer
+        ┌───┼───┐
+        ▼   ▼   ▼
+      App  App  App
+        └───┼───┘
+            ▼
+     Database / cache / queue</div>
+<h3>Load balancing</h3>
+<ul><li><strong>Round robin:</strong> distributes requests in sequence; simple but not workload-aware.</li><li><strong>Least connections:</strong> can help when request duration varies.</li><li><strong>Health checks:</strong> keep known-unhealthy instances out of rotation.</li><li><strong>Connection draining:</strong> lets an instance finish in-flight work during deployment or shutdown.</li><li><strong>Client affinity:</strong> sometimes useful, but often hides statefulness that should instead be moved to shared durable storage.</li></ul>
+<h3>TLS termination</h3>
+<p>HTTPS can terminate at an edge or load-balancing layer, but the internal path still needs an explicit trust model. Do not assume that an internal network is automatically trusted.</p>
+</section>
+<section class="card" id="stateless">
+<h2>4. Stateless application tiers</h2>
+<p>Horizontal scaling becomes easier when any healthy application instance can handle any request. Avoid storing user session state only in process memory when requests can move between instances.</p>
+<div class="grid"><div class="mini"><h3>Good shared state</h3><p>Database records, durable object storage, managed session storage or a deliberately designed distributed cache.</p></div><div class="mini"><h3>Risky local state</h3><p>In-memory sessions, local uploaded files, process-only queues and assumptions that the next request reaches the same server.</p></div></div>
+<pre><code>// Prefer a request that can succeed on any instance
+GET /api/courses/42
+        │
+        ├── instance A ──┐
+        ├── instance B ──┼──► shared durable state
+        └── instance C ──┘</code></pre>
+<p>Stateless does not mean “the system has no state.” It means the application process does not depend on private local state for correctness.</p>
+</section>
+<section class="card" id="cache">
+<h2>5. Caching as a correctness decision</h2>
+<p>Caching trades freshness and memory for lower latency and lower origin load. The key questions are: what is the source of truth, how stale may the result be, who invalidates it, and what happens when the cache is empty?</p>
+<h3>Cache-aside</h3>
+<div class="diagram">Request
+  │
+  ▼
+Cache ── hit ──► return
+  │ miss
+  ▼
+Database ──► store result ──► return</div>
+<h3>Failure modes</h3>
+<ul><li><strong>Cache stampede:</strong> many requests miss simultaneously and overload the origin.</li><li><strong>Stale data:</strong> a cached answer outlives the freshness requirement.</li><li><strong>Hot key:</strong> one popular item concentrates load.</li><li><strong>Negative caching:</strong> repeated requests for a missing resource can also require controlled caching.</li><li><strong>Invalidation bugs:</strong> the cache may contradict the source of truth.</li></ul>
+<p>At the HTTP layer, browsers and shared caches use directives such as <code>Cache-Control</code>; validators such as <code>ETag</code> can allow a cache to revalidate without downloading an unchanged representation.</p>
+<pre><code>Cache-Control: max-age=60
+ETag: "course-42-v18"
+
+GET /courses/42
+If-None-Match: "course-42-v18"
+
+→ 304 Not Modified</code></pre>
+</section>
+<section class="card" id="data">
+<h2>6. Database scaling: optimize before distribute</h2>
+<p>Database scaling is a sequence, not a single feature. Start with query correctness and measurement, then address connection pressure, read volume, storage growth and write throughput.</p>
+<div class="flow"><div><b>01</b>Query plan</div><div><b>02</b>Indexes</div><div><b>03</b>Pool</div><div><b>04</b>Replica</div><div><b>05</b>Partition</div></div>
+<h3>Read replicas</h3><p>Replication can increase read capacity and provide additional recovery options, but replicas introduce replication lag. A request that writes data and immediately reads from a lagging replica may observe an older state.</p>
+<h3>Partitioning</h3><p>Partitioning splits a logical table into physically managed pieces according to a partition key. A good key supports pruning and operational needs; a poor key simply moves the bottleneck.</p>
+<h3>Sharding</h3><p>Sharding distributes data across independent database nodes. It can increase capacity but makes routing, rebalancing, cross-shard operations, backups and consistency more complex.</p>
+<div class="note warn"><strong>Architecture smell:</strong> “We will shard it” is not a capacity plan. Identify the access patterns and the actual resource that is saturating first.</div>
+</section>
+<section class="card" id="async">
+<h2>7. Queues, workers and asynchronous processing</h2>
+<p>Queues are useful when work is slow, bursty, retryable or independent of the user's immediate response. The request can persist a job and return while workers process it later.</p>
+<div class="diagram">HTTP request
+     │
+     ├── validate
+     ├── persist intent
+     └── publish job ─────► Queue
+                              │
+                    ┌─────────┴─────────┐
+                    ▼                   ▼
+                 Worker A            Worker B
+                    │                   │
+                    └──────► service ───┘
+                              │
+                       success / retry
+                              │
+                            DLQ</div>
+<h3>Delivery is not completion</h3>
+<p>A message being delivered to a worker does not mean the business operation succeeded. Durable messaging systems commonly use acknowledgements so work can be redelivered when a consumer dies before completion.</p>
+<h3>Backpressure</h3><p>If producers create jobs faster than workers can complete them, queue depth grows. Monitor queue age and depth, limit concurrency, scale workers deliberately and decide what should happen when the system cannot keep up.</p>
+<pre><code>attempt = 1
+wait = min(baseDelay * 2 ** (attempt - 1), maxDelay)
+// add bounded jitter in production</code></pre>
+</section>
+<section class="card" id="failure">
+<h2>8. Distributed failure: timeouts, retries and idempotency</h2>
+<p>Once a system crosses a network boundary, failure becomes partial. One component can be healthy while another is slow, unreachable or returning errors.</p>
+<div class="grid"><div class="mini"><h3>Timeout</h3><p>Bounds how long a caller waits. Every network dependency needs an explicit budget.</p></div><div class="mini"><h3>Retry</h3><p>Repeats an operation after a failure. It must be bounded and applied only when retrying is safe.</p></div><div class="mini"><h3>Backoff</h3><p>Spreads retries over time so a failing dependency is not hammered by synchronized clients.</p></div><div class="mini"><h3>Idempotency</h3><p>Allows repeated requests to have the same intended effect as one request.</p></div></div>
+<h3>Why retries can amplify an outage</h3>
+<p>Suppose 1,000 clients each send one request to a slow dependency. If every client retries three times immediately, the dependency can receive up to 4,000 attempts. A recovery mechanism has become a load multiplier.</p>
+<h3>Idempotent mutation pattern</h3>
+<pre><code>POST /api/enroll
+Idempotency-Key: 8b2f...
+
+server:
+  validate request
+  begin transaction
+  if key already completed:
+      return stored result
+  create enrollment
+  store key + result
+  commit</code></pre>
+<div class="note"><strong>Important:</strong> idempotency is an application property. A unique key in a database, transaction boundaries and a durable record of the result often form the foundation.</div>
+</section>
+<section class="card">
+<h2>9. Consistency and distributed state</h2>
+<p>Consistency describes what readers can observe as data changes. Do not reduce the subject to “strong versus eventual” as a slogan; define the behavior the product actually needs.</p>
+<ul><li><strong>Strong read-after-write behavior:</strong> useful when a user must immediately see a committed change.</li><li><strong>Eventual consistency:</strong> replicas or derived views may converge after a delay.</li><li><strong>Ordering:</strong> consumers may need an ordering key when event sequence matters.</li><li><strong>Deduplication:</strong> repeated delivery requires a safe way to recognize work already applied.</li><li><strong>Conflict handling:</strong> concurrent writers need explicit rules rather than an assumption that timing will always be favorable.</li></ul>
+<div class="note warn"><strong>Design exercise:</strong> For each feature, write the sentence “After action X, the user must be able to observe Y within Z.” That turns vague consistency requirements into testable behavior.</div>
+</section>
+<section class="card">
+<h2>10. Reliability patterns</h2>
+<p>Reliable architecture is designed around failure, not merely around the happy path. Useful patterns include graceful degradation, throttling, bounded queues, timeouts, health checks, stateless services and emergency controls.</p>
+<div class="grid"><div class="mini"><h3>Graceful degradation</h3><p>If recommendations fail, the course page can still render. A non-critical dependency should not automatically become a total outage.</p></div><div class="mini"><h3>Bulkheads</h3><p>Isolate resource pools so one expensive workload cannot consume every connection or worker.</p></div><div class="mini"><h3>Circuit breaking</h3><p>Stop repeatedly calling a failing dependency for a controlled period, then probe recovery.</p></div><div class="mini"><h3>Emergency levers</h3><p>Feature flags, rate limits or kill switches can reduce load while preserving the core path.</p></div></div>
+</section>
+<section class="card" id="architecture">
+<h2>11. Architecture boundaries: monolith → modular monolith → services</h2>
+<p>A monolith is not automatically poorly designed. A modular monolith can provide strong boundaries while keeping deployment and operations simple.</p>
+<div class="diagram">Learning Hub — modular monolith
+
+┌───────────────────────────────────────────┐
+│                  Web App                  │
+├────────────┬────────────┬─────────────────┤
+│ Identity   │ Learning   │ Search          │
+├────────────┼────────────┼─────────────────┤
+│ Billing    │ Progress   │ Notifications   │
+└─────┬──────┴─────┬──────┴────────┬────────┘
+      │            │               │
+      └────────────┴───────┬───────┘
+                            ▼
+                      PostgreSQL
+                            │
+                    Queue / Workers</div>
+<p>Extract a service when there is a concrete reason: independent scaling, a clear ownership boundary, isolation requirement, different runtime needs or an organizational boundary. Service count is not a maturity metric.</p>
+</section>
+<section class="card">
+<h2>12. Observability for system design</h2>
+<p>A distributed system cannot be debugged reliably from one server log. Build a view across requests, dependencies and asynchronous work.</p>
+<div class="grid"><div class="mini"><h3>Logs</h3><p>Structured events with request IDs, operation names, outcome and safe diagnostic context.</p></div><div class="mini"><h3>Metrics</h3><p>Request rate, latency, errors, saturation, queue depth, database connections and cache hit rate.</p></div><div class="mini"><h3>Traces</h3><p>Follow a request across services and dependencies to locate latency and failure boundaries.</p></div><div class="mini"><h3>Business signals</h3><p>Enrollment completion, checkout success or lesson-open rate can reveal failures that infrastructure metrics miss.</p></div></div>
+<pre><code>trace_id=abc123
+  web.request  120ms
+    db.query    22ms
+    cache       2ms
+    ai.call     81ms
+  result=200</code></pre>
+</section>
+<section class="card" id="lab">
+<h2>13. Hands-on lab — break a distributed Learning Hub</h2>
+<p>Do this on paper first, then implement a small simulation if you can. Your objective is to learn the reasoning loop: <strong>observe → isolate → choose a control → verify</strong>.</p>
+<ol><li>Draw the request path for opening a lesson.</li><li>Introduce a slow database response.</li><li>Add a 2-second dependency timeout.</li><li>Decide whether the request should retry.</li><li>Add bounded exponential backoff with jitter.</li><li>Move non-critical work to a queue.</li><li>Define what the user sees when the queue or dependency is unavailable.</li><li>Define metrics that prove the mitigation works.</li></ol>
+<h3>Failure drills</h3>
+<div class="grid"><div class="mini"><h3>Drill A — cache outage</h3><p>Cache is unavailable. Decide whether the application fails open to the database, degrades, or rejects requests. Explain the load consequences.</p></div><div class="mini"><h3>Drill B — worker death</h3><p>A worker crashes after performing an external side effect but before acknowledging the job. Explain how duplicate delivery can occur and how idempotency protects the operation.</p></div><div class="mini"><h3>Drill C — replica lag</h3><p>A user updates their profile and immediately reads from a replica. Explain the stale-read behavior and choose an appropriate consistency strategy.</p></div><div class="mini"><h3>Drill D — retry storm</h3><p>An upstream service becomes slow. Ten application instances retry immediately. Design controls that stop the feedback loop.</p></div></div>
+</section>
+<section class="card" id="capstone">
+<h2>14. Capstone — 10× Learning Hub architecture</h2>
+<p>Design the next version of FullStack Bible as if traffic, stored learning data and asynchronous work will each grow by 10×. Do not begin by choosing vendors. Begin with requirements and measurable assumptions.</p>
+<h3>Deliverable A — requirements</h3><ul><li>Functional requirements for learning, search, progress and AI assistance.</li><li>Latency and availability expectations for each critical path.</li><li>Consistency expectations for progress and account state.</li><li>Security and privacy boundaries.</li></ul>
+<h3>Deliverable B — architecture</h3><ul><li>Request-flow diagram from browser to data stores.</li><li>Application scaling strategy.</li><li>Cache strategy and invalidation rules.</li><li>Database indexing, pooling, replication and partitioning plan.</li><li>Queue and worker architecture.</li><li>Failure isolation and graceful degradation plan.</li></ul>
+<h3>Deliverable C — reliability</h3><ul><li>Timeout budget for every remote dependency.</li><li>Retry policy with backoff and idempotency.</li><li>Queue retry and dead-letter policy.</li><li>Health checks and emergency controls.</li><li>Logs, metrics and traces required to diagnose incidents.</li></ul>
+<h3>Deliverable D — trade-offs</h3><p>For every major decision write: <strong>problem → option → reason → cost → failure mode → measurement</strong>. A good architecture is explainable, not merely complicated.</p>
+<div class="note"><strong>Definition of done:</strong> another developer should be able to read your design and understand what happens on the happy path, under peak load, when a dependency is slow, when a worker dies, when data is stale and when the system needs to recover.</div>
+</section>
+<section class="card">
+<h2>15. Knowledge check — 18 questions</h2>
+<ol><li>What is the difference between a functional and non-functional requirement?</li><li>Why should workload assumptions be written down?</li><li>How does horizontal scaling differ from vertical scaling?</li><li>Why does a stateless application tier simplify load balancing?</li><li>What does a health check protect against?</li><li>What is cache-aside?</li><li>Why is cache invalidation a correctness concern?</li><li>What is replication lag?</li><li>How does partitioning differ from sharding?</li><li>When should work move from an HTTP request into a queue?</li><li>Why are acknowledgements important for worker reliability?</li><li>Why can retries amplify an outage?</li><li>What makes a mutation idempotent?</li><li>What is eventual consistency?</li><li>Why can graceful degradation improve availability?</li><li>When is a modular monolith a reasonable architecture?</li><li>What do logs, metrics and traces each contribute?</li><li>Why should architecture decisions include explicit failure modes and measurements?</li></ol>
+<div class="note">Use these questions as oral interview prompts. Do not memorize one-line definitions; explain the trade-off and give a concrete example.</div>
+</section>
+<section class="card">
+<h2>16. Completion checklist</h2>
+<div class="progress"><div class="bar" id="bar"></div></div><div class="score" id="score">0 / 18 complete</div>
+<div class="checks" id="checks"></div>
+</section>
+<section class="card sources">
+<h2>17. Authoritative reference library</h2>
+<ul>
+<li><a href="https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/welcome.html" target="_blank" rel="noreferrer">AWS Well-Architected Framework — Reliability Pillar</a> — reliability foundations, workload architecture, change management and failure management.</li>
+<li><a href="https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/design-interactions-in-a-distributed-system-to-prevent-failures.html" target="_blank" rel="noreferrer">AWS — Design interactions in a distributed system to prevent failures</a> — loose coupling and idempotent operations.</li>
+<li><a href="https://docs.aws.amazon.com/wellarchitected/latest/reliability-pillar/design-interactions-in-a-distributed-system-to-mitigate-or-withstand-failures.html" target="_blank" rel="noreferrer">AWS — Design interactions to mitigate or withstand failures</a> — graceful degradation, throttling, retries, timeouts and statelessness.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Guides/Caching" target="_blank" rel="noreferrer">MDN — HTTP caching</a> — Cache-Control, validators and ETag revalidation.</li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Cache-Control" target="_blank" rel="noreferrer">MDN — Cache-Control</a> — cache directives for requests and responses.</li>
+<li><a href="https://www.postgresql.org/docs/current/using-explain.html" target="_blank" rel="noreferrer">PostgreSQL — EXPLAIN</a> — understanding query plans before scaling.</li>
+<li><a href="https://www.postgresql.org/docs/current/ddl-partitioning.html" target="_blank" rel="noreferrer">PostgreSQL — Table Partitioning</a> — native partitioning concepts.</li>
+<li><a href="https://www.postgresql.org/docs/current/high-availability.html" target="_blank" rel="noreferrer">PostgreSQL — High Availability, Load Balancing and Replication</a>.</li>
+<li><a href="https://redis.io/docs/latest/develop/data-types/" target="_blank" rel="noreferrer">Redis — Data Types</a> — foundations for cache and data-structure workloads.</li>
+<li><a href="https://www.rabbitmq.com/tutorials" target="_blank" rel="noreferrer">RabbitMQ Tutorials</a> — queues, work queues and acknowledgement patterns.</li>
+</ul>
+</section>
+</main>
+<footer class="wrap footer">FullStack Bible · Module 13 · System Design & Distributed Systems<br><a class="top" href="#top">Back to top ↑</a></footer>
+<script>
+const key='fsb-module-13-checks';
+const labels=[
+'Write functional and non-functional requirements for the Learning Hub',
+'Calculate average and peak RPS from explicit assumptions',
+'Identify the likely bottleneck before choosing a scaling technique',
+'Draw DNS, CDN, proxy, load balancer and application flow',
+'Explain why stateless application instances simplify horizontal scaling',
+'Design a cache-aside flow with a defined source of truth',
+'Explain Cache-Control and ETag revalidation',
+'Read a PostgreSQL query plan before proposing database scaling',
+'Explain connection pooling and its failure modes',
+'Compare replication, partitioning and sharding',
+'Design a queue and worker flow for slow background work',
+'Design bounded retries with backoff and jitter',
+'Define an idempotency strategy for a mutation',
+'Design behavior for stale reads and eventual consistency',
+'Apply graceful degradation and failure isolation to a feature',
+'Compare monolith, modular monolith and services using explicit trade-offs',
+'Create an observability plan using logs, metrics and traces',
+'Complete and document the 10× Learning Hub architecture capstone'
+];
+const old=JSON.parse(localStorage.getItem(key)||'[]');
+const checks=document.getElementById('checks');
+checks.innerHTML=labels.map((x,i)=>`<label class="check"><input type="checkbox" ${old[i]?'checked':''}>${x}</label>`).join('');
+const inputs=[...checks.querySelectorAll('input')];
+function update(){const a=inputs.map(x=>x.checked);localStorage.setItem(key,JSON.stringify(a));const done=a.filter(Boolean).length;document.getElementById('bar').style.width=(done/labels.length*100)+'%';document.getElementById('score').textContent=`${done} / ${labels.length} complete`}
+inputs.forEach(x=>x.addEventListener('change',update));update();
+</script>
+</body>
+</html>
