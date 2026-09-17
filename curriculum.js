@@ -4,3 +4,4 @@ document.write('<script src="deep-content.js"><\/script>');
 document.write('<script src="theme-loader.js"><\/script>');
 document.write('<script src="app-enhancements.js"><\/script>');
 document.write('<script src="mobile-layout.js"><\/script>');
+document.write('<script src="mobile-fix-v2.js"><\/script>');
