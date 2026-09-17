@@ -3,14 +3,14 @@
 import { useState } from 'react';
 
 const menu = [
-  ['Roadmap', '/roadmap'],
-  ['Curriculum', '#'],
-  ['Lessons', '#'],
-  ['Projects', '#'],
-  ['Practice', '#'],
-  ['AI', '#'],
-  ['Progress', '#'],
-  ['Resources', '#'],
+  ['Roadmap', '/roadmap.html'],
+  ['Curriculum', '/curriculum.html'],
+  ['Lessons', '/lessons.html'],
+  ['Projects', '/projects.html'],
+  ['Practice', '/practice.html'],
+  ['AI', '/ai.html'],
+  ['Progress', '/progress.html'],
+  ['Resources', '/resources.html'],
 ];
 
 export default function Home() {
@@ -48,7 +48,7 @@ export default function Home() {
         <div className="eyebrow"><span className="dot" /> Learning Hub</div>
         <h1>Start from zero.<br /><em>Build for what comes next.</em></h1>
         <p className="hero-copy">Full-stack development, learned step by step.</p>
-        <a className="primary" href="/roadmap">Start learning <span>→</span></a>
+        <a className="primary" href="/roadmap.html">Start learning <span>→</span></a>
       </section>
 
       <footer className="footer">
