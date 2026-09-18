@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f5f7">
+<title>Cybersecurity — FullStack Bible</title>
+<style>
+:root{--bg:#f5f5f7;--ink:#111113;--muted:#6e6e73;--blue:#007aff;--purple:#5856d6;--green:#34c759;--line:#e5e5ea}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(60% 35% at 90% 0,#5856d622,transparent 70%),radial-gradient(55% 35% at 0 20%,#007aff18,transparent 70%),var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{width:min(1050px,calc(100% - 28px));margin:auto}.nav{position:sticky;top:10px;z-index:10;margin-top:10px;padding:9px 10px 9px 17px;border:1px solid #fff;border-radius:20px;background:#ffffffc4;backdrop-filter:blur(25px);display:flex;justify-content:space-between;align-items:center;box-shadow:0 12px 38px #0000000b}.brand{font-weight:800;letter-spacing:-.06em;text-decoration:none;color:inherit}.brand span{color:var(--blue)}.back{padding:10px 14px;border-radius:999px;background:#111;color:#fff;text-decoration:none;font-size:12px;font-weight:700}
+.hero{padding:68px 0 32px}.eyebrow{font-size:11px;letter-spacing:.16em;color:#999;font-weight:800}.hero h1{font-size:clamp(46px,8vw,82px);line-height:.94;letter-spacing:-.085em;margin:14px 0}.hero h1 span{background:linear-gradient(105deg,#111,#007aff,#5856d6);background-clip:text;-webkit-background-clip:text;color:transparent}.hero p{max-width:820px;color:var(--muted);font-size:17px;line-height:1.65}.note{margin-top:18px;padding:16px 18px;border:1px solid #fff;border-radius:19px;background:#ffffffb8;color:#555;font-size:13px;line-height:1.7}
+.grid{display:grid;gap:12px}.module{padding:22px;border:1px solid #fff;border-radius:24px;background:#ffffffb8;box-shadow:0 18px 55px #00000009}.head{display:flex;gap:14px}.num{color:#999;font-size:11px;font-weight:800;padding-top:5px}.module h2{margin:0 0 6px;font-size:22px;letter-spacing:-.05em}.module>p{margin:0 0 15px;color:#5d5d63;font-size:13px;line-height:1.65}.topics{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.topic{padding:12px 13px;border-radius:14px;background:#f0f0f3}.topic strong{display:block;font-size:12px;margin-bottom:4px}.topic span{display:block;color:#666;font-size:11px;line-height:1.55}.lab{margin-top:14px;padding:13px 15px;border-radius:15px;background:#eef6ff;color:#075ec0;font-size:11px;line-height:1.6}.refs{margin-top:25px;padding:20px;border:1px solid #fff;border-radius:22px;background:#fff}.refs h2{margin:0 0 10px;font-size:18px}.refs a{display:block;color:#007aff;font-size:12px;margin:8px 0;text-decoration:none}.footer{text-align:center;color:#999;padding:55px 0 70px;font-size:11px}
+@media(max-width:700px){.topics{grid-template-columns:1fr}.hero{padding-top:55px}.module{padding:19px}}
+</style>
+</head>
+<body>
+<nav class="nav wrap"><a class="brand" href="index.html">FullStack<span>Bible</span></a><a class="back" href="learn.html">Learning Hub</a></nav>
+<header class="wrap hero">
+<div class="eyebrow">LEARNING TRACK · CYBERSECURITY</div>
+<h1>Security from <span>zero to professional.</span></h1>
+<p>A structured cybersecurity course for a full-stack developer: understand how systems fail, how attackers exploit weaknesses, and how to design, code, test, monitor and recover from those failures.</p>
+<div class="note"><b>How this course works:</b> fundamentals first, then networking and operating systems, identity and cryptography, web/application security, cloud and supply-chain security, detection and incident response, threat modeling and security engineering. Practical exercises should use systems you own or intentionally provided training labs.</div>
+</header>
+<main class="wrap grid" id="modules"></main>
+<section class="wrap refs">
+<h2>Authoritative learning sources</h2>
+<a href="https://top10.owasp.org/2025/" target="_blank" rel="noopener">OWASP Top 10:2025 — current web application security risks</a>
+<a href="https://www.nist.gov/publications/nist-cybersecurity-framework-csf-20" target="_blank" rel="noopener">NIST Cybersecurity Framework 2.0 — cybersecurity risk management</a>
+<a href="https://developer.mozilla.org/en-US/docs/Web/Security" target="_blank" rel="noopener">MDN Web Security — attacks, defenses, threat modeling and authentication</a>
+<a href="https://portswigger.net/web-security" target="_blank" rel="noopener">PortSwigger Web Security Academy — interactive web-security labs</a>
+</section>
+<footer class="wrap footer">Learn → practice safely → secure → detect → respond → recover</footer>
+<script>
+const modules=[
+["01","Security foundations","Build the mental model before touching security tools.","CIA triad, assets and trust boundaries","Threats, vulnerabilities, risk and controls","Attack surface and defense in depth","Security principles: least privilege, fail-safe defaults, separation of duties","Security mindset for developers","Create a simple threat model for a personal web app."],
+["02","Networking fundamentals","Understand the network paths your applications depend on.","IP, TCP, UDP and ports","DNS, HTTP/HTTPS and TLS","Routing, NAT, proxies and firewalls","Packets, sockets and connection lifecycle","Network segmentation and trust zones","Trace a browser request from DNS through HTTPS to the application."],
+["03","Linux and system security","Learn the operating-system concepts behind secure servers.","Users, groups and permissions","Processes, services and signals","Filesystems, ownership and least privilege","SSH concepts and secure administration","Logs, environment variables and secrets","Harden a disposable Linux lab and document every change."],
+["04","Identity and access","Treat identity as a security boundary, not just a login screen.","Authentication vs authorization","Sessions, cookies and tokens","MFA and phishing-resistant authentication concepts","RBAC, ABAC and least privilege","Object-level authorization and IDOR","Map identities, roles and permissions for a multi-user application."],
+["05","Cryptography","Understand what cryptography provides and what it cannot provide.","Hashing vs encryption vs encoding","Symmetric and asymmetric cryptography","TLS and certificates","Password storage and password-reset flows","Key management, rotation and secrecy","Choose appropriate primitives for several application scenarios and explain why."],
+["06","Web application security","Learn the major ways web applications become vulnerable.","OWASP Top 10:2025","Injection and output encoding","Broken access control","Authentication failures and session security","Security misconfiguration and exception handling","Use a legal training lab to identify a vulnerability, explain the root cause and apply a defensive fix."],
+["07","Secure frontend and API engineering","Carry security thinking into the code you write every day.","Input validation and output handling","CORS, CSRF and browser security boundaries","API authentication and authorization","Rate limiting and abuse controls","Secure error handling and security headers","Review an API and produce a concrete security checklist."],
+["08","Secure databases and data","Protect data through application controls and database constraints.","SQL injection prevention","Parameterized queries and ORM boundaries","Database roles and least privilege","Encryption at rest and in transit","Backups, retention and sensitive-data minimization","Design a secure data path from browser input to database storage."],
+["09","Cloud, containers and supply chain","Understand the modern infrastructure attack surface.","Cloud identity and IAM","Secrets and environment separation","Containers and image hardening","Dependency risk and software supply chain failures","SBOMs, lockfiles and CI security","Build a secure deployment checklist for a containerized web app."],
+["10","Security testing","Turn security requirements into repeatable tests.","SAST, DAST and dependency scanning","Unit and integration security tests","End-to-end authorization tests","Threat-driven test cases","Regression tests for discovered vulnerabilities","Write tests for authentication, authorization, validation and security headers."],
+["11","Detection and logging","Learn how defenders discover suspicious behavior.","Security logging principles","Authentication and authorization events","Centralized logs and structured events","Metrics, traces and detection signals","Alert quality and false positives","Design a minimal security telemetry model for a SaaS application."],
+["12","Incident response","Move from prevention to controlled response when something goes wrong.","Preparation and detection","Triage and containment","Evidence preservation concepts","Eradication and recovery","Communication and post-incident review","Run a tabletop incident against a deliberately broken training application."],
+["13","Threat modeling and security architecture","Make security a design activity rather than a final checklist.","Assets, actors and trust boundaries","STRIDE and abuse cases","Security requirements and controls","Secure architecture reviews","Risk acceptance and residual risk","Threat-model a production-style Learning Hub and map threats to controls."],
+["14","Professional security engineering","Combine everything into an engineering practice.","Security policies and standards","NIST CSF 2.0 and risk management","Secure SDLC and supply-chain controls","Vulnerability management and remediation","Security metrics and continuous improvement","Capstone: secure, test, monitor and incident-review a full-stack application."]
+];
+document.getElementById("modules").innerHTML=modules.map(m=>'<article class="module"><div class="head"><div class="num">'+m[0]+'</div><div><h2>'+m[1]+'</h2><p>'+m[2]+'</p></div></div><div class="topics">'+[[m[3],"Core concepts"],[m[4],"Core concepts"],[m[5],"Core concepts"],[m[6],"Core concepts"],[m[7],"Core concepts"]].map(x=>'<div class="topic"><strong>'+x[0]+'</strong><span>'+x[1]+'</span></div>').join("")+'</div><div class="lab"><b>Practice:</b> '+m[8]+'</div></article>').join("");
+</script>
+</body>
+</html>
