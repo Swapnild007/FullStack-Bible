@@ -21,12 +21,11 @@ test.describe('FullStack Bible site smoke', () => {
     expect(errors, 'No uncaught browser errors').toEqual([]);
   });
 
-  test('landing menu exposes all nine destinations', async ({ page }) => {
+  test('landing menu exposes the core destinations', async ({ page }) => {
     await page.goto('index.html');
     await page.getByRole('button', { name: /open menu/i }).click();
     for (const [label, href] of Object.entries({
-      Roadmap:'roadmap.html', Curriculum:'curriculum.html', Lessons:'lessons.html',
-      Projects:'projects.html', Practice:'practice.html', AI:'ai.html',
+      Learn:'learn.html', Projects:'projects.html', Practice:'practice.html', AI:'ai.html',
       Progress:'progress.html', Resources:'resources.html', Settings:'settings.html'
     })) {
       await expect(page.getByRole('link', { name: new RegExp('^'+label+'\\b') })).toHaveAttribute('href', href);
