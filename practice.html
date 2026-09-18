@@ -1,117 +1,224 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#f5f5f7"><title>Practice — FullStack Bible</title><script src="progress.js"></script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f5f7">
+<title>Practice Lab — FullStack Bible</title>
+<script src="progress.js"></script>
 <style>
-:root{--bg:#f5f5f7;--ink:#111113;--muted:#6e6e73;--blue:#007aff;--purple:#5856d6;--green:#34c759;--card:#ffffffbd}
-*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(60% 35% at 90% 0,#5856d622,transparent 70%),radial-gradient(55% 35% at 0 20%,#007aff18,transparent 70%),var(--bg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}.wrap{width:min(980px,calc(100% - 28px));margin:auto}.nav{position:sticky;top:10px;z-index:10;margin-top:10px;padding:9px 10px 9px 17px;border:1px solid #fff;border-radius:21px;background:#ffffffb5;backdrop-filter:blur(25px);display:flex;justify-content:space-between;align-items:center;box-shadow:0 12px 38px #0000000b}.brand{font-weight:800;letter-spacing:-.06em;text-decoration:none;color:inherit}.brand span{color:var(--blue)}.back{padding:10px 14px;border-radius:999px;background:#111;color:#fff;text-decoration:none;font-size:12px;font-weight:700}.hero{padding:72px 0 25px}.eyebrow{font-size:11px;letter-spacing:.16em;color:#999;font-weight:800}.hero h1{font-size:clamp(46px,8vw,80px);line-height:.94;letter-spacing:-.085em;margin:14px 0}.hero h1 span{background:linear-gradient(105deg,#111,#007aff,#5856d6);background-clip:text;-webkit-background-clip:text;color:transparent}.hero p{max-width:730px;color:var(--muted);font-size:17px;line-height:1.65}.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin:15px 0 20px}.pill{padding:8px 11px;border-radius:999px;background:#e9eefc;color:#075ec0;font-size:10px;font-weight:800}.filter{border:1px solid #fff;background:#ffffffb8;border-radius:999px;padding:9px 12px;font:700 11px inherit;cursor:pointer;color:#666}.filter.active{background:#111;color:#fff}.summary{display:grid;grid-template-columns:1fr auto;gap:10px;padding:16px 18px;margin-bottom:12px;border:1px solid #fff;border-radius:21px;background:#ffffffb8}.summary strong{font-size:13px}.summary small{display:block;color:#888;margin-top:4px}.bar{height:7px;background:#e3e3e7;border-radius:99px;overflow:hidden;grid-column:1/-1}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#007aff,#5856d6);transition:width .45s}.module{margin:12px 0;padding:23px;border:1px solid #fff;border-radius:27px;background:var(--card);box-shadow:0 18px 55px #00000009}.module.focus{background:linear-gradient(135deg,#ffffffc9,#eef4ffbd)}.module-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}.num{color:#999;font-size:11px;font-weight:800}.module h2{font-size:25px;letter-spacing:-.055em;margin:2px 0 7px}.module-intro{color:#666;line-height:1.6;font-size:14px;margin:0}.module-count{white-space:nowrap;padding:7px 9px;border-radius:999px;background:#eeeef1;color:#777;font-size:9px;font-weight:800}.drills{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:17px}.drill{padding:17px;border:1px solid rgba(0,0,0,.05);border-radius:19px;background:rgba(255,255,255,.66)}.label{font-size:9px;letter-spacing:.1em;font-weight:800;color:#888}.drill h3{font-size:16px;letter-spacing:-.035em;margin:7px 0}.drill p{font-size:13px;line-height:1.6;color:#5d5d63;margin:0}.task{display:none;margin-top:12px;padding:13px;border-radius:15px;background:#f0f0f3;color:#444;font-size:12px;line-height:1.65}.drill.open .task{display:block}.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:14px}.actions button{border:0;border-radius:999px;padding:9px 11px;background:#111;color:#fff;font-size:10px;font-weight:750;cursor:pointer}.actions .done{background:var(--green)}.actions .reveal{background:#e9e9ed;color:#555}.note{margin-top:15px;padding:12px 14px;border-radius:15px;background:#f8f8fa;color:#777;font-size:11px;line-height:1.6}.footer{text-align:center;color:#999;padding:55px 0 70px;font-size:11px}
-@media(max-width:760px){.drills{grid-template-columns:1fr 1fr}}@media(max-width:560px){.nav{top:7px}.hero{padding-top:55px}.summary{grid-template-columns:1fr}.drills{grid-template-columns:1fr}.module{padding:19px}.module-head{display:block}.module-count{display:inline-block;margin-top:10px}.hero p{font-size:15px}}
+:root{--bg:#f5f5f7;--ink:#111113;--muted:#6e6e73;--blue:#007aff;--purple:#5856d6;--green:#34c759;--orange:#ff9500;--red:#ff3b30;--card:#ffffffc4}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(60% 35% at 90% 0,#5856d622,transparent 70%),radial-gradient(55% 35% at 0 20%,#007aff18,transparent 70%),var(--bg);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif;color:var(--ink);-webkit-font-smoothing:antialiased}.wrap{width:min(1080px,calc(100% - 28px));margin:auto}
+.nav{position:sticky;top:10px;z-index:20;margin-top:10px;padding:9px 10px 9px 17px;border:1px solid #fff;border-radius:21px;background:#ffffffb5;backdrop-filter:blur(25px);display:flex;justify-content:space-between;align-items:center;box-shadow:0 12px 38px #0000000b}.brand{font-weight:800;letter-spacing:-.06em;text-decoration:none;color:inherit}.brand span{color:var(--blue)}.back{padding:10px 14px;border-radius:999px;background:#111;color:#fff;text-decoration:none;font-size:12px;font-weight:700}
+.hero{padding:68px 0 22px}.eyebrow{font-size:11px;letter-spacing:.16em;color:#999;font-weight:800}.hero h1{font-size:clamp(46px,8vw,82px);line-height:.94;letter-spacing:-.085em;margin:14px 0}.hero h1 span{background:linear-gradient(105deg,#111,#007aff,#5856d6);background-clip:text;-webkit-background-clip:text;color:transparent}.hero p{max-width:780px;color:var(--muted);font-size:17px;line-height:1.65;margin-bottom:20px}
+.pills{display:flex;gap:7px;overflow:auto;padding:2px 1px 8px;scrollbar-width:none}.pills::-webkit-scrollbar{display:none}.filter{flex:0 0 auto;border:1px solid #fff;background:#ffffffb8;border-radius:999px;padding:9px 12px;font:700 10px inherit;cursor:pointer;color:#666}.filter.active{background:#111;color:#fff}
+.summary{display:grid;grid-template-columns:1fr auto;gap:12px;padding:17px 18px;margin:8px 0 14px;border:1px solid #fff;border-radius:22px;background:#ffffffb8;box-shadow:0 14px 40px #00000008}.summary strong{font-size:13px}.summary small{display:block;color:#888;margin-top:4px}.stats{display:flex;gap:7px;flex-wrap:wrap;justify-content:flex-end}.stat{padding:8px 10px;border-radius:12px;background:#f0f0f3;color:#666;font-size:10px;font-weight:800}.bar{height:7px;background:#e3e3e7;border-radius:99px;overflow:hidden;grid-column:1/-1}.bar i{display:block;height:100%;width:0;background:linear-gradient(90deg,#007aff,#5856d6);transition:width .45s}
+.ladder{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:0 0 14px}.step{padding:12px;border:1px solid #fff;border-radius:17px;background:#ffffff8f}.step b{font-size:11px}.step small{display:block;color:#777;line-height:1.45;margin-top:3px}
+.module{margin:13px 0;padding:24px;border:1px solid #fff;border-radius:28px;background:var(--card);box-shadow:0 18px 55px #00000009}.module.focus{background:linear-gradient(135deg,#ffffffd4,#eef4ffbf)}.module-head{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}.num{color:#999;font-size:11px;font-weight:800}.module h2{font-size:26px;letter-spacing:-.055em;margin:2px 0 7px}.module-intro{color:#666;line-height:1.6;font-size:14px;margin:0}.module-meta{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}.tag{padding:6px 8px;border-radius:999px;background:#eeeef1;color:#777;font-size:9px;font-weight:800}.module-actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:15px}.module-actions a{padding:9px 11px;border-radius:999px;text-decoration:none;font-size:10px;font-weight:800;background:#111;color:#fff}.module-actions a.alt{background:#e9e9ed;color:#555}.module-count{white-space:nowrap;padding:8px 10px;border-radius:999px;background:#eeeef1;color:#777;font-size:9px;font-weight:800}
+.drills{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:18px}.drill{padding:18px;border:1px solid rgba(0,0,0,.05);border-radius:20px;background:rgba(255,255,255,.7);position:relative}.drill.completed{box-shadow:inset 0 0 0 1px #34c75955}.label{font-size:9px;letter-spacing:.1em;font-weight:800;color:#888}.drill h3{font-size:17px;letter-spacing:-.035em;margin:7px 0}.objective{font-size:13px;line-height:1.6;color:#5d5d63;margin:0}.task{display:none;margin-top:13px;padding:14px;border-radius:16px;background:#f0f0f3;color:#444;font-size:12px;line-height:1.7}.drill.open .task{display:block}.task strong{color:#111}.verify{margin-top:10px;padding-top:10px;border-top:1px solid #dcdce1;color:#666}.evidence{width:100%;min-height:74px;margin-top:12px;padding:10px 11px;border:1px solid #dddde2;border-radius:13px;background:#fff;font:500 12px/1.5 inherit;color:#222;resize:vertical}.evidence:focus{outline:2px solid #007aff33;border-color:#007aff88}.evidence-status{font-size:9px;color:#888;margin-top:5px}.actions{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}.actions button{border:0;border-radius:999px;padding:9px 11px;background:#111;color:#fff;font-size:10px;font-weight:750;cursor:pointer}.actions .done{background:var(--green)}.actions .reveal,.actions .save{background:#e9e9ed;color:#555}.actions .challenge{background:#fff0d8;color:#8a5600}.drill.completed .actions .done{background:var(--green)}
+.module-foot{margin-top:16px;padding:13px 14px;border-radius:16px;background:#f8f8fa;color:#777;font-size:11px;line-height:1.6}.module-foot b{color:#333}.empty{padding:30px;border-radius:22px;background:#fff;text-align:center;color:#777}.footer{text-align:center;color:#999;padding:55px 0 70px;font-size:11px}
+@media(max-width:760px){.drills{grid-template-columns:1fr}.ladder{grid-template-columns:repeat(2,1fr)}.module-head{display:block}.module-count{display:inline-block;margin-top:11px}.stats{justify-content:flex-start}}
+@media(max-width:560px){.nav{top:7px}.hero{padding-top:55px}.summary{grid-template-columns:1fr}.hero p{font-size:15px}.module{padding:19px}.ladder{grid-template-columns:1fr 1fr}.step:last-child{grid-column:1/-1}}
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
 </style>
 </head>
 <body>
 <nav class="nav wrap"><a class="brand" href="index.html">FullStack<span>Bible</span></a><a class="back" href="learn.html">Your journey</a></nav>
-<header class="wrap hero"><div class="eyebrow">LEARNING HUB · PRACTICE LAB</div><div class="toolbar" id="context"></div><h1>Practice until you can <span>explain it.</span></h1><p>Every stage now has a real practice set: recall the concept, perform a hands-on drill, then verify the result. Completing a stage requires finishing its practice set—not simply opening a task.</p></header>
-<main class="wrap"><div class="summary"><div><strong id="summary">0 / 17 practice sets complete</strong><small id="sub">0 individual drills completed</small></div><div id="stageLabel" class="pill">ALL STAGES</div><div class="bar"><i id="bar"></i></div></div><div id="modules"></div></main>
-<footer class="wrap footer">Practice → build → verify → explain</footer>
+
+<header class="wrap hero">
+<div class="eyebrow">LEARNING HUB · PRACTICE LAB</div>
+<h1>Practice until you can <span>build it.</span></h1>
+<p>This is not a checklist of things you opened. Each stage has a five-part practice ladder: recall the idea, perform the task, debug or test it, produce evidence, and explain the engineering decision. Finish the full set to mark practice complete.</p>
+<div class="pills" id="filters" aria-label="Practice stage filters"></div>
+</header>
+
+<main class="wrap">
+<div class="summary">
+<div><strong id="summary">0 / 17 practice sets complete</strong><small id="sub">0 / 85 drills completed</small></div>
+<div class="stats"><span class="stat" id="stageStat">17 stages</span><span class="stat">5 drills / stage</span><span class="stat">85 total drills</span></div>
+<div class="bar" aria-label="Practice progress"><i id="bar"></i></div>
+</div>
+
+<div class="ladder" aria-label="Practice ladder">
+<div class="step"><b>01 · Recall</b><small>Can you explain the concept?</small></div>
+<div class="step"><b>02 · Perform</b><small>Can you do it yourself?</small></div>
+<div class="step"><b>03 · Debug</b><small>Can you handle failure?</small></div>
+<div class="step"><b>04 · Test</b><small>Can you prove behaviour?</small></div>
+<div class="step"><b>05 · Explain</b><small>Can you defend the decision?</small></div>
+</div>
+
+<div id="modules"></div>
+</main>
+<footer class="wrap footer">Learn → practice → build → verify → explain</footer>
+
 <script>
 const data=[
 ['01','FOUNDATION','Start here','Understand the machine before writing application code.',[
-['Recall','Web request map','Draw the path from URL entry to rendered pixels.','Label DNS, HTTP request/response, HTML parsing, CSS, JavaScript and subresources. Compare your map with DevTools Network.'],
-['Hands-on','File & terminal lab','Create a project folder with an index.html and assets folder.','Navigate to it with the terminal, list files, open the page, then deliberately rename the HTML file and recover it.'],
-['Inspect','DevTools evidence','Inspect a real page without guessing.','Record one document, stylesheet, script and image from Network; capture method, status, type and initiator.']]],
+['Recall','Web request map','Draw the path from URL entry to rendered pixels.','Label DNS, HTTP request/response, HTML parsing, CSS, JavaScript and subresources. Compare your map with DevTools Network.','A labelled request-flow diagram.'],
+['Hands-on','File & terminal lab','Create a project folder with an index.html and assets folder.','Navigate to it with the terminal, list files, open the page, deliberately rename the HTML file and recover it.','The final folder tree and the recovery steps.'],
+['Inspect','DevTools evidence','Inspect a real page without guessing.','Record one document, stylesheet, script and image from Network; capture method, status, type and initiator.','A four-row Network evidence table.'],
+['Debug','Browser failure drill','Diagnose a page that does not load its stylesheet.','Use DevTools Console and Network to identify the failing request, distinguish path failure from CSS syntax failure, then fix it.','The observed error, hypothesis, fix and verification.'],
+['Explain','System boundary check','Explain where browser work ends and server work begins.','Use one example request and identify what the browser can observe, what the server controls, and why secrets cannot safely live in browser JavaScript.','A short boundary explanation in your own words.']
+]],
 ['02','WEB','Build the web','Make semantic, responsive and accessible interfaces.',[
-['HTML','Semantic rebuild','Turn a generic div-heavy card into meaningful HTML.','Use heading, paragraph, list/link or button semantics and an image alternative. Test keyboard navigation.'],
-['CSS','Responsive layout','Build a two-column learner card that becomes one column on a narrow viewport.','Use Grid or Flexbox, a media query and deliberate spacing. Resize the browser and inspect the box model.'],
-['JavaScript','Interactive form','Build a small form that validates input and updates a status message.','Test valid, empty and invalid input. Confirm labels, focus and visible error/success states.']]],
+['Recall','Semantic HTML map','Explain why element choice is part of interface design.','Take a card made from generic divs and map each region to an appropriate semantic element or native control.','Your element-to-purpose mapping.'],
+['Hands-on','Responsive layout','Build a two-column learner card that becomes one column on a narrow viewport.','Use Grid or Flexbox, a media query and deliberate spacing. Resize the browser and inspect the box model.','A working responsive page plus one screenshot or viewport measurement.'],
+['Accessibility','Keyboard path','Audit the learner card without a mouse.','Tab through controls, verify visible focus, activate controls from the keyboard and fix any unreachable interaction.','The keyboard path and defects fixed.'],
+['Debug','Broken form drill','Repair a form with missing labels and weak validation feedback.','Test empty and invalid input. Make errors understandable, associated with the relevant control and visible without relying on colour alone.','Before/after defect notes and test cases.'],
+['Explain','Browser-native choice','Explain when a native HTML control should be preferred to a custom widget.','Compare a native button/input/select with a div-based imitation and discuss semantics, keyboard behaviour and accessibility.','A short engineering rationale.']
+]],
 ['03','JAVASCRIPT','Make it work','Control browser state, events, storage and asynchronous work.',[
-['DOM','State → render','Build a lesson list from an array rather than hard-coding repeated markup.','Change the array and prove the rendered UI follows state. Keep rendering separate from state updates.'],
-['Async','Request lifecycle','Implement loading, success and failure states around a fetch request.','Use DevTools Network to simulate failure and verify the UI does not remain stuck in loading.'],
-['Debug','Persistent state','Persist one preference across refresh.','Inspect localStorage, reload, restore the value and explain serialization/deserialization.']]],
+['Recall','State → render','Build a lesson list from an array rather than hard-coding repeated markup.','Change the array and prove the rendered UI follows state. Keep rendering separate from state updates.','The state data and rendered result.'],
+['Async','Request lifecycle','Implement loading, success and failure states around a fetch request.','Use DevTools Network to simulate failure and verify the UI does not remain stuck in loading.','A state diagram and observed behaviour.'],
+['Debug','Event propagation','Diagnose an event firing more times than expected.','Inspect bubbling and listener placement. Fix the issue without adding arbitrary guards that hide the cause.','Cause, fix and a small reproduction.'],
+['Test','Persistent state','Persist one preference across refresh.','Inspect localStorage, reload, restore the value and explain serialization/deserialization. Test missing and malformed stored data.','A persistence test matrix.'],
+['Explain','Async boundary','Explain why fetch completion is not immediate and why UI code needs explicit loading and error states.','Describe promise settlement, the event loop at a useful high level, and what the user sees while work is pending.','A plain-language explanation.']
+]],
 ['04','ENGINEERING','Work like a developer','Use version control, debugging and tests as engineering tools.',[
-['Git','Safe recovery','Create a branch, make a change and inspect the diff before committing.','Use status, diff and log. Explain which commit contains the change and how you would revert it safely.'],
-['Debug','Reduce the bug','Take a broken feature and reduce it to the smallest reproducible case.','Write the observed behaviour, expected behaviour, hypothesis, experiment and result before changing code.'],
-['Test','Regression test','Turn a fixed bug into a repeatable test.','Run it before and after the fix and explain what behaviour the test protects.']]],
+['Git','Safe recovery','Create a branch, make a change and inspect the diff before committing.','Use status, diff and log. Explain which commit contains the change and how you would revert it safely.','The command sequence and resulting history.'],
+['Debug','Reduce the bug','Take a broken feature and reduce it to the smallest reproducible case.','Write the observed behaviour, expected behaviour, hypothesis, experiment and result before changing code.','A reproducible bug report.'],
+['Test','Regression test','Turn a fixed bug into a repeatable test.','Run it before and after the fix and explain what behaviour the test protects.','The test plus its passing result.'],
+['Collaboration','Pull request drill','Turn a small change into a reviewable contribution.','Use a focused branch, clear commit, concise PR description and explicit verification steps.','A review-ready PR description.'],
+['Explain','Git mental model','Explain working tree, staging area, commit and remote as different states.','Trace one file from editing through commit and push, and identify where each version exists.','A four-state diagram.']
+]],
 ['05','TYPESCRIPT','Add TypeScript','Model data precisely and let the compiler expose unsafe states.',[
-['Types','Request union','Model idle, loading, success and failure as a discriminated union.','Attempt an invalid property access and explain the compiler error. Then narrow by the discriminant.'],
-['Generics','Reusable collection','Write a generic helper that returns the first item from an array.','Use it with two different types without any. Explain where inference comes from.'],
-['Boundaries','Unknown input','Accept unknown JSON and narrow it before use.','Reject malformed data instead of asserting it into a type. Separate compile-time types from runtime validation.']]],
+['Types','Request union','Model idle, loading, success and failure as a discriminated union.','Attempt an invalid property access and explain the compiler error. Then narrow by the discriminant.','The union and one intentional compiler error.'],
+['Generics','Reusable collection','Write a generic helper that returns the first item from an array.','Use it with two different types without any. Explain where inference comes from.','The generic function and two calls.'],
+['Boundaries','Unknown input','Accept unknown JSON and narrow it before use.','Reject malformed data instead of asserting it into a type. Separate compile-time types from runtime validation.','Validation cases for valid and invalid input.'],
+['Debug','Strict-mode repair','Take code that relies on implicit any or unsafe assertions and make it strict-safe.','Use the compiler errors as a map. Prefer narrowing or better modelling over suppressing errors.','The errors fixed and why each fix is sound.'],
+['Explain','Type vs runtime','Explain what TypeScript can prove and what it cannot prove about external data.','Contrast a compile-time type with runtime validation at an API boundary and give one concrete example.','A boundary rule you would apply in a real app.']
+]],
 ['06','REACT','Build interfaces','Compose components and manage state deliberately.',[
-['Components','Composition drill','Build LessonCard, ProgressCard and Button without duplicating layout logic.','Identify each component boundary and explain why the boundary exists.'],
-['State','Ownership drill','Create a search field and filtered lesson list that always agree.','Keep the query in their nearest common owner and derive filtered results instead of duplicating state.'],
-['Forms','Controlled interaction','Build a controlled form with validation and a submit state.','Test empty, valid and repeated submissions. Keep state updates immutable.']]],
+['Components','Composition drill','Build LessonCard, ProgressCard and Button without duplicating layout logic.','Identify each component boundary and explain why the boundary exists.','A component tree and boundary rationale.'],
+['State','Ownership drill','Create a search field and filtered lesson list that always agree.','Keep the query in their nearest common owner and derive filtered results instead of duplicating state.','The state ownership map.'],
+['Forms','Controlled interaction','Build a controlled form with validation and a submit state.','Test empty, valid and repeated submissions. Keep state updates immutable.','A form state table and working interaction.'],
+['Debug','Render bug drill','Diagnose a list that loses input state after reordering.','Inspect keys and prove why unstable keys cause identity problems. Fix the key strategy.','A minimal reproduction and explanation.'],
+['Explain','Derived state','Explain why duplicated state creates synchronization problems.','Identify one piece of state that can be derived from existing state and rewrite the design conceptually.','Before/after state model.']
+]],
 ['07','NEXT.JS','Build full-stack apps','Place routing, data access and interactivity at the right boundaries.',[
-['Routing','Dynamic lesson route','Create a route for a lesson identifier with loading and not-found states.','Test an existing and missing identifier. Explain what belongs in the route versus the shared layout.'],
-['Server/Client','Boundary drill','Build a page that reads data on the server and updates progress from a button.','Keep secrets and data access server-side; isolate only the interactive control as client code.'],
-['Data flow','Avoid a waterfall','Design two independent data requests that can be fetched without unnecessary serial waiting.','Draw the dependency graph and identify which request truly depends on another.']]],
+['Routing','Dynamic lesson route','Create a route for a lesson identifier with loading and not-found states.','Test an existing and missing identifier. Explain what belongs in the route versus the shared layout.','Route behaviour for both cases.'],
+['Server/Client','Boundary drill','Build a page that reads data on the server and updates progress from a button.','Keep secrets and data access server-side; isolate only the interactive control as client code.','A server/client boundary diagram.'],
+['Data flow','Avoid a waterfall','Design two independent data requests that can be fetched without unnecessary serial waiting.','Draw the dependency graph and identify which request truly depends on another.','The dependency graph and revised flow.'],
+['Mutation','Server Action drill','Design a mutation using a server-side action.','Validate input and authenticate/authorize inside the server-side mutation. Define how the UI is refreshed or invalidated after success.','Validation, authorization and invalidation steps.'],
+['Explain','Caching decision','Decide whether a piece of data can be cached safely.','Classify it as public, user-scoped or permission-sensitive and explain freshness/invalidation requirements.','A cache policy with its invalidation rule.']
+]],
 ['08','DATA','Work with data','Model relational data, query it correctly and protect its integrity.',[
-['SQL','Join challenge','Return courses for a learner with lesson counts.','Use learner → enrollment → course → lesson relationships. Test the empty-result case.'],
-['Schema','Integrity drill','Model users, courses, lessons and enrollments.','Add primary keys, foreign keys, uniqueness and useful checks. Explain what invalid state each constraint prevents.'],
-['Performance','Index decision','Given three common queries, decide which indexes are justified.','Use query patterns, selectivity and write cost. Explain why an index is not automatically an optimization.']]],
+['SQL','Join challenge','Return courses for a learner with lesson counts.','Use learner → enrollment → course → lesson relationships. Test the empty-result case.','The query and two test cases.'],
+['Schema','Integrity drill','Model users, courses, lessons and enrollments.','Add primary keys, foreign keys, uniqueness and useful checks. Explain what invalid state each constraint prevents.','Schema plus constraint rationale.'],
+['Performance','Index decision','Given three common queries, decide which indexes are justified.','Use query patterns, selectivity and write cost. Explain why an index is not automatically an optimization.','An index decision table.'],
+['Reliability','Transaction drill','Design a multi-step update that must remain consistent.','Identify the transaction boundary and what must happen if one step fails. Explain what the database guarantees and what the application must handle.','A transaction sequence with failure point.'],
+['Explain','Storage boundary','Explain when relational data, Redis-style ephemeral state and object storage solve different problems.','Choose storage for structured records, cache/session-like data and large blobs, including the metadata/authorization relationship.','A storage decision matrix.']
+]],
 ['09','BACKEND','Build the backend','Design secure HTTP APIs with authentication and authorization.',[
-['HTTP','API contract','Design a course endpoint with method, path, request, response and error contract.','Include validation failures and a missing-resource case. Keep status codes consistent with the contract.'],
-['Auth','Identity lifecycle','Trace login from credential submission to an authenticated request.','Separate authentication from authorization and identify where session/cookie protections apply.'],
-['Security','Object authorization','A user changes /courses/42 to /courses/43. Design the server check.','Verify the authenticated user is allowed to access resource 43. Never rely on hidden UI controls.']]],
+['HTTP','API contract','Design a course endpoint with method, path, request, response and error contract.','Include validation failures and a missing-resource case. Keep status codes consistent with the contract.','The endpoint contract.'],
+['Auth','Identity lifecycle','Trace login from credential submission to an authenticated request.','Separate authentication from authorization and identify where session/cookie protections apply.','An identity-to-request sequence.'],
+['Security','Object authorization','A user changes /courses/42 to /courses/43. Design the server check.','Verify the authenticated user is allowed to access resource 43. Never rely on hidden UI controls.','The authorization rule and negative test.'],
+['Realtime','Reconnect drill','Design a client that loses a realtime connection.','Choose polling, SSE or WebSocket for the use case, then define reconnect, ordering, authorization and backpressure behaviour.','Transport choice plus failure policy.'],
+['Explain','OAuth vs OIDC','Explain the difference between delegated authorization and user authentication/identity.','Describe where OAuth 2.0 and OpenID Connect fit in a login architecture without treating an access token as proof of every application permission.','A concise identity flow.']
+]],
 ['10','PRODUCTION','Make it production-ready','Measure, secure, test and operate software in production.',[
-['Security','Threat model','Threat-model one Learning Hub feature.','List assets, trust boundaries, threats, mitigations and residual risk. Keep authorization at the server boundary.'],
-['Performance','Measure first','Investigate a slow page without immediately optimizing it.','Measure network, server, JavaScript, images and database work. Record a baseline before changing code.'],
-['Delivery','Release gate','Design a CI gate for a production change.','Require install from lockfile, lint, typecheck, tests, security checks and production build before release.']]],
+['Security','Threat model','Threat-model one Learning Hub feature.','List assets, trust boundaries, threats, mitigations and residual risk. Keep authorization at the server boundary.','A compact threat model.'],
+['Performance','Measure first','Investigate a slow page without immediately optimizing it.','Measure network, server, JavaScript, images and database work. Record a baseline before changing code.','Baseline measurements and one justified change.'],
+['Delivery','Release gate','Design a CI gate for a production change.','Require install from lockfile, lint, typecheck, tests, security checks and production build before release.','A release-gate checklist.'],
+['Operations','Recovery drill','A deployment causes elevated errors. Design the operational response.','Define detection, rollback or mitigation, communication, logs/metrics/traces and recovery verification.','A short runbook.'],
+['Explain','Core Web Vitals','Explain LCP, INP and CLS as user-facing performance signals.','For a slow page, identify which measurement would support the suspected problem and what evidence you would collect next.','A metric-to-investigation map.']
+]],
 ['11','AI','Build with AI','Use models as application components, not as security boundaries.',[
-['API','Server-side model call','Design a server endpoint that calls a model without exposing the API key.','Identify secret storage, input validation, timeout, error handling and cost controls.'],
-['RAG','Untrusted retrieval','Retrieved content contains an instruction to reveal private data.','Treat retrieved text as untrusted data. Keep authorization outside the model and validate tool arguments.'],
-['Eval','Regression set','Create ten representative AI evaluation cases.','Include normal, edge and adversarial inputs. Define expected criteria and rerun the set after prompt/model changes.']]],
+['API','Server-side model call','Design a server endpoint that calls a model without exposing the API key.','Identify secret storage, input validation, timeout, error handling and cost controls.','A secure request flow.'],
+['RAG','Untrusted retrieval','Retrieved content contains an instruction to reveal private data.','Treat retrieved text as untrusted data. Keep authorization outside the model and validate tool arguments.','The threat and containment plan.'],
+['Eval','Regression set','Create ten representative AI evaluation cases.','Include normal, edge and adversarial inputs. Define expected criteria and rerun the set after prompt/model changes.','The ten-case evaluation set.'],
+['Tools','Agent boundary','Design a model-to-tool loop for one safe task.','Allowlist tools, validate arguments, enforce authorization, bound execution/time/cost and record an audit trail.','Tool policy and execution limits.'],
+['Explain','Model is not policy','Explain why model instructions cannot replace application authorization.','Give one example where the model says “allowed” but the server must still deny the action.','The server-side security rule.']
+]],
 ['12','PRODUCT','Build your product','Turn an idea into a complete vertical slice.',[
-['Scope','Vertical slice','Choose one user outcome and write acceptance criteria.','Define the smallest UI, server operation, data and test needed to deliver that outcome.'],
-['Build','Failure states','Map the UI for loading, empty, validation failure, server failure and success.','For each state specify user action and recovery. Do not hide failures behind silent spinners.'],
-['Launch','Release rehearsal','Walk a feature from code to production readiness.','Check secrets, migrations, tests, monitoring, rollback and recovery before calling it done.']]],
+['Scope','Vertical slice','Choose one user outcome and write acceptance criteria.','Define the smallest UI, server operation, data and test needed to deliver that outcome.','A vertical-slice acceptance contract.'],
+['Build','Failure states','Map the UI for loading, empty, validation failure, server failure and success.','For each state specify user action and recovery. Do not hide failures behind silent spinners.','A state/recovery matrix.'],
+['Launch','Release rehearsal','Walk a feature from code to production readiness.','Check secrets, migrations, tests, monitoring, rollback and recovery before calling it done.','A launch checklist with evidence.'],
+['Product','Metric definition','Choose one product metric that tests whether the feature solves its intended problem.','Define event, population, time window and interpretation. Avoid vanity metrics that do not connect to the user outcome.','A measurable product hypothesis.'],
+['Explain','Definition of done','Defend what “done” means for a production feature.','Include functional acceptance, security, tests, observability, deployment and recovery—not just “works on my machine.”','Your definition-of-done contract.']
+]],
 ['13','SYSTEM DESIGN','System Design & Distributed Systems','Design for scale, latency and failure.',[
-['Capacity','10× exercise','Estimate traffic for a Learning Hub during a sudden spike.','Estimate RPS, identify bottlenecks and state which layer you would scale first and why.'],
-['Reliability','Failure isolation','A downstream service becomes slow. Design the response.','Use timeout, bounded retry, backoff, circuit breaking or graceful degradation where appropriate. Explain retry amplification.'],
-['Distributed','Queue design','Move slow work off the request path.','Define producer, queue, worker, acknowledgement, retry and dead-letter behaviour. Make the operation idempotent.']]],
+['Capacity','10× exercise','Estimate traffic for a Learning Hub during a sudden spike.','Estimate RPS, identify bottlenecks and state which layer you would scale first and why.','Assumptions, calculations and bottleneck map.'],
+['Reliability','Failure isolation','A downstream service becomes slow. Design the response.','Use timeout, bounded retry, backoff, circuit breaking or graceful degradation where appropriate. Explain retry amplification.','A failure-handling sequence.'],
+['Distributed','Queue design','Move slow work off the request path.','Define producer, queue, worker, acknowledgement, retry and dead-letter behaviour. Make the operation idempotent.','A queue lifecycle diagram.'],
+['Data','Consistency choice','Choose where strong consistency is required and where eventual consistency is acceptable.','Use a user-visible example such as search indexing versus account entitlement and explain the consequence of stale data.','A consistency decision table.'],
+['Explain','Scale without guessing','Explain why capacity planning starts with assumptions and measurements rather than “add more servers.”','State traffic, latency, payload and concurrency assumptions, then identify what evidence would invalidate them.','A capacity assumptions sheet.']
+]],
 ['14','TOOLING','Advanced Developer Tooling','Make large codebases easier to change safely.',[
-['Git','History surgery','Use interactive rebase on a disposable branch.','Squash or reorder commits, inspect the final history and explain when rewriting public history is unsafe.'],
-['Monorepo','Package boundary','Design three packages with dependencies but no cycle.','Draw the dependency graph and identify which code belongs in shared packages versus applications.'],
-['CI','Cache correctness','Design a dependency/build cache strategy.','Identify cache keys, invalidation inputs and the failure mode caused by stale artifacts.']]],
+['Git','History surgery','Use interactive rebase on a disposable branch.','Squash or reorder commits, inspect the final history and explain when rewriting public history is unsafe.','The before/after history.'],
+['Monorepo','Package boundary','Design three packages with dependencies but no cycle.','Draw the dependency graph and identify which code belongs in shared packages versus applications.','A dependency graph.'],
+['CI','Cache correctness','Design a dependency/build cache strategy.','Identify cache keys, invalidation inputs and the failure mode caused by stale artifacts.','A cache-key policy.'],
+['Workspace','Dependency drill','Set up workspace-level dependency ownership.','Identify which package owns a dependency, how version drift is controlled and how a package can accidentally become coupled to another.','A workspace dependency map.'],
+['Explain','Tooling trade-off','Explain why a monorepo, build orchestrator or shared package is not automatically better.','Name the scale or coordination problem the tool solves, its new failure modes and the evidence that would justify adopting it.','A decision record.']
+]],
 ['15','BILLING','Product Engineering & Billing','Build payment flows around durable state and unreliable delivery.',[
-['Payments','Lifecycle map','Map checkout from intent creation to entitlement.','Include pending, success, failure and cancellation. Keep payment status separate from access entitlement.'],
-['Webhooks','Duplicate delivery','A webhook arrives twice and out of order.','Verify authenticity, persist event identity, make handling idempotent and reconcile against provider state.'],
-['Recovery','Failed renewal','A subscription renewal fails.','Design retry/recovery states, customer communication, entitlement behaviour and a manual reconciliation path.']]],
+['Payments','Lifecycle map','Map checkout from intent creation to entitlement.','Include pending, success, failure and cancellation. Keep payment status separate from access entitlement.','A payment-to-entitlement state map.'],
+['Webhooks','Duplicate delivery','A webhook arrives twice and out of order.','Verify authenticity, persist event identity, make handling idempotent and reconcile against provider state.','The deduplication and ordering strategy.'],
+['Recovery','Failed renewal','A subscription renewal fails.','Design retry/recovery states, customer communication, entitlement behaviour and a manual reconciliation path.','A failed-renewal state machine.'],
+['Testing','Billing failure matrix','Design tests for duplicate, delayed, missing and contradictory payment events.','Include provider retry behaviour and your own replay/reconciliation path.','A billing failure matrix.'],
+['Explain','Entitlement boundary','Explain why “payment succeeded” and “user has access” should be modelled as related but distinct states.','Give one example involving delayed webhooks or reconciliation and define which state controls access.','The authorization rule and recovery path.']
+]],
 ['16','DATA · SEARCH','Data & Search','Build search that is relevant, fast and recoverable.',[
-['Search','Ranking drill','Define relevance for lesson search.','Choose searchable fields, tokenization assumptions, ranking signals, filters and pagination behaviour.'],
-['Sync','Stale index','A lesson title changes but search still shows the old title.','Design an outbox/indexing flow with retry, idempotency, replay and a full rebuild path.'],
-['Data','Query choice','Choose between PostgreSQL full-text search and a dedicated search engine.','Compare scale, ranking needs, operational complexity, freshness and filtering requirements.']]],
+['Search','Ranking drill','Define relevance for lesson search.','Choose searchable fields, tokenization assumptions, ranking signals, filters and pagination behaviour.','A relevance specification.'],
+['Sync','Stale index','A lesson title changes but search still shows the old title.','Design an outbox/indexing flow with retry, idempotency, replay and a full rebuild path.','The source-to-index lifecycle.'],
+['Data','Query choice','Choose between PostgreSQL full-text search and a dedicated search engine.','Compare scale, ranking needs, operational complexity, freshness and filtering requirements.','A technology decision matrix.'],
+['Reliability','Rebuild drill','Assume the search index is corrupted or lost.','Design a rebuild from the source of truth, including progress, backpressure, cutover and verification.','A rebuild runbook.'],
+['Explain','Freshness vs relevance','Explain why a search system can be fast and relevant yet still be wrong because its index is stale.','Describe freshness SLO thinking and how an outbox/replay design changes recovery.','A freshness/recovery policy.']
+]],
 ['17','PROFESSIONAL','Professional Engineering','Operate software deliberately under real-world pressure.',[
-['Design','ADR drill','Write a short ADR for a consequential architecture decision.','State context, decision, alternatives, consequences and the evidence that would trigger reconsideration.'],
-['Operations','Incident simulation','A release causes elevated errors for a subset of users.','Define detection, severity, roles, mitigation, rollback, communication, timeline and follow-up actions.'],
-['Reliability','SLO exercise','Choose an SLI and SLO for the Learning Hub lesson page.','Define the measurement window, target, error budget interpretation and what action follows sustained budget burn.']]]
+['Design','ADR drill','Write a short ADR for a consequential architecture decision.','State context, decision, alternatives, consequences and the evidence that would trigger reconsideration.','A complete ADR.'],
+['Operations','Incident simulation','A release causes elevated errors for a subset of users.','Define detection, severity, roles, mitigation, rollback, communication, timeline and follow-up actions.','An incident timeline/runbook.'],
+['Reliability','SLO exercise','Choose an SLI and SLO for the Learning Hub lesson page.','Define the measurement window, target, error budget interpretation and what action follows sustained budget burn.','An SLI/SLO/error-budget definition.'],
+['Observability','Trace drill','Follow one slow request across application boundaries.','Identify the logs, metrics and traces needed to connect user impact to a dependency or code path.','An observability evidence map.'],
+['Explain','Postmortem quality','Write the structure of a blameless technical postmortem.','Separate impact, timeline, contributing factors, detection gaps, corrective actions and verification. Focus on system improvement rather than individual blame.','A postmortem skeleton with owners and follow-up evidence.']
+]]
 ];
+
 const q=new URLSearchParams(location.search).get('stage');
-const selected=q?data.filter(x=>x[0]===q):data;
-const key='fsb-practice-items';
-const readItems=()=>{try{return JSON.parse(localStorage.getItem(key)||'{}')}catch{return{}}};
-const saveItems=x=>localStorage.setItem(key,JSON.stringify(x));
-function isDone(id){return !!readItems()[id]}
-function stageDone(n){return data.find(x=>x[0]===n).slice(4).flat().every((_,i)=>{return true})}
+const selected=q&&data.some(x=>x[0]===q)?q:null;
+const itemsKey='fsb-practice-items';
+const evidenceKey='fsb-practice-evidence';
+
+function readJSON(key,fallback){try{return JSON.parse(localStorage.getItem(key)||JSON.stringify(fallback))}catch{return fallback}}
+function writeJSON(key,value){try{localStorage.setItem(key,JSON.stringify(value));return true}catch{return false}}
+function isDone(id){return !!readJSON(itemsKey,{})[id]}
+function getEvidence(id){return readJSON(evidenceKey,{})[id]||''}
 function completedDrills(n){const m=data.find(x=>x[0]===n);return m?m[4].filter((_,i)=>isDone(n+'-'+i)).length:0}
-function render(){
- document.getElementById('context').innerHTML=q&&selected.length?'<span class="pill">MODULE '+q+'</span><span class="pill">Focused practice</span>':'<span class="pill">17 STAGES</span><span class="pill">51 DRILLS</span>';
- document.getElementById('stageLabel').textContent=q&&selected.length?'MODULE '+q:'ALL STAGES';
- document.getElementById('modules').innerHTML=selected.map(m=>{
-  const done=completedDrills(m[0]), total=m[4].length, complete=done===total;
-  return '<section class="module '+(q?'focus':'')+'"><div class="module-head"><div><div class="num">'+m[0]+'</div><h2>'+m[2]+'</h2><p class="module-intro">'+m[3]+'</p></div><span class="module-count">'+done+' / '+total+' drills</span></div><div class="drills">'+m[4].map((d,i)=>{
-   const id=m[0]+'-'+i, checked=isDone(id);
-   return '<article class="drill '+(checked?'completed':'')+'" id="drill-'+id+'"><span class="label">'+d[0]+'</span><h3>'+d[1]+'</h3><p>'+d[2]+'</p><div class="actions"><button class="reveal" onclick="toggleTask(this)">Reveal task →</button><button class="'+(checked?'done':'')+'" onclick="completeDrill(''+id+'','+i+')">'+(checked?'Completed ✓':'Mark complete')+'</button></div><div class="task"><strong>Do this:</strong> '+d[3]+'<div class="note"><strong>Verify:</strong> Run it, inspect the result, or compare your reasoning with the relevant module and primary documentation.</div></div></article>';
-  }).join('')+'</div><div class="note">'+(complete?'Practice set complete. Return to the journey to mark the stage milestone.':'Finish all '+total+' drills to complete this practice set. You can revisit any drill later.')+'</div></section>'
- }).join('');
- const allDone=data.filter(m=>completedDrills(m[0])===m[4].length).length;
- const drills=data.reduce((a,m)=>a+m[4].length,0), finished=data.reduce((a,m)=>a+completedDrills(m[0]),0);
- document.getElementById('summary').textContent=allDone+' / 17 practice sets complete';
- document.getElementById('sub').textContent=finished+' / '+drills+' individual drills completed';
- document.getElementById('bar').style.width=(finished/drills*100)+'%';
+function syncStage(n){const m=data.find(x=>x[0]===n);const done=m[4].every((_,i)=>isDone(n+'-'+i));FSBProgress.set('practice',n,done);return done}
+
+function renderFilters(){
+ const box=document.getElementById('filters');
+ const all='<button class="filter '+(!selected?'active':'')+'" onclick="goAll()">All</button>';
+ box.innerHTML=all+data.map(m=>'<button class="filter '+(selected===m[0]?'active':'')+'" onclick="goStage(\''+m[0]+'\')">'+m[0]+'</button>').join('');
 }
-function toggleTask(b){const d=b.closest('.drill');d.classList.toggle('open');b.textContent=d.classList.contains('open')?'Hide task ↑':'Reveal task →'}
-function completeDrill(id){const s=readItems();s[id]=!s[id];saveItems(s);const n=id.split('-')[0];const m=data.find(x=>x[0]===n);const done=m[4].every((_,i)=>isDone(n+'-'+i));FSBProgress.set('practice',n,done);render()}
+function goAll(){location.href='practice.html'}
+function goStage(n){location.href='practice.html?stage='+n}
+
+function render(){
+ renderFilters();
+ const shown=selected?data.filter(x=>x[0]===selected):data;
+ document.getElementById('stageStat').textContent=selected?'Module '+selected:'17 stages';
+ document.getElementById('modules').innerHTML=shown.length?shown.map(m=>{
+  const done=completedDrills(m[0]),total=m[4].length,complete=done===total;
+  return '<section class="module '+(selected?'focus':'')+'"><div class="module-head"><div><div class="num">'+m[0]+'</div><h2>'+m[2]+'</h2><p class="module-intro">'+m[3]+'</p><div class="module-meta"><span class="tag">5 drills</span><span class="tag">'+done+' completed</span><span class="tag">'+(complete?'Stage practice complete':'In progress')+'</span></div><div class="module-actions"><a href="module-'+m[0]+'.html">Open Module '+m[0]+'</a><a class="alt" href="projects.html?stage='+m[0]+'">Open Project</a></div></div><span class="module-count">'+done+' / '+total+'</span></div><div class="drills">'+m[4].map((d,i)=>{
+   const id=m[0]+'-'+i,checked=isDone(id),ev=getEvidence(id);
+   return '<article class="drill '+(checked?'completed':'')+'" id="drill-'+id+'"><span class="label">'+d[0]+'</span><h3>'+d[1]+'</h3><p class="objective">'+d[2]+'</p><div class="actions"><button class="reveal" onclick="toggleTask(this)">Show lab brief →</button><button class="'+(checked?'done':'')+'" onclick="completeDrill(\''+id+'\')">'+(checked?'Completed ✓':'Mark complete')+'</button><button class="challenge" onclick="focusEvidence(\''+id+'\')">Add evidence</button></div><div class="task"><strong>Do this:</strong> '+d[3]+'<div class="verify"><strong>Deliverable:</strong> '+d[4]+'<br><strong>Verify:</strong> Run it, inspect the result, test the failure path where relevant, and compare your reasoning with the corresponding module and primary documentation.</div><textarea class="evidence" id="evidence-'+id+'" placeholder="Record what you built, observed, tested, or concluded...">'+escapeHTML(ev)+'</textarea><div class="evidence-status" id="status-'+id+'">'+(ev?'Evidence saved locally.':'Evidence is optional, but recommended for serious practice.')+'</div><div class="actions"><button class="save" onclick="saveEvidence(\''+id+'\')">Save evidence</button></div></div></article>';
+  }).join('')+'</div><div class="module-foot"><b>'+(complete?'Practice set complete.':'Complete all five drills.')+'</b> '+(complete?'The stage practice signal is now synced to your journey.':'Use the module link for theory, the project link for a larger build, and record evidence so you can explain what you actually did.')+'</div></section>';
+ }).join(''):'<div class="empty">No practice stage found.</div>';
+
+ const allDone=data.filter(m=>completedDrills(m[0])===m[4].length).length;
+ const total=data.reduce((a,m)=>a+m[4].length,0),finished=data.reduce((a,m)=>a+completedDrills(m[0]),0);
+ document.getElementById('summary').textContent=allDone+' / 17 practice sets complete';
+ document.getElementById('sub').textContent=finished+' / '+total+' drills completed';
+ document.getElementById('bar').style.width=(finished/total*100)+'%';
+}
+
+function escapeHTML(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function toggleTask(b){const d=b.closest('.drill');d.classList.toggle('open');b.textContent=d.classList.contains('open')?'Hide lab brief ↑':'Show lab brief →'}
+function focusEvidence(id){const d=document.getElementById('drill-'+id);d.classList.add('open');const b=d.querySelector('.reveal');if(b)b.textContent='Hide lab brief ↑';const el=document.getElementById('evidence-'+id);el.focus();el.scrollIntoView({behavior:'smooth',block:'center'})}
+function saveEvidence(id){const el=document.getElementById('evidence-'+id);if(!el)return;const state=readJSON(evidenceKey,{});state[id]=el.value.trim();writeJSON(evidenceKey,state);const s=document.getElementById('status-'+id);if(s)s.textContent=state[id]?'Evidence saved locally.':'Evidence cleared.'}
+function completeDrill(id){const state=readJSON(itemsKey,{});state[id]=!state[id];writeJSON(itemsKey,state);syncStage(id.split('-')[0]);render()}
+
 render();
 </script>
 </body>
