@@ -83,4 +83,32 @@ test.describe('FullStack Bible site smoke', () => {
     await expect(page.locator('#checks input').first()).toBeChecked();
     await expect(page.locator('#progressText')).toContainText('% complete');
   });
+
+  test('embedded terminal mounts and executes a browser lab command', async ({ page }) => {
+    await page.goto('practice.html?stage=1');
+    await page.locator('.drill').first().getByRole('button', { name:/open full lab/i }).click();
+    await expect(page.locator('[data-terminal-host]').first()).toBeVisible();
+    const terminal = page.locator('.fsb-terminal').first();
+    await expect(terminal).toContainText('Browser sandbox');
+    const input = terminal.locator('.fsb-terminal-line input');
+    await input.fill('pwd');
+    await input.press('Enter');
+    await expect(terminal.locator('.fsb-terminal-output')).toContainText('/project');
+    await input.fill('run');
+    await input.press('Enter');
+    await expect(terminal.locator('.fsb-terminal-output')).toContainText('Program started');
+  });
+
+  test('project workspace mounts embedded terminal', async ({ page }) => {
+    await page.goto('projects.html?stage=05');
+    await page.getByRole('button', { name:/open project/i }).click();
+    await page.getByRole('button', { name:'Workspace' }).click();
+    await expect(page.locator('[data-terminal-host]').first()).toBeVisible();
+    await expect(page.locator('.fsb-terminal').first()).toContainText('Browser sandbox');
+    const input = page.locator('.fsb-terminal-line input').first();
+    await input.fill('help');
+    await input.press('Enter');
+    await expect(page.locator('.fsb-terminal-output').first()).toContainText('touch');
+  });
+
 });
