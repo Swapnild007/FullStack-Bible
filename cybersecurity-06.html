@@ -1,0 +1,222 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f5f7">
+<title>06 — Defensive Operations & Detection Engineering — FullStack Bible</title>
+<style>
+:root{--bg:#f5f5f7;--ink:#111113;--muted:#6e6e73;--blue:#007aff;--purple:#5856d6}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(65% 35% at 90% 0,#5856d622,transparent 70%),radial-gradient(55% 35% at 0 20%,#007aff18,transparent 70%),var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{width:min(1000px,calc(100% - 28px));margin:auto}.nav{position:sticky;top:10px;z-index:20;margin-top:10px;padding:9px 10px 9px 17px;border:1px solid #fff;border-radius:20px;background:#ffffffcc;backdrop-filter:blur(25px);display:flex;justify-content:space-between;align-items:center;box-shadow:0 12px 38px #0000000b}.brand{font-weight:800;letter-spacing:-.06em;text-decoration:none;color:inherit}.brand span{color:var(--blue)}.back{padding:10px 14px;border-radius:999px;background:#111;color:#fff;text-decoration:none;font-size:12px;font-weight:700}
+.hero{padding:68px 0 34px}.eyebrow{font-size:11px;letter-spacing:.16em;color:#999;font-weight:800}.hero h1{font-size:clamp(43px,8vw,78px);line-height:.94;letter-spacing:-.085em;margin:14px 0}.hero h1 span{background:linear-gradient(105deg,#111,#007aff,#5856d6);background-clip:text;-webkit-background-clip:text;color:transparent}.hero p{max-width:850px;color:var(--muted);font-size:17px;line-height:1.7}.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.pill{padding:7px 10px;border-radius:999px;background:#fff;border:1px solid #fff;color:#666;font-size:10px;font-weight:800}
+.lessonbar{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.lessonbar a{padding:9px 12px;border-radius:999px;background:#fff;border:1px solid #e8e8ec;color:#555;text-decoration:none;font-size:11px;font-weight:750}
+.section{margin:12px 0;padding:24px;border:1px solid #fff;border-radius:25px;background:#ffffffbd;box-shadow:0 18px 55px #00000009;scroll-margin-top:80px}.section h2{font-size:24px;letter-spacing:-.055em;margin:0 0 13px}.section h3{font-size:16px;letter-spacing:-.025em;margin:21px 0 8px}.section p,.section li{color:#555;font-size:13px;line-height:1.78}.section p{margin:9px 0}.section ul,.section ol{padding-left:21px}.section li{margin:6px 0}.callout{margin:15px 0;padding:15px 16px;border-radius:16px;background:#eef5ff;color:#36506c;font-size:12px;line-height:1.7}.warning{background:#fff5ed;color:#705038}.formula{margin:12px 0;padding:12px 14px;border-radius:13px;background:#f0f0f3;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:#444;overflow:auto}.compare{width:100%;border-collapse:collapse;margin:12px 0;font-size:11px}.compare th,.compare td{padding:10px;border-bottom:1px solid #e7e7ea;text-align:left;vertical-align:top}.qa{margin:9px 0;border:1px solid #e8e8ec;border-radius:15px;background:#fff;overflow:hidden}.qa summary{cursor:pointer;padding:13px 14px;font-size:12px;font-weight:750;list-style:none}.qa summary::-webkit-details-marker{display:none}.qa summary:after{content:"+";float:right;color:#888}.qa[open] summary:after{content:"−"}.answer{padding:0 14px 15px;color:#555;font-size:12px;line-height:1.75}.answer strong{color:#222}.sources{padding:22px;margin:14px 0 30px;border:1px solid #fff;border-radius:22px;background:#fff}.sources h2{font-size:19px;margin:0 0 10px}.sources a{display:block;color:#007aff;text-decoration:none;font-size:12px;margin:9px 0}.footer{text-align:center;color:#999;padding:45px 0 70px;font-size:11px}
+@media(max-width:650px){.hero{padding-top:55px}.hero p{font-size:15px}.section{padding:20px}.section h2{font-size:21px}.compare{font-size:10px}.compare th,.compare td{padding:8px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<nav class="nav wrap"><a class="brand" href="index.html">FullStack<span>Bible</span></a><a class="back" href="cybersecurity.html">Cybersecurity</a></nav>
+
+<header class="wrap hero">
+<div class="eyebrow">CYBERSECURITY · DISCIPLINE 06 · INTERMEDIATE → ADVANCED</div>
+<h1>Defensive Operations & <span>Detection Engineering.</span></h1>
+<p>Detection is the discipline of turning observable system behavior into useful security decisions. This chapter builds the reasoning chain from telemetry and logging through detection design, SIEM architecture, endpoint and network visibility, threat hunting, investigation, alert quality, automation and continuous improvement.</p>
+<div class="meta"><span class="pill">Intermediate → Advanced</span><span class="pill">Deep theory</span><span class="pill">15 chapters</span><span class="pill">20 mastery answers</span><span class="pill">Theory only</span></div>
+</header>
+
+<main class="wrap">
+<div class="lessonbar">
+<a href="#mission">Defensive mission</a><a href="#telemetry">Telemetry</a><a href="#logging">Logging</a><a href="#endpoint">Endpoint</a><a href="#network">Network</a><a href="#siem">SIEM</a><a href="#detection">Detection</a><a href="#attack">ATT&CK</a><a href="#hunting">Hunting</a><a href="#triage">Triage</a><a href="#investigation">Investigation</a><a href="#automation">Automation</a><a href="#quality">Quality</a><a href="#operations">SOC</a><a href="#mastery">Mastery</a>
+</div>
+
+<section class="section" id="mission"><h2>01 · The defensive mission</h2>
+<h3>Prevention is not the whole security model</h3>
+<p>Preventive controls reduce the probability that an unwanted action succeeds. Detection provides evidence when prevention fails, when a control is bypassed, or when activity is ambiguous and requires investigation. A mature defensive program therefore connects prevention, detection, response and recovery instead of treating monitoring as a dashboard exercise.</p>
+<h3>Detection as a decision system</h3>
+<p>A detection should answer a practical question: <strong>what happened, why might it matter, and what should an analyst do next?</strong> A technically clever rule that generates thousands of unexplained alerts can be less useful than a narrower rule with clear evidence and a defined response path.</p>
+<div class="formula">telemetry → context → analytic logic → alert → triage → investigation → response → feedback</div>
+<h3>Security operations versus detection engineering</h3>
+<p>Security operations manages the continuous workflow of monitoring, triage, investigation and response. Detection engineering designs and maintains the analytic logic and telemetry dependencies that make that workflow possible. They are different responsibilities but must operate as one feedback loop.</p></section>
+
+<section class="section" id="telemetry"><h2>02 · Security telemetry and observability</h2>
+<h3>What is telemetry?</h3>
+<p>Telemetry is structured evidence emitted by systems and services about their state or activity. Useful security telemetry can come from endpoints, identity providers, applications, databases, cloud control planes, network devices, DNS resolvers, email systems and security products.</p>
+<h3>Event versus signal</h3>
+<p>An event is an observation. A signal is an observation that becomes meaningful in context. A process starting is an event; an unsigned executable launched from an unusual user-writable location by an unexpected parent process may be a stronger security signal.</p>
+<h3>The security context model</h3>
+<p>Good telemetry preserves enough context to answer <strong>who, what, where, when, how and with what result</strong>. Important fields often include timestamp, identity, host, source process, destination, resource, action, outcome, unique identifiers and correlation identifiers.</p>
+<h3>Telemetry has a cost</h3>
+<p>Every additional field consumes collection, transport, storage and analyst attention. Logging everything without an analytic purpose can increase cost while reducing signal-to-noise ratio. Collection should therefore be driven by detection and investigation requirements.</p></section>
+
+<section class="section" id="logging"><h2>03 · Logging architecture and data quality</h2>
+<h3>Collection pipeline</h3>
+<p>A typical pipeline contains collection, transport, parsing, normalization, enrichment, storage, search and analytic layers. Each stage can introduce failure. Dropped events, clock errors, schema drift and parser changes can silently weaken detection.</p>
+<h3>Time is a security dependency</h3>
+<p>Incident reconstruction depends on reliable time. Systems should use appropriate time synchronization and preserve timezone or UTC semantics. Analysts must distinguish the time an event occurred from the time it was collected, indexed or displayed.</p>
+<h3>Normalization</h3>
+<p>Different products describe similar actions differently. Normalization creates a common analytical vocabulary for fields such as user, source address, destination, process, action and outcome. Normalization improves correlation but must not erase important vendor-specific detail.</p>
+<h3>Retention and access</h3>
+<p>Retention should reflect investigation requirements, regulatory obligations, storage constraints and the expected time between compromise and discovery. Security logs themselves contain sensitive information, so access to them requires authorization, integrity protection and appropriate privacy controls.</p>
+<div class="callout"><strong>Design question:</strong> if an incident is discovered thirty days after the first suspicious event, which telemetry still exists and can you prove it has not been silently altered?</div></section>
+
+<section class="section" id="endpoint"><h2>04 · Endpoint telemetry and host visibility</h2>
+<h3>Process lifecycle</h3>
+<p>Process creation is one of the most valuable endpoint signals because it connects execution to a parent process, command line, user, image and time. Microsoft Sysmon can record detailed process-creation information, including command lines, hashes and correlation identifiers.</p>
+<h3>Beyond process creation</h3>
+<p>Useful endpoint visibility can include process access, network connections, DNS queries, image or driver loading, file creation, registry changes, scheduled tasks, services and authentication activity. The value comes from correlating these events into a behavioral sequence.</p>
+<h3>Windows telemetry</h3>
+<p>Windows Event Log, security auditing and Sysmon can provide complementary evidence. Sysmon is not itself a detection engine: it records selected activity; analysts and downstream systems interpret those events.</p>
+<h3>Linux telemetry</h3>
+<p>Linux environments can expose audit records, system logs, process information, authentication events, service activity and network state. The exact evidence depends on distribution, configuration, kernel facilities and deployed security tooling.</p>
+<h3>Endpoint blind spots</h3>
+<p>Telemetry can be disabled, filtered, delayed, corrupted or absent on unmanaged systems. A detection program should track sensor health and explicitly model coverage rather than assuming that “no event” means “nothing happened.”</p></section>
+
+<section class="section" id="network"><h2>05 · Network and identity telemetry</h2>
+<h3>Network evidence</h3>
+<p>Network telemetry ranges from raw packet capture to flow records and higher-level protocol logs. Useful fields include source and destination, protocol, ports, timing, volume, DNS names and the process or identity responsible where that association is available.</p>
+<h3>Identity evidence</h3>
+<p>Authentication and authorization telemetry answers questions that endpoint logs alone cannot: which identity authenticated, from where, using what method, against which service, and whether the action succeeded. Identity events are especially valuable when investigating credential misuse and privilege changes.</p>
+<h3>Application and cloud evidence</h3>
+<p>Application logs can reveal object access, administrative actions, API calls and business-level changes. Cloud control-plane logs can reveal creation, modification and deletion of resources and permissions. Defensive coverage should include the control plane, not only workload hosts.</p>
+<h3>Correlation</h3>
+<p>A useful investigation may connect an identity event to an endpoint process, then to a network connection, then to a cloud API action. Stable identifiers and consistent timestamps make this possible.</p></section>
+
+<section class="section" id="siem"><h2>06 · SIEM architecture and security analytics</h2>
+<h3>What a SIEM does</h3>
+<p>A SIEM centralizes security-relevant telemetry for search, correlation, alerting and investigation. It may also provide enrichment, dashboards, case management and integrations with response systems.</p>
+<h3>Core architecture</h3>
+<p>The conceptual pipeline is:</p>
+<div class="formula">sources → collectors → transport → parsing → normalization → enrichment → storage → analytics → alerts/cases</div>
+<p>Each stage should have observable health. A broken parser or delayed ingestion can produce an apparent reduction in attacks while actually representing a reduction in visibility.</p>
+<h3>Enrichment</h3>
+<p>Enrichment adds context such as asset criticality, identity ownership, geographic information, vulnerability state, reputation or business service. Enrichment should be traceable and time-aware because external context can change.</p>
+<h3>Search and correlation</h3>
+<p>Correlation joins events using identifiers, time windows, identities, hosts, processes or network relationships. Correlation is powerful but should remain explainable: analysts need to understand why the system connected two observations.</p>
+<h3>SIEM is not the analyst</h3>
+<p>Automation can prioritize evidence, but complex incidents still require human reasoning about scope, causality, uncertainty and business impact.</p></section>
+
+<section class="section" id="detection"><h2>07 · Detection engineering fundamentals</h2>
+<h3>Start with behavior</h3>
+<p>A detection should begin with a security-relevant behavior or hypothesis, not with a favorite log source. Example: “an unusual administrative process creates a persistence mechanism” is a behavioral hypothesis. The next question is which telemetry can demonstrate the behavior reliably.</p>
+<h3>Detection types</h3>
+<table class="compare"><tr><th>Type</th><th>Purpose</th><th>Typical limitation</th></tr>
+<tr><td>Signature</td><td>Match a known artifact or pattern.</td><td>Can miss modified variants.</td></tr>
+<tr><td>Threshold</td><td>Identify unusual volume or frequency.</td><td>Normal baselines vary.</td></tr>
+<tr><td>Behavioral</td><td>Detect a suspicious sequence or relationship.</td><td>Requires richer context.</td></tr>
+<tr><td>Correlation</td><td>Combine multiple observations.</td><td>More dependencies and tuning.</td></tr>
+<tr><td>Anomaly</td><td>Identify deviations from a model or baseline.</td><td>Can be noisy without strong context.</td></tr></table>
+<h3>Detection specification</h3>
+<p>A production detection should document its objective, data dependencies, logic, expected false positives, severity rationale, investigation guidance, owner, test cases and retirement criteria.</p>
+<h3>Detection is software</h3>
+<p>Detection rules need version control, peer review, testing, deployment discipline, monitoring and rollback. Treating detections as code makes changes traceable and reduces accidental blind spots.</p></section>
+
+<section class="section" id="attack"><h2>08 · ATT&CK and behavior-based coverage</h2>
+<h3>Why behavior frameworks matter</h3>
+<p>MITRE ATT&CK provides a structured vocabulary for adversary tactics and techniques. It helps defenders describe behaviors consistently and connect threat intelligence, detections and control gaps.</p>
+<h3>From technique to telemetry</h3>
+<p>A useful mapping asks: what behavior is represented, which data components can expose it, what analytic logic can identify it, and what response evidence would confirm or reject the hypothesis? ATT&CK should guide reasoning rather than become a checklist where every technique is assumed to be equally relevant.</p>
+<h3>Coverage is multidimensional</h3>
+<p>“We have a detection for technique X” is not enough. Coverage also depends on platform, identity type, telemetry availability, analytic quality, alert routing and analyst ability to investigate the result.</p>
+<h3>Current ATT&CK model</h3>
+<p>ATT&CK's current releases emphasize data components and detection strategies. Older “data source” terminology remains visible in historical material, but defenders should follow the current ATT&CK model when designing new coverage.</p></section>
+
+<section class="section" id="hunting"><h2>09 · Threat hunting</h2>
+<h3>Hunting versus alert triage</h3>
+<p>Triage starts from an alert and determines whether it represents a meaningful event. Hunting starts from a hypothesis and searches telemetry for evidence that may not have triggered an existing alert.</p>
+<h3>Hypothesis-driven hunting</h3>
+<p>A good hunt states the hypothesis, affected population, required data, expected benign behavior, suspicious behavior and stopping criteria. The outcome may be a confirmed finding, a useful negative result, a new detection, or a telemetry gap.</p>
+<h3>Baseline and rarity</h3>
+<p>Rare does not mean malicious. New software, administrative activity, software deployment and legitimate automation can all appear unusual. Rarity becomes useful when combined with identity, asset criticality, process ancestry, timing and other context.</p>
+<h3>Hunt outputs</h3>
+<p>Every completed hunt should produce reusable knowledge: a detection candidate, telemetry improvement, investigation query, documented benign explanation, or a clearly stated unresolved hypothesis.</p></section>
+
+<section class="section" id="triage"><h2>10 · Alert triage and investigation</h2>
+<h3>First-pass questions</h3>
+<ol><li>What exactly triggered the alert?</li><li>Which identity, host, application or resource is involved?</li><li>Is the observed activity expected for this asset and role?</li><li>What happened immediately before and after the event?</li><li>What evidence would change the current assessment?</li></ol>
+<h3>Severity versus confidence</h3>
+<p>Impact and confidence are different dimensions. A high-impact alert with weak evidence may need rapid validation; a low-impact event with extremely strong evidence may still be useful for correlation. Do not collapse these concepts into one unexplained score.</p>
+<h3>Scope</h3>
+<p>Investigation should establish whether the event is isolated or part of a larger pattern. Search for related identities, hosts, processes, destinations, files, accounts and time windows.</p>
+<h3>Evidence preservation</h3>
+<p>Investigation can change system state. For potentially significant incidents, evidence handling should follow the organization's forensic procedures so that response actions do not unnecessarily destroy useful evidence.</p></section>
+
+<section class="section" id="investigation"><h2>11 · Incident investigation and case reasoning</h2>
+<h3>Facts, inferences and hypotheses</h3>
+<p>Record observed facts separately from interpretations. “Process X started at time Y” is an observation. “Process X was malicious” is a conclusion that requires supporting evidence. Explicitly recording uncertainty prevents analysts from turning early assumptions into permanent facts.</p>
+<h3>Timeline reasoning</h3>
+<p>Build a chronological sequence across identity, endpoint, network and application evidence. Look for causal relationships while remaining aware that timestamp ordering does not automatically prove causality.</p>
+<h3>Root cause</h3>
+<p>Root cause should explain the condition that allowed the event to occur, not merely identify the final malicious action. Examples include excessive privilege, weak authentication, exposed service, missing patch, unsafe application behavior or inadequate monitoring.</p>
+<h3>Investigation notes</h3>
+<p>Good case notes make the reasoning reproducible: source, query, result, interpretation, confidence, decision and next action. This also supports handoffs between analysts.</p></section>
+
+<section class="section" id="automation"><h2>12 · Security automation and response orchestration</h2>
+<h3>Automation boundaries</h3>
+<p>Automation is appropriate for deterministic, low-risk actions such as enrichment, ticket creation, evidence gathering and known-safe containment workflows. High-impact actions should include authorization and safeguards appropriate to the environment.</p>
+<h3>SOAR concepts</h3>
+<p>Security orchestration and automation platforms connect alerts to workflows, enrichment sources and response systems. A playbook should define inputs, decision points, permissions, actions, failure handling and audit records.</p>
+<h3>Idempotency</h3>
+<p>Automated response should be safe to retry. If a workflow receives the same event twice, it should not unintentionally multiply destructive actions. Idempotency is especially important when APIs, queues and integrations can deliver duplicate messages.</p>
+<h3>Human approval</h3>
+<p>Human-in-the-loop controls are valuable for actions with material business impact. Automation should expose the evidence behind a recommendation rather than hiding the reasoning inside an opaque workflow.</p></section>
+
+<section class="section" id="quality"><h2>13 · Detection quality, testing and maintenance</h2>
+<h3>False positives and false negatives</h3>
+<p>False positives consume analyst capacity. False negatives leave threats undetected. Detection quality therefore cannot be measured by alert volume alone.</p>
+<h3>Testing</h3>
+<p>Detection tests should include known-good behavior, known-bad-like behavior in authorized test environments, edge cases and telemetry-missing scenarios. A rule that only works on one exact sample is fragile.</p>
+<h3>Precision, recall and operational usefulness</h3>
+<p>Precision describes how many alerts are relevant among the alerts produced; recall describes how much of the target activity is detected. In real SOCs, ground truth is incomplete, so these metrics must be interpreted alongside analyst effort, severity, coverage and investigation outcomes.</p>
+<h3>Drift</h3>
+<p>Applications change, operating systems change, cloud services change and attacker behavior changes. A detection that was reliable six months ago can silently decay. Ownership, periodic review and telemetry health are therefore part of detection engineering.</p>
+<div class="callout"><strong>Rule:</strong> every important detection should have an owner, a purpose, required telemetry, a test method and a known failure mode.</div></section>
+
+<section class="section" id="operations"><h2>14 · Building a mature SOC</h2>
+<h3>People, process and technology</h3>
+<p>A SOC is not defined by its SIEM license. It is an operating capability involving roles, escalation paths, evidence standards, detection ownership, incident procedures, communications and technology.</p>
+<h3>Tiering is a workflow choice</h3>
+<p>Organizations may separate monitoring, triage, investigation, threat hunting and detection engineering into different roles, or combine them in smaller teams. The important property is clear responsibility and effective handoff.</p>
+<h3>Metrics that support decisions</h3>
+<p>Useful operational measures can include time to acknowledge, time to investigate, time to contain, detection coverage, sensor health, alert quality, unresolved high-risk cases and response-test success. Metrics should reveal bottlenecks rather than reward teams for generating activity.</p>
+<h3>Continuous improvement</h3>
+<p>Every meaningful incident and investigation should feed back into prevention, telemetry, detections, playbooks, training and architecture. NIST CSF 2.0 places Detect within a broader lifecycle of Govern, Identify, Protect, Respond and Recover.</p></section>
+
+<section class="section" id="mastery"><h2>15 · Mastery questions — with answers</h2>
+<details class="qa"><summary>1. What is the difference between an event and a security signal?</summary><div class="answer"><strong>Answer:</strong> An event is an observation; a signal is an observation interpreted in context as potentially security-relevant. Context such as identity, asset, process ancestry and expected behavior determines usefulness.</div></details>
+<details class="qa"><summary>2. Why is “no log” not proof that nothing happened?</summary><div class="answer"><strong>Answer:</strong> Telemetry can be disabled, filtered, delayed, dropped or unavailable because a sensor was unhealthy. Absence of evidence is meaningful only when collection coverage and health are known.</div></details>
+<details class="qa"><summary>3. Why is process creation valuable to defenders?</summary><div class="answer"><strong>Answer:</strong> It can connect execution to a parent process, user, command line, executable and time. Those relationships provide context that a simple file hash cannot provide.</div></details>
+<details class="qa"><summary>4. What does Sysmon provide?</summary><div class="answer"><strong>Answer:</strong> Sysmon provides detailed Windows system telemetry such as process creation and optional network, DNS, file, registry, driver and process-access events. It records activity; it does not by itself determine whether the activity is malicious.</div></details>
+<details class="qa"><summary>5. Why does time synchronization matter?</summary><div class="answer"><strong>Answer:</strong> Investigators correlate events across systems. Clock skew or inconsistent timezone handling can produce an incorrect sequence and therefore a false causal story.</div></details>
+<details class="qa"><summary>6. What is a SIEM?</summary><div class="answer"><strong>Answer:</strong> A SIEM centralizes security telemetry for search, correlation, alerting and investigation, often with enrichment and case-management capabilities.</div></details>
+<details class="qa"><summary>7. Why should detections start with a behavior?</summary><div class="answer"><strong>Answer:</strong> A behavioral hypothesis defines what the defender is trying to detect. This prevents choosing a log source first and then forcing unrelated data into a detection.</div></details>
+<details class="qa"><summary>8. What should a production detection document?</summary><div class="answer"><strong>Answer:</strong> Its purpose, telemetry dependencies, logic, expected false positives, severity rationale, investigation steps, owner, tests, deployment history and retirement conditions.</div></details>
+<details class="qa"><summary>9. What is ATT&CK useful for?</summary><div class="answer"><strong>Answer:</strong> ATT&CK provides a structured vocabulary for adversary behaviors and helps defenders relate behaviors to telemetry, detections and mitigations. It is a knowledge base, not a complete SOC procedure.</div></details>
+<details class="qa"><summary>10. What is threat hunting?</summary><div class="answer"><strong>Answer:</strong> Threat hunting is hypothesis-driven searching for suspicious or adversarial behavior that may not have triggered an existing alert. It should produce reusable knowledge or expose a visibility gap.</div></details>
+<details class="qa"><summary>11. Why is rarity alone a weak detection signal?</summary><div class="answer"><strong>Answer:</strong> Legitimate administrative actions, deployments and new software can also be rare. Rarity becomes stronger when combined with identity, asset, process, timing and other context.</div></details>
+<details class="qa"><summary>12. What is the difference between severity and confidence?</summary><div class="answer"><strong>Answer:</strong> Severity describes potential impact; confidence describes how strongly the available evidence supports the assessment. They should be tracked separately.</div></details>
+<details class="qa"><summary>13. Why separate facts from hypotheses?</summary><div class="answer"><strong>Answer:</strong> It prevents assumptions from becoming treated as evidence and makes investigations easier to review, challenge and reproduce.</div></details>
+<details class="qa"><summary>14. What is detection drift?</summary><div class="answer"><strong>Answer:</strong> Detection drift occurs when environmental or adversary changes reduce the effectiveness of a previously useful detection. Regular testing and ownership help identify it.</div></details>
+<details class="qa"><summary>15. Why is telemetry normalization useful?</summary><div class="answer"><strong>Answer:</strong> It gives analysts and analytics a consistent vocabulary across different products while preserving the ability to retain vendor-specific fields where necessary.</div></details>
+<details class="qa"><summary>16. What makes an automated response safe to retry?</summary><div class="answer"><strong>Answer:</strong> Idempotent design: repeating the same workflow should not unintentionally multiply or escalate the action. Duplicate events and partial failures must be expected.</div></details>
+<details class="qa"><summary>17. Why should high-impact automated actions have safeguards?</summary><div class="answer"><strong>Answer:</strong> A false detection or integration failure can cause material business disruption. Authorization, scoped permissions, approvals and rollback paths reduce that risk.</div></details>
+<details class="qa"><summary>18. Why is alert volume a poor standalone SOC metric?</summary><div class="answer"><strong>Answer:</strong> More alerts can mean better visibility or simply more noise. Operational quality depends on relevance, severity, investigation effort, coverage and outcomes.</div></details>
+<details class="qa"><summary>19. What should happen after a successful investigation?</summary><div class="answer"><strong>Answer:</strong> Findings should feed improvements into detections, telemetry, controls, playbooks, architecture and training where appropriate. Investigation should improve the system rather than end with case closure.</div></details>
+<details class="qa"><summary>20. What is the core mental model for defensive operations?</summary><div class="answer"><strong>Answer:</strong> Observe reliably, establish context, test a security hypothesis, preserve evidence, make an explicit decision, respond within authorization, and feed the result back into the defensive system.</div></details>
+</section>
+
+<section class="sources">
+<h2>Primary references</h2>
+<a href="https://www.nist.gov/publications/nist-cybersecurity-framework-csf-20" target="_blank" rel="noopener">NIST — Cybersecurity Framework 2.0</a>
+<a href="https://www.nist.gov/cyberframework/detect" target="_blank" rel="noopener">NIST — Detect Function</a>
+<a href="https://attack.mitre.org/" target="_blank" rel="noopener">MITRE ATT&CK</a>
+<a href="https://attack.mitre.org/datacomponents/" target="_blank" rel="noopener">MITRE ATT&CK — Data Components</a>
+<a href="https://learn.microsoft.com/en-us/windows/security/operating-system-security/sysmon/overview" target="_blank" rel="noopener">Microsoft Learn — Sysmon overview</a>
+<a href="https://learn.microsoft.com/en-us/windows/security/operating-system-security/sysmon/sysmon-events" target="_blank" rel="noopener">Microsoft Learn — Sysmon events</a>
+<a href="https://learn.microsoft.com/en-us/windows/security/operating-system-security/sysmon/sysmon-configuration-files" target="_blank" rel="noopener">Microsoft Learn — Sysmon configuration</a>
+<a href="https://sigmahq.io/" target="_blank" rel="noopener">Sigma — Detection format and ecosystem</a>
+<a href="https://www.rfc-editor.org/" target="_blank" rel="noopener">RFC Editor — Internet protocol standards</a>
+</section>
+</main>
+<footer class="wrap footer">Observe → understand → detect → investigate → improve</footer>
+</body>
+</html>
