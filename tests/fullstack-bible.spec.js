@@ -99,18 +99,17 @@ test.describe('FullStack Bible site smoke', () => {
     await expect(terminal.locator('.fsb-terminal-output')).toContainText('Program started');
   });
 
-  test('project workspace mounts embedded terminal', async ({ page }) => {
-    await page.goto('projects.html?stage=05');
-    const projectCard = page.locator('.card[data-project-id="05"]');
+  test('projects open real learning source and explanation', async ({ page }) => {
+    await page.goto('projects.html');
+    const projectCard = page.locator('.card[data-project-id="07"]');
     await expect(projectCard).toHaveCount(1);
-    await projectCard.getByRole('button', { name:/open project/i }).click();
-    await page.getByRole('button', { name:'Workspace' }).click();
-    await expect(page.locator('[data-terminal-host]').first()).toBeVisible();
-    await expect(page.locator('.fsb-terminal').first()).toContainText('Browser sandbox');
-    const input = page.locator('.fsb-terminal-line input').first();
-    await input.fill('help');
-    await input.press('Enter');
-    await expect(page.locator('.fsb-terminal-output').first()).toContainText('touch');
+    await projectCard.getByRole('button', { name:/read project/i }).click();
+    await expect(page.getByRole('heading', { name:/Blog CMS/i })).toBeVisible();
+    await page.getByRole('button', { name:'Source code' }).click();
+    await expect(page.locator('.code')).toBeVisible();
+    await expect(page.locator('.code')).toContainText('PostgreSQL');
+    await page.getByRole('button', { name:'Explain' }).click();
+    await expect(page.locator('.concept')).toHaveCount(6);
   });
 
 });
