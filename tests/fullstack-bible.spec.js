@@ -62,7 +62,7 @@ test.describe('FullStack Bible site smoke', () => {
     await expect(page).toHaveTitle(/FullStack Bible/i);
     await expect(page.getByRole('link', { name:/start learning/i })).toHaveAttribute('href', /roadmap\.html/);
     await page.goto('projects.html?stage=03');
-    await expect(page.locator('body')).toContainText(/Learning dashboard/i);
+    await expect(page.locator('body')).toContainText(/Task Manager/i);
     await page.goto('practice.html?stage=99');
     await expect(page.locator('body')).toBeVisible();
     await page.goto('projects.html?stage=99');
