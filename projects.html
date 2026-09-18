@@ -66,7 +66,7 @@ function renderProject(){
     if(!file||!current.files[file])file=names[0];
     b='<div class="box"><h3>Source code — read it as a codebase</h3><p>Every visible file is real source for the learning project. Follow imports and boundaries rather than treating the file as an isolated snippet.</p><div class="files">'+names.map(n=>'<button class="file '+(file===n?"active":"")+'" data-file="'+esc(n)+'" onclick="selectFile(this.dataset.file)">'+esc(n)+'</button>').join("")+'</div><textarea class="code" readonly>'+esc(current.files[file])+'</textarea></div>';
   } else {
-    b='<div class="explain"><div class="box"><h3>Answer these while reading</h3><p>Do not guess. The answer is on this page so you can learn by tracing the code and then checking your reasoning.</p></div><div class="qa">'+(guide.qa||[]).map((x,i)=>'<details '+(i===0?"open":"")+'><summary>'+esc(x[0])+'</summary><p>'+esc(x[1])+'</p></details>').join("")+'</div><div class="box"><h3>Concepts</h3><div class="tags">'+current.concepts.map(x=>'<span class="tag">'+esc(x)+'</span>').join("")+'</div></div></div>';
+    b='<div class="explain"><div class="box"><h3>Project Q&A</h3><p>These questions are specific to <strong>'+current.title+'</strong>. Read the source first, then open a question to check your understanding.</p></div><div class="qa">'+(guide.qa||[]).map((x,i)=>'<details '+(i===0?"open":"")+'><summary>'+esc(x[0])+'</summary><p>'+esc(x[1])+'</p></details>').join("")+'</div><div class="box"><h3>Concepts</h3><div class="tags">'+current.concepts.map(x=>'<span class="tag">'+esc(x)+'</span>').join("")+'</div></div></div>';
   }
   $("body").innerHTML=b;
 }
