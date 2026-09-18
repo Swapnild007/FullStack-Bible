@@ -101,7 +101,7 @@ test.describe('FullStack Bible site smoke', () => {
 
   test('project workspace mounts embedded terminal', async ({ page }) => {
     await page.goto('projects.html?stage=05');
-    const projectCard = page.locator('.card').filter({ hasText: 'Typed learning state' });
+    const projectCard = page.locator('.card[data-project-id="05"]');
     await expect(projectCard).toHaveCount(1);
     await projectCard.getByRole('button', { name:/open project/i }).click();
     await page.getByRole('button', { name:'Workspace' }).click();
