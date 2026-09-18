@@ -1,0 +1,249 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f5f7">
+<title>08 — Web Application & API Security — FullStack Bible</title>
+<style>
+:root{--bg:#f5f5f7;--ink:#111113;--muted:#6e6e73;--blue:#007aff;--purple:#5856d6}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(65% 35% at 90% 0,#5856d622,transparent 70%),radial-gradient(55% 35% at 0 20%,#007aff18,transparent 70%),var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{width:min(1000px,calc(100% - 28px));margin:auto}.nav{position:sticky;top:10px;z-index:20;margin-top:10px;padding:9px 10px 9px 17px;border:1px solid #fff;border-radius:20px;background:#ffffffcc;backdrop-filter:blur(25px);display:flex;justify-content:space-between;align-items:center;box-shadow:0 12px 38px #0000000b}.brand{font-weight:800;letter-spacing:-.06em;text-decoration:none;color:inherit}.brand span{color:var(--blue)}.back{padding:10px 14px;border-radius:999px;background:#111;color:#fff;text-decoration:none;font-size:12px;font-weight:700}
+.hero{padding:68px 0 34px}.eyebrow{font-size:11px;letter-spacing:.16em;color:#999;font-weight:800}.hero h1{font-size:clamp(43px,8vw,78px);line-height:.94;letter-spacing:-.085em;margin:14px 0}.hero h1 span{background:linear-gradient(105deg,#111,#007aff,#5856d6);background-clip:text;-webkit-background-clip:text;color:transparent}.hero p{max-width:850px;color:var(--muted);font-size:17px;line-height:1.7}.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.pill{padding:7px 10px;border-radius:999px;background:#fff;border:1px solid #fff;color:#666;font-size:10px;font-weight:800}
+.lessonbar{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.lessonbar a{padding:9px 12px;border-radius:999px;background:#fff;border:1px solid #e8e8ec;color:#555;text-decoration:none;font-size:11px;font-weight:750}
+.section{margin:12px 0;padding:24px;border:1px solid #fff;border-radius:25px;background:#ffffffbd;box-shadow:0 18px 55px #00000009;scroll-margin-top:80px}.section h2{font-size:24px;letter-spacing:-.055em;margin:0 0 13px}.section h3{font-size:16px;letter-spacing:-.025em;margin:21px 0 8px}.section p,.section li{color:#555;font-size:13px;line-height:1.78}.section p{margin:9px 0}.section ul,.section ol{padding-left:21px}.section li{margin:6px 0}.callout{margin:15px 0;padding:15px 16px;border-radius:16px;background:#eef5ff;color:#36506c;font-size:12px;line-height:1.7}.warning{background:#fff5ed;color:#705038}.formula{margin:12px 0;padding:12px 14px;border-radius:13px;background:#f0f0f3;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:#444;overflow:auto}.compare{width:100%;border-collapse:collapse;margin:12px 0;font-size:11px}.compare th,.compare td{padding:10px;border-bottom:1px solid #e7e7ea;text-align:left;vertical-align:top}.qa{margin:9px 0;border:1px solid #e8e8ec;border-radius:15px;background:#fff;overflow:hidden}.qa summary{cursor:pointer;padding:13px 14px;font-size:12px;font-weight:750;list-style:none}.qa summary::-webkit-details-marker{display:none}.qa summary:after{content:"+";float:right;color:#888}.qa[open] summary:after{content:"−"}.answer{padding:0 14px 15px;color:#555;font-size:12px;line-height:1.75}.answer strong{color:#222}.sources{padding:22px;margin:14px 0 30px;border:1px solid #fff;border-radius:22px;background:#fff}.sources h2{font-size:19px;margin:0 0 10px}.sources a{display:block;color:#007aff;text-decoration:none;font-size:12px;margin:9px 0}.footer{text-align:center;color:#999;padding:45px 0 70px;font-size:11px}
+@media(max-width:650px){.hero{padding-top:55px}.hero p{font-size:15px}.section{padding:20px}.section h2{font-size:21px}.compare{font-size:10px}.compare th,.compare td{padding:8px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<nav class="nav wrap"><a class="brand" href="index.html">FullStack<span>Bible</span></a><a class="back" href="cybersecurity.html">Cybersecurity</a></nav>
+
+<header class="wrap hero">
+<div class="eyebrow">CYBERSECURITY · DISCIPLINE 08 · INTERMEDIATE → ADVANCED</div>
+<h1>Web Application & <span>API Security.</span></h1>
+<p>Secure web applications by understanding trust boundaries, browser behavior, identity, authorization, input handling, data access, server-side requests, API contracts, secrets, third-party dependencies and failure modes. This chapter connects application architecture to the current OWASP web and API security guidance.</p>
+<div class="meta"><span class="pill">Intermediate → Advanced</span><span class="pill">Deep theory</span><span class="pill">17 chapters</span><span class="pill">20 mastery answers</span><span class="pill">Theory only</span></div>
+</header>
+
+<main class="wrap">
+<div class="lessonbar">
+<a href="#architecture">Architecture</a><a href="#browser">Browser</a><a href="#access">Access control</a><a href="#input">Input & injection</a><a href="#auth">Authentication</a><a href="#session">Sessions</a><a href="#api">API security</a><a href="#ssrf">SSRF</a><a href="#supply">Supply chain</a><a href="#mastery">20 questions</a>
+</div>
+
+<section class="section" id="architecture"><h2>01 · Application security as trust-boundary engineering</h2>
+<p>A web application is a chain of components: browser, frontend code, edge/CDN, web server, application services, identity provider, database, object storage, queues and third-party APIs. Every boundary can change what the application knows, trusts or permits.</p>
+<div class="formula">Untrusted input → validation → business logic → authorization → data operation → response</div>
+<h3>Security is not a frontend feature</h3>
+<p>Client-side validation improves usability but cannot enforce security because the client is controlled by the user. Security decisions involving identity, permissions, tenant ownership, pricing, workflow state or sensitive data must be enforced on trusted server-side components.</p>
+<h3>Threat modelling</h3>
+<p>Identify assets, actors, trust boundaries, entry points, privileged operations and abuse cases. Ask what happens if a request is modified, replayed, duplicated, delayed, reordered or sent without the expected UI.</p>
+<div class="callout"><strong>Core rule:</strong> every value crossing a trust boundary should have an explicit interpretation. Do not let “it came from our frontend” become an authorization decision.</div>
+</section>
+
+<section class="section" id="browser"><h2>02 · Browser security model</h2>
+<h3>Same-origin policy</h3>
+<p>The browser's same-origin policy limits how documents and scripts from one origin interact with resources from another. An origin is based on scheme, host and port. CORS can selectively relax certain cross-origin browser restrictions, but it does not make an API intrinsically trusted.</p>
+<h3>Cookies</h3>
+<p>Cookies can carry session identifiers. Security attributes include <strong>Secure</strong>, <strong>HttpOnly</strong> and <strong>SameSite</strong>, plus appropriate domain and path scope. Cookie configuration should reflect the application's actual cross-site requirements.</p>
+<h3>Web storage</h3>
+<p>LocalStorage and sessionStorage are accessible to JavaScript running in the origin. Consequently, placing high-value bearer credentials there can increase exposure when an XSS flaw exists. Credential storage strategy should be selected from the application's threat model rather than convenience.</p>
+<h3>Browser isolation is layered</h3>
+<p>CSP, framing controls, origin isolation, cookie policy, HTTPS, permissions policy and careful DOM APIs provide complementary controls. None removes the need for server-side authorization.</p>
+</section>
+
+<section class="section" id="access"><h2>03 · Broken access control and object authorization</h2>
+<p>Access control determines whether an authenticated or otherwise identified principal may perform a specific action on a specific resource. The most dangerous failures often occur when an application verifies identity but not resource ownership or permitted action.</p>
+<h3>Object-level authorization</h3>
+<p>If an API accepts an object identifier, the server must determine whether the caller may access that particular object. Changing an ID in a request should not be enough to cross a tenant or user boundary.</p>
+<h3>Function-level authorization</h3>
+<p>Administrative actions require explicit authorization. Hiding an admin button in the UI is not authorization. Every privileged route must enforce the required policy server-side.</p>
+<h3>Property-level authorization</h3>
+<p>An object can contain fields with different sensitivity. A user may be allowed to update a display name but not a billing status, owner identifier, role or internal risk field. Avoid binding arbitrary request objects directly to persistence models.</p>
+<table class="compare"><tr><th>Decision</th><th>Question</th></tr><tr><td>Authentication</td><td>Who is the principal?</td></tr><tr><td>Object authorization</td><td>May this principal act on this resource?</td></tr><tr><td>Function authorization</td><td>May this principal invoke this operation?</td></tr><tr><td>Property authorization</td><td>May this principal change or see this field?</td></tr></table>
+</section>
+
+<section class="section" id="input"><h2>04 · Input validation and injection</h2>
+<p>Input validation is about defining what the application accepts and how that value is interpreted. Injection occurs when untrusted data changes the structure or meaning of a command, query, template, expression or markup.</p>
+<h3>SQL injection</h3>
+<p>SQL should be constructed through parameterized queries or safe query APIs. A string that contains SQL syntax must remain data rather than becoming executable query structure.</p>
+<h3>Command injection</h3>
+<p>Passing user-controlled strings to operating-system command interpreters creates a high-risk boundary. Prefer direct library APIs with structured arguments instead of shell interpretation. If a command is genuinely required, use strict allowlists and separate data from command structure.</p>
+<h3>HTML and DOM injection</h3>
+<p>HTML is an interpreter context. Context-aware output encoding, safe DOM APIs and a restrictive Content Security Policy can reduce XSS risk. Sanitization is context-dependent; a sanitizer suitable for HTML fragments is not automatically safe for JavaScript, CSS or URL contexts.</p>
+<h3>Template, expression and parser injection</h3>
+<p>Template engines, expression languages, YAML/XML parsers and serialization formats can create their own interpretation boundaries. Understand the parser and avoid evaluating attacker-controlled expressions.</p>
+<div class="callout"><strong>Defense pattern:</strong> parameterize structured operations, validate business constraints, encode at the output context and minimize interpreters.</div>
+</section>
+
+<section class="section" id="auth"><h2>05 · Authentication security</h2>
+<h3>Password authentication</h3>
+<p>Passwords should be stored using dedicated password-hashing algorithms designed for password storage, with unique salts and parameters appropriate to current guidance. Plaintext passwords and fast general-purpose hashes are not acceptable password storage designs.</p>
+<h3>MFA and phishing resistance</h3>
+<p>Multi-factor authentication reduces dependence on passwords. Phishing-resistant methods such as passkeys/WebAuthn provide stronger protection because authentication is cryptographically bound to the legitimate relying-party origin.</p>
+<h3>Account recovery</h3>
+<p>Password reset, email changes, backup codes and help-desk recovery are authentication paths. They need strong identity proof, rate controls, auditing and careful notification.</p>
+<h3>Authentication versus authorization</h3>
+<p>Even a perfectly authenticated user can be unauthorized to access another user's data or invoke an administrative operation.</p>
+</section>
+
+<section class="section" id="session"><h2>06 · Session management and credential lifecycle</h2>
+<p>After authentication, the application needs a mechanism to associate subsequent requests with the authenticated principal. A session identifier is a credential and must be protected accordingly.</p>
+<h3>Session fixation</h3>
+<p>Applications should establish a fresh session identifier after authentication or privilege elevation so an attacker cannot force a victim to use a known session identifier.</p>
+<h3>Cookie controls</h3>
+<ul><li><strong>Secure:</strong> restricts cookie transmission to HTTPS.</li><li><strong>HttpOnly:</strong> prevents normal JavaScript access to the cookie.</li><li><strong>SameSite:</strong> controls cross-site cookie sending according to the selected policy.</li><li><strong>Scope:</strong> keep Domain and Path as narrow as practical.</li></ul>
+<h3>Token lifecycle</h3>
+<p>Bearer tokens should have an explicit issuer, audience, scope and expiration. OAuth security guidance now recommends stronger protections against authorization-code attacks and token replay, including PKCE and sender-constrained mechanisms where appropriate.</p>
+<h3>Logout and revocation</h3>
+<p>Define what logout means, how sessions are invalidated, what happens after password or privilege changes, and how compromised credentials are revoked.</p>
+</section>
+
+<section class="section" id="csrf"><h2>07 · CSRF, CORS and cross-origin behavior</h2>
+<h3>CSRF</h3>
+<p>Cross-site request forgery abuses a browser's ability to attach ambient credentials to a request. It matters particularly for cookie-authenticated state-changing operations.</p>
+<h3>Defenses</h3>
+<p>SameSite cookies can reduce exposure, while synchronizer tokens or equivalent request-binding mechanisms can provide explicit proof that the request originated from the intended application flow. Sensitive operations can also require reauthentication or other user presence signals.</p>
+<h3>CORS is not an authentication control</h3>
+<p>CORS controls whether browser JavaScript may read certain cross-origin responses. A server may still receive a request even when a browser blocks JavaScript from reading the response. CORS should therefore be configured according to explicit trusted origins and methods, not used as a substitute for authorization.</p>
+</section>
+
+<section class="section" id="api"><h2>08 · API security architecture</h2>
+<p>APIs expose application capabilities directly. The current OWASP API Security Top 10 (2023) highlights risks including broken object-level authorization, broken authentication, broken object-property authorization, unrestricted resource consumption, broken function-level authorization, sensitive business-flow abuse, SSRF, misconfiguration, poor API inventory and unsafe consumption of third-party APIs.</p>
+<h3>API request model</h3>
+<div class="formula">Identity → endpoint policy → object policy → property policy → business rule → data access → response policy</div>
+<h3>Schema validation</h3>
+<p>Define request and response schemas. Reject malformed or semantically invalid values before they reach sensitive business logic. Validate types, ranges, enumerations, lengths and relationships.</p>
+<h3>Response minimization</h3>
+<p>Return only fields required by the caller. A database row should not automatically become an API response object. Sensitive internal fields, credentials, authorization metadata and tenant identifiers should be deliberately controlled.</p>
+<h3>Resource consumption</h3>
+<p>Rate limits are only one control. Also constrain pagination, upload sizes, query complexity, batch sizes, expensive searches, concurrency and downstream fan-out. Resource limits protect both security and availability.</p>
+</section>
+
+<section class="section" id="business"><h2>09 · Business-logic and workflow security</h2>
+<p>Not every vulnerability is a malformed input. Applications can be technically correct at the request level while violating business rules.</p>
+<h3>State-machine thinking</h3>
+<div class="formula">Draft → Submitted → Approved → Fulfilled → Closed</div>
+<p>If an endpoint accepts a state transition without checking the current state, actor permissions and required conditions, a caller may skip intended controls. Model sensitive workflows explicitly.</p>
+<h3>Replay and duplication</h3>
+<p>Payments, invitations, password resets, job submissions and other operations may be retried. Use idempotency keys or server-side state where repeated requests must not produce repeated effects.</p>
+<h3>Race conditions</h3>
+<p>Authorization and business invariants can fail when two requests execute concurrently. Use appropriate transactional boundaries, uniqueness constraints, locking or other concurrency controls.</p>
+</section>
+
+<section class="section" id="ssrf"><h2>10 · Server-Side Request Forgery</h2>
+<p>SSRF occurs when a server retrieves a remote resource based on attacker-controlled input and the attacker can influence the destination beyond the intended policy.</p>
+<h3>Why SSRF matters</h3>
+<p>The server may have network access that the user does not: internal services, administrative endpoints, metadata services or private APIs. SSRF therefore crosses a network trust boundary using the application's own privileges.</p>
+<h3>Defense architecture</h3>
+<ul><li>Prefer fixed destinations when the feature does not require arbitrary URLs.</li><li>Use strict destination allowlists for approved integrations.</li><li>Validate URL schemes, hosts, ports and redirect behavior.</li><li>Resolve and connect under a network policy that denies unintended private destinations.</li><li>Do not assume DNS validation performed once remains valid for the subsequent connection.</li><li>Limit response size, timeout and redirect depth.</li><li>Log outbound requests with sufficient context.</li></ul>
+<div class="callout warning"><strong>Important:</strong> SSRF defenses are layered. A string-based “is this a private IP?” check alone is not a complete network security boundary.</div>
+</section>
+
+<section class="section" id="data"><h2>11 · Data access, databases and multi-tenant isolation</h2>
+<h3>Authorization must reach the data boundary</h3>
+<p>Checking authorization in one controller is fragile when other code paths can access the same data. Data-access functions should preserve tenant and ownership constraints, and database-level controls such as row-level security can provide an additional boundary where appropriate.</p>
+<h3>Mass assignment</h3>
+<p>Never allow arbitrary client fields to update a persistence model. Define explicit writable fields and map them deliberately.</p>
+<h3>Tenant isolation</h3>
+<p>Every query involving tenant-scoped data should establish tenant context from trusted identity rather than from a freely supplied request parameter. Test for cross-tenant access as a first-class security property.</p>
+<h3>Secrets and sensitive data</h3>
+<p>Minimize storage of secrets and sensitive information. Encrypt data in transit and at rest according to the threat model, restrict database privileges and prevent sensitive values from appearing in logs or error messages.</p>
+</section>
+
+<section class="section" id="errors"><h2>12 · Error handling, logging and observability</h2>
+<p>Error behavior is part of the security boundary. Detailed internal exceptions can expose filesystem paths, database structure, stack traces, tokens or implementation details.</p>
+<h3>Safe error responses</h3>
+<p>Return stable, useful error codes to clients while keeping sensitive diagnostic detail in protected server-side telemetry. Do not leak credentials, connection strings or raw exception objects.</p>
+<h3>Security logging</h3>
+<p>Log authentication events, authorization failures, administrative actions, security-sensitive configuration changes, suspicious workflow transitions and relevant API abuse signals. Preserve principal, action, resource, outcome and time context.</p>
+<h3>Logging failures</h3>
+<p>OWASP Top 10:2025 includes <strong>Security Logging & Alerting Failures</strong> as A09. Logs that exist but cannot support detection or investigation are a security weakness.</p>
+</section>
+
+<section class="section" id="headers"><h2>13 · Browser-facing hardening</h2>
+<h3>Content Security Policy</h3>
+<p>CSP can constrain script, style, image, frame and other resource sources. A well-designed policy reduces the impact of injection but requires understanding of application dependencies.</p>
+<h3>Security headers</h3>
+<p>Headers such as HSTS, frame-ancestors through CSP, Referrer-Policy and appropriate content-type protections can reduce browser attack surface. Exact configuration should match application behavior rather than copying a generic list.</p>
+<h3>HTTPS and transport</h3>
+<p>HTTPS provides authenticated, encrypted transport when certificate validation succeeds. It protects credentials and data in transit but does not make a vulnerable application secure once traffic reaches the server.</p>
+<h3>Clickjacking</h3>
+<p>Framing controls prevent an attacker-controlled page from embedding sensitive application interfaces in ways that can trick users into unintended interaction.</p>
+</section>
+
+<section class="section" id="supply"><h2>14 · Dependencies, software supply chain and integrity</h2>
+<p>Applications depend on packages, build tools, container images, CI systems, registries and deployment infrastructure. A compromise in any trusted build dependency can become application code.</p>
+<h3>Dependency security</h3>
+<ul><li>Maintain an inventory of direct and transitive dependencies.</li><li>Pin or constrain versions according to the project's update strategy.</li><li>Review security advisories and transitive exposure.</li><li>Remove unused packages and capabilities.</li><li>Protect package and deployment credentials.</li><li>Generate and maintain an SBOM where appropriate.</li></ul>
+<h3>Build integrity</h3>
+<p>Protect source repositories, CI credentials, signing keys and artifact registries. Separate build authority from deployment authority where practical and retain provenance for production artifacts.</p>
+<h3>OWASP 2025</h3>
+<p>OWASP Top 10:2025 lists <strong>Software Supply Chain Failures</strong> as A03, reflecting the broader security boundary created by modern dependency and build ecosystems.</p>
+</section>
+
+<section class="section" id="thirdparty"><h2>15 · Third-party APIs and external integrations</h2>
+<p>External API responses are data from another trust domain. Do not assume they are safe simply because the integration is documented or authenticated.</p>
+<h3>Validate external data</h3>
+<p>Apply schema validation, size limits, timeouts and business-rule checks to third-party responses. Treat URLs, HTML, file names and identifiers received from partners as untrusted data.</p>
+<h3>Least privilege</h3>
+<p>Give integrations only the scopes and network access they need. Separate credentials per integration and rotate or revoke them through a defined lifecycle.</p>
+<h3>Failure containment</h3>
+<p>Use timeouts, bounded retries, circuit breakers and safe fallbacks. An external service failure should not automatically cause credential leakage, unbounded resource consumption or inconsistent business state.</p>
+</section>
+
+<section class="section" id="testing"><h2>16 · Secure development and security testing</h2>
+<h3>Security requirements</h3>
+<p>Translate threats into testable requirements: “A user cannot read another tenant's invoice” is testable. “The API is secure” is not.</p>
+<h3>Testing layers</h3>
+<ul><li><strong>Unit tests:</strong> authorization predicates and validation rules.</li><li><strong>Integration tests:</strong> database, identity and service boundaries.</li><li><strong>End-to-end tests:</strong> realistic user and permission flows.</li><li><strong>Static analysis:</strong> source and dependency analysis.</li><li><strong>Dynamic testing:</strong> behavior of a running application.</li><li><strong>Threat-driven testing:</strong> abuse cases and trust-boundary failures.</li></ul>
+<h3>Security regression</h3>
+<p>Every important security bug should produce a regression test that fails if the boundary is broken again. This turns incident knowledge into durable engineering control.</p>
+</section>
+
+<section class="section" id="design"><h2>17 · Secure application architecture</h2>
+<p>A mature application treats security as a set of explicit boundaries rather than a final scanning step.</p>
+<div class="formula">Browser → Edge → App/API → Identity → Authorization → Data → External services
+             ↓         ↓          ↓             ↓
+          browser   transport   policy       audit/telemetry</div>
+<h3>Security properties to preserve</h3>
+<ul><li>Every sensitive operation has an explicit authorization decision.</li><li>Every trust boundary validates and interprets incoming data.</li><li>Every credential has a lifecycle and narrow scope.</li><li>Every external dependency has bounded failure behavior.</li><li>Every critical security decision is observable enough to investigate.</li><li>Every important security invariant is tested.</li></ul>
+<div class="callout"><strong>Architecture rule:</strong> secure design is not “add more filters.” It is choosing boundaries so a single compromised input, session, service or dependency cannot automatically cross the next security boundary.</div>
+</section>
+
+<section class="section" id="mastery"><h2>18 · Mastery review — 20 questions with answers</h2>
+<details class="qa"><summary>01 · Why can client-side validation not enforce security?</summary><div class="answer"><strong>Answer:</strong> The client is controlled by the user and can be modified or bypassed.<br><br><strong>Why:</strong> Security decisions must be enforced on trusted server-side boundaries.</div></details>
+<details class="qa"><summary>02 · What is object-level authorization?</summary><div class="answer"><strong>Answer:</strong> It checks whether the current principal may access or modify the specific resource identified by the request.<br><br><strong>Why:</strong> Authentication alone does not authorize every object a user can name.</div></details>
+<details class="qa"><summary>03 · What is property-level authorization?</summary><div class="answer"><strong>Answer:</strong> It controls which fields of an object a principal may read or modify.<br><br><strong>Why:</strong> A user may be allowed to edit a profile name but not its owner, role or billing state.</div></details>
+<details class="qa"><summary>04 · What is injection?</summary><div class="answer"><strong>Answer:</strong> Injection occurs when untrusted data changes the structure or meaning of an interpreter's command, query, markup or expression.<br><br><strong>Why:</strong> Parameterization and context-aware encoding keep data separate from executable structure.</div></details>
+<details class="qa"><summary>05 · Why is SQL parameterization important?</summary><div class="answer"><strong>Answer:</strong> It keeps user-supplied values separate from SQL syntax.<br><br><strong>Why:</strong> The database receives data as parameters rather than treating the value as query structure.</div></details>
+<details class="qa"><summary>06 · What is phishing-resistant authentication?</summary><div class="answer"><strong>Answer:</strong> Authentication where the credential is cryptographically bound to the legitimate relying-party context, such as WebAuthn/passkeys.<br><br><strong>Why:</strong> A copied password or one-time code can be relayed; origin-bound public-key authentication provides stronger resistance.</div></details>
+<details class="qa"><summary>07 · What is the purpose of HttpOnly?</summary><div class="answer"><strong>Answer:</strong> It prevents ordinary JavaScript from reading a cookie.<br><br><strong>Why:</strong> This can reduce direct theft of session cookies through some client-side injection scenarios, although it does not prevent all XSS effects.</div></details>
+<details class="qa"><summary>08 · What is CSRF?</summary><div class="answer"><strong>Answer:</strong> CSRF causes a victim's browser to send an authenticated request to a site without the user's intended action.<br><br><strong>Why:</strong> Ambient credentials such as cookies can be attached automatically.</div></details>
+<details class="qa"><summary>09 · Why is CORS not an authorization mechanism?</summary><div class="answer"><strong>Answer:</strong> CORS primarily controls browser JavaScript access to cross-origin responses; it does not decide whether the server should authorize the request.<br><br><strong>Why:</strong> Server-side authentication and authorization remain necessary.</div></details>
+<details class="qa"><summary>10 · What is BOLA?</summary><div class="answer"><strong>Answer:</strong> Broken Object Level Authorization occurs when an API exposes object identifiers but fails to verify whether the caller may access the referenced object.<br><br><strong>Why:</strong> Changing an identifier can otherwise cross ownership or tenant boundaries.</div></details>
+<details class="qa"><summary>11 · What is SSRF?</summary><div class="answer"><strong>Answer:</strong> SSRF occurs when an application can be induced to make a server-side request to an unintended destination.<br><br><strong>Why:</strong> The server may have network privileges unavailable to the user.</div></details>
+<details class="qa"><summary>12 · Why is URL allowlisting alone not always enough for SSRF?</summary><div class="answer"><strong>Answer:</strong> DNS resolution, redirects, alternate address representations and changes between validation and connection can undermine simplistic checks.<br><br><strong>Why:</strong> SSRF defense requires application and network-layer controls.</div></details>
+<details class="qa"><summary>13 · Why should APIs minimize response fields?</summary><div class="answer"><strong>Answer:</strong> Returning only required fields reduces accidental exposure of sensitive or internal data.<br><br><strong>Why:</strong> A database model should not automatically define the public API contract.</div></details>
+<details class="qa"><summary>14 · What is a business-logic vulnerability?</summary><div class="answer"><strong>Answer:</strong> It is a flaw where technically valid operations violate an intended business rule or workflow.<br><br><strong>Why:</strong> Input validation cannot detect every invalid state transition or economic abuse.</div></details>
+<details class="qa"><summary>15 · Why are idempotency controls important?</summary><div class="answer"><strong>Answer:</strong> They prevent retries or duplicate submissions from unintentionally creating repeated side effects.<br><br><strong>Why:</strong> Networks and clients can legitimately retry requests.</div></details>
+<details class="qa"><summary>16 · What does CSP provide?</summary><div class="answer"><strong>Answer:</strong> Content Security Policy restricts which types and sources of browser resources may execute or load.<br><br><strong>Why:</strong> A strong policy can reduce the impact of certain injection and framing attacks.</div></details>
+<details class="qa"><summary>17 · Why are third-party APIs untrusted input?</summary><div class="answer"><strong>Answer:</strong> They belong to another trust domain and their responses can be malformed, compromised, unexpectedly large or semantically unsafe.<br><br><strong>Why:</strong> Authentication of a partner does not make every returned value safe.</div></details>
+<details class="qa"><summary>18 · What is a security regression test?</summary><div class="answer"><strong>Answer:</strong> A test that encodes a previously identified security requirement or failure so the defect cannot silently return.<br><br><strong>Why:</strong> It converts security knowledge into repeatable engineering control.</div></details>
+<details class="qa"><summary>19 · What is the current OWASP Top 10 version?</summary><div class="answer"><strong>Answer:</strong> OWASP Top 10:2025 is the current released web-application Top 10. It includes categories such as Broken Access Control, Security Misconfiguration, Software Supply Chain Failures, Cryptographic Failures, Injection and Authentication Failures.<br><br><strong>Why:</strong> Security guidance should use the current released version while recognizing that the Top 10 is an awareness document, not a complete application-security standard.</div></details>
+<details class="qa"><summary>20 · What is the core web/API security mental model?</summary><div class="answer"><strong>Answer:</strong> Identify the principal, resource, action and trust boundary; validate the input; enforce authorization at the resource boundary; constrain credentials and dependencies; limit resources; observe important decisions; and test the security invariant.<br><br><strong>Why:</strong> Secure applications are designed around explicit trust boundaries rather than assumptions about clients or networks.</div></details>
+<div class="callout"><strong>Completion standard:</strong> You should be able to trace a request from browser to database, identify each trust boundary, explain object/function/property authorization, reason about injection and SSRF, distinguish authentication from authorization, secure API contracts, and design security regression tests.</div>
+</section>
+
+<section class="sources"><h2>Primary references</h2>
+<a href="https://top10.owasp.org/2025/" target="_blank" rel="noopener">OWASP Top 10:2025</a>
+<a href="https://owasp.org/API-Security/editions/2023/en/0x11-t10/" target="_blank" rel="noopener">OWASP API Security Top 10 — 2023</a>
+<a href="https://owasp.org/www-project-application-security-verification-standard/" target="_blank" rel="noopener">OWASP Application Security Verification Standard</a>
+<a href="https://www.rfc-editor.org/rfc/rfc9700" target="_blank" rel="noopener">RFC 9700 — Best Current Practice for OAuth 2.0 Security</a>
+<a href="https://www.rfc-editor.org/rfc/rfc7636" target="_blank" rel="noopener">RFC 7636 — OAuth 2.0 PKCE</a>
+<a href="https://developer.mozilla.org/en-US/docs/Web/Security" target="_blank" rel="noopener">MDN Web Security</a>
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS" target="_blank" rel="noopener">MDN CORS</a>
+<a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP" target="_blank" rel="noopener">MDN Content Security Policy</a>
+<a href="https://cheatsheetseries.owasp.org/" target="_blank" rel="noopener">OWASP Cheat Sheet Series</a>
+</section>
+</main>
+<footer class="wrap footer">Cybersecurity · Discipline 08 · Web Application & API Security</footer>
+</body></html>
