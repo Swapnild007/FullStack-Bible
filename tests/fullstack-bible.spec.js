@@ -40,7 +40,7 @@ test.describe('FullStack Bible site smoke', () => {
   });
 
   test('practice drill completion persists after reload', async ({ page }) => {
-    await page.goto('practice.html?stage=17');
+    await page.goto('site/practice.html?stage=17');
     const drill = page.locator('.drill').first();
     await expect(drill).toBeVisible();
     await drill.getByRole('button', { name:'Mark complete' }).click();
@@ -49,7 +49,7 @@ test.describe('FullStack Bible site smoke', () => {
   });
 
   test('progress understands the advanced module checklist keys', async ({ page }) => {
-    await page.goto('module-13.html');
+    await page.goto('site/module-13.html');
     const first = page.locator('#checks input').first();
     await first.check();
     await page.goto('site/progress.html');
@@ -60,12 +60,12 @@ test.describe('FullStack Bible site smoke', () => {
   test('landing, projects, invalid stages and keyboard focus work', async ({ page }) => {
     await page.goto('index.html');
     await expect(page).toHaveTitle(/FullStack Bible/i);
-    await expect(page.getByRole('link', { name:/start learning/i })).toHaveAttribute('href', /roadmap\.html/);
-    await page.goto('projects.html?stage=03');
+    await expect(page.getByRole('link', { name:/start learning/i })).toHaveAttribute('href', /site/roadmap\.html/);
+    await page.goto('site/projects.html?stage=03');
     await expect(page.locator('body')).toContainText(/Task Manager/i);
-    await page.goto('practice.html?stage=99');
+    await page.goto('site/practice.html?stage=99');
     await expect(page.locator('body')).toBeVisible();
-    await page.goto('projects.html?stage=99');
+    await page.goto('site/projects.html?stage=99');
     await expect(page.locator('body')).toBeVisible();
     await page.goto('index.html');
     await page.keyboard.press('Tab');
@@ -73,7 +73,7 @@ test.describe('FullStack Bible site smoke', () => {
   });
 
   test('module checklist survives reload', async ({ page }) => {
-    await page.goto('module-02.html');
+    await page.goto('site/module-02.html');
     await page.evaluate(() => localStorage.clear());
     await page.reload();
     const first = page.locator('#checks input').first();
@@ -84,7 +84,7 @@ test.describe('FullStack Bible site smoke', () => {
   });
 
   test('embedded terminal mounts and executes a browser lab command', async ({ page }) => {
-    await page.goto('practice.html?stage=1');
+    await page.goto('site/practice.html?stage=1');
     await page.locator('.drill').first().getByRole('button', { name:/open full lab/i }).click();
     await expect(page.locator('[data-terminal-host]').first()).toBeVisible();
     const terminal = page.locator('.fsb-terminal').first();
