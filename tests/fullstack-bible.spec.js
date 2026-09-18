@@ -101,7 +101,9 @@ test.describe('FullStack Bible site smoke', () => {
 
   test('project workspace mounts embedded terminal', async ({ page }) => {
     await page.goto('projects.html?stage=05');
-    await page.getByRole('button', { name:/open project/i }).click();
+    const projectCard = page.locator('.card').filter({ hasText: 'Typed learning state' });
+    await expect(projectCard).toHaveCount(1);
+    await projectCard.getByRole('button', { name:/open project/i }).click();
     await page.getByRole('button', { name:'Workspace' }).click();
     await expect(page.locator('[data-terminal-host]').first()).toBeVisible();
     await expect(page.locator('.fsb-terminal').first()).toContainText('Browser sandbox');
