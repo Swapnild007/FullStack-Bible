@@ -31,10 +31,10 @@ test.describe('FullStack Bible site smoke', () => {
     }
   });
 
-  test('practice contains all 17 stages and 51 drills', async ({ page }) => {
+  test('practice contains all 17 stages and 85 drills', async ({ page }) => {
     await page.goto('practice.html');
     await expect(page.locator('.module')).toHaveCount(17);
-    await expect(page.locator('.drill')).toHaveCount(51);
+    await expect(page.locator('.drill')).toHaveCount(85);
     await expect(page.locator('#summary')).toContainText('0 / 17');
   });
 
