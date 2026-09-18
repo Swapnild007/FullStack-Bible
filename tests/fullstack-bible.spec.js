@@ -6,10 +6,6 @@ const pages = [
   ...Array.from({length:17},(_,i)=>`module-${String(i+1).padStart(2,'0')}.html`)
 ];
 
-async function clearLearningState(page){
-  await page.addInitScript(() => localStorage.clear());
-}
-
 test.describe('FullStack Bible site smoke', () => {
   test('every public HTML page loads without a page error', async ({ page, browserName }) => {
     test.skip(browserName !== 'chromium', 'Full page inventory runs once on Chromium.');
@@ -78,8 +74,9 @@ test.describe('FullStack Bible site smoke', () => {
   });
 
   test('module checklist survives reload', async ({ page }) => {
-    await clearLearningState(page);
     await page.goto('module-02.html');
+    await page.evaluate(() => localStorage.clear());
+    await page.reload();
     const first = page.locator('#checks input').first();
     await first.check();
     await page.reload();
