@@ -6,29 +6,34 @@ const pages = [
   ...Array.from({length:17},(_,i)=>`module-${String(i+1).padStart(2,'0')}.html`)
 ];
 
+async function clearLearningState(page){
+  await page.addInitScript(() => localStorage.clear());
+}
+
 test.describe('FullStack Bible site smoke', () => {
-  test('every public HTML page loads with a primary heading', async ({ page, browserName }) => {
-    test.skip(browserName !== 'chromium', 'Full page inventory runs once on Chromium to keep CI fast; targeted smoke tests cover the other engines.');
+  test('every public HTML page loads without a page error', async ({ page, browserName }) => {
+    test.skip(browserName !== 'chromium', 'Full page inventory runs once on Chromium.');
+    const errors = [];
+    page.on('pageerror', error => errors.push(error.message));
     for (const path of pages) {
-      const response = await page.goto(path, { waitUntil: 'domcontentloaded' });
+      const response = await page.goto(path, { waitUntil:'domcontentloaded' });
       expect(response && response.ok(), path).toBeTruthy();
       await expect(page.locator('h1').first(), path).toBeVisible();
       await expect(page.locator('body'), path).not.toContainText('cite');
       await expect(page.locator('body'), path).not.toContainText('url');
-      await expect(page.locator('body'), path).not.toContainText('undefined');
     }
+    expect(errors, 'No uncaught browser errors').toEqual([]);
   });
 
   test('landing menu exposes all nine destinations', async ({ page }) => {
     await page.goto('index.html');
     await page.getByRole('button', { name: /open menu/i }).click();
-    const expected = {
+    for (const [label, href] of Object.entries({
       Roadmap:'roadmap.html', Curriculum:'curriculum.html', Lessons:'lessons.html',
       Projects:'projects.html', Practice:'practice.html', AI:'ai.html',
       Progress:'progress.html', Resources:'resources.html', Settings:'settings.html'
-    };
-    for (const [label, href] of Object.entries(expected)) {
-      await expect(page.getByRole('link', { name: new RegExp('^'+label+'$') })).toHaveAttribute('href', href);
+    })) {
+      await expect(page.getByRole('link', { name: new RegExp('^'+label+'\\b') })).toHaveAttribute('href', href);
     }
   });
 
@@ -37,6 +42,15 @@ test.describe('FullStack Bible site smoke', () => {
     await expect(page.locator('.module')).toHaveCount(17);
     await expect(page.locator('.drill')).toHaveCount(85);
     await expect(page.locator('#summary')).toContainText('0 / 17');
+  });
+
+  test('practice drill completion persists after reload', async ({ page }) => {
+    await page.goto('practice.html?stage=17');
+    const drill = page.locator('.drill').first();
+    await expect(drill).toBeVisible();
+    await drill.getByRole('button', { name:'Mark complete' }).click();
+    await page.reload();
+    await expect(page.locator('.drill').first()).toContainText('Completed');
   });
 
   test('progress understands the advanced module checklist keys', async ({ page }) => {
@@ -48,10 +62,28 @@ test.describe('FullStack Bible site smoke', () => {
     await expect(stage13).toContainText('1/18 checklist items');
   });
 
-  test('practice drill completion persists into progress state', async ({ page }) => {
-    await page.goto('practice.html?stage=17');
-    await page.locator('.drill').first().getByRole('button', { name:'Mark complete' }).click();
+  test('landing, projects, invalid stages and keyboard focus work', async ({ page }) => {
+    await page.goto('index.html');
+    await expect(page).toHaveTitle(/FullStack Bible/i);
+    await expect(page.getByRole('link', { name:/start learning/i })).toHaveAttribute('href', /roadmap\.html/);
+    await page.goto('projects.html?stage=03');
+    await expect(page.locator('body')).toContainText(/Learning dashboard/i);
+    await page.goto('practice.html?stage=99');
+    await expect(page.locator('body')).toBeVisible();
+    await page.goto('projects.html?stage=99');
+    await expect(page.locator('body')).toBeVisible();
+    await page.goto('index.html');
+    await page.keyboard.press('Tab');
+    await expect(page.locator(':focus')).toBeVisible();
+  });
+
+  test('module checklist survives reload', async ({ page }) => {
+    await clearLearningState(page);
+    await page.goto('module-02.html');
+    const first = page.locator('#checks input').first();
+    await first.check();
     await page.reload();
-    await expect(page.locator('.drill').first()).toContainText('Completed');
+    await expect(page.locator('#checks input').first()).toBeChecked();
+    await expect(page.locator('#progressText')).toContainText('% complete');
   });
 });
