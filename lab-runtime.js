@@ -1,181 +1,402 @@
-/* FullStack Bible — mobile coding terminal runtime
-   Browser sandbox only: no network, no device filesystem, no arbitrary OS commands. */
-(function(){
-  'use strict';
-  const sessions=new Map();
-  const STORAGE='fsb-terminal-sessions-v2';
+/* FullStack Bible mobile coding terminal. Browser sandbox only. */
+(function () {
+  "use strict";
 
-  const css=[
-    '.fsb-terminal{margin-top:12px;border:1px solid #2d2d33;border-radius:18px;overflow:hidden;background:#101014;color:#f5f5f7;box-shadow:0 14px 35px rgba(0,0,0,.12);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif}',
-    '.fsb-terminal-head{display:flex;align-items:center;justify-content:space-between;padding:11px 13px;background:#1b1b20;border-bottom:1px solid #303037;font-size:11px}',
-    '.fsb-terminal-head strong{font-size:12px}.fsb-terminal-head span{color:#8e8e93;font-weight:700}',
-    '.fsb-terminal-output{margin:0;padding:13px;min-height:130px;max-height:260px;overflow:auto;white-space:pre-wrap;word-break:break-word;background:#101014;color:#e9e9ed;font:500 11px/1.65 ui-monospace,SFMono-Regular,Menlo,monospace}',
-    '.fsb-terminal-output .ok{color:#34c759}.fsb-terminal-output .err{color:#ff6b63}.fsb-terminal-output .muted{color:#8e8e93}',
-    '.fsb-terminal-line{display:flex;align-items:center;gap:8px;padding:9px 10px;border-top:1px solid #303037}.fsb-terminal-line b{color:#34c759;font:700 12px ui-monospace,monospace}',
-    '.fsb-terminal-line input{min-width:0;flex:1;border:0;outline:0;background:transparent;color:#fff;font:500 11px ui-monospace,monospace}',
-    '.fsb-terminal-line button,.fsb-terminal-shortcuts button{border:0;border-radius:10px;padding:8px 10px;background:#2c2c32;color:#fff;font:700 10px inherit;white-space:nowrap}',
-    '.fsb-terminal-shortcuts{display:flex;gap:6px;overflow:auto;padding:0 10px 10px}.fsb-terminal-shortcuts button{color:#d7d7dc}',
-    '.fsb-terminal-files{display:flex;gap:6px;overflow:auto;padding:9px 10px;border-bottom:1px solid #303037;background:#17171b}.fsb-terminal-file{border:0;border-radius:9px;padding:7px 9px;background:#25252b;color:#c8c8ce;font:700 10px inherit}.fsb-terminal-file.active{background:#fff;color:#111}',
-    '@media(max-width:650px){.fsb-terminal-output{max-height:210px}.fsb-terminal-line input{font-size:12px}}'
-  ].join('');
-  function injectStyle(){
-    if(document.getElementById('fsb-terminal-style'))return;
-    const s=document.createElement('style');s.id='fsb-terminal-style';s.textContent=css;document.head.appendChild(s);
+  var sessions = {};
+  var STORAGE = "fsb-terminal-sessions-v4";
+
+  function escapeText(value) {
+    return String(value).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
   }
-  function esc(v){return String(v).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));}
-  function loadSaved(){
-    try{return JSON.parse(localStorage.getItem(STORAGE)||'{}')}catch(e){return{}}
+
+  function getSaved() {
+    try { return JSON.parse(localStorage.getItem(STORAGE) || "{}"); }
+    catch (e) { return {}; }
   }
-  function saveSaved(){
-    try{localStorage.setItem(STORAGE,JSON.stringify(Object.fromEntries([...sessions].map(([k,v])=>[k,{files:v.files,cwd:v.cwd,history:v.history.slice(-40)}]))))}catch(e){}
+
+  function save() {
+    try { localStorage.setItem(STORAGE, JSON.stringify(sessions)); }
+    catch (e) {}
   }
-  function getSession(id,seed){
-    if(sessions.has(id))return sessions.get(id);
-    const all=loadSaved(),saved=all[id];
-    const s=saved||{cwd:'/project',files:{'index.html':seed||'<!doctype html>\n<html><body><h1>FullStack Bible</h1></body></html>'},history:[]};
-    sessions.set(id,s);return s;
+
+  function injectStyle() {
+    if (document.getElementById("fsb-terminal-style")) return;
+    var style = document.createElement("style");
+    style.id = "fsb-terminal-style";
+    style.textContent =
+      ".fsb-terminal{margin-top:12px;border:1px solid #2d2d33;border-radius:18px;overflow:hidden;background:#101014;color:#f5f5f7;box-shadow:0 14px 35px rgba(0,0,0,.12);font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Helvetica Neue',Arial,sans-serif}" +
+      ".fsb-terminal-head{display:flex;justify-content:space-between;padding:11px 13px;background:#1b1b20;border-bottom:1px solid #303037;font-size:11px}" +
+      ".fsb-terminal-head span{color:#8e8e93;font-weight:700}" +
+      ".fsb-terminal-files{display:flex;gap:6px;overflow:auto;padding:9px 10px;border-bottom:1px solid #303037;background:#17171b}" +
+      ".fsb-terminal-file,.fsb-terminal-shortcuts button,.fsb-terminal-line button{border:0;border-radius:9px;padding:7px 10px;background:#2c2c32;color:#fff;font:700 10px -apple-system,BlinkMacSystemFont,sans-serif;white-space:nowrap}" +
+      ".fsb-terminal-file.active{background:#fff;color:#111}" +
+      ".fsb-terminal-output{margin:0;padding:13px;min-height:130px;max-height:240px;overflow:auto;white-space:pre-wrap;word-break:break-word;background:#101014;color:#e9e9ed;font:500 11px/1.65 ui-monospace,SFMono-Regular,Menlo,monospace}" +
+      ".fsb-terminal-line{display:flex;gap:8px;align-items:center;padding:9px 10px;border-top:1px solid #303037}" +
+      ".fsb-terminal-line b{color:#34c759;font:700 12px ui-monospace,monospace}" +
+      ".fsb-terminal-line input{min-width:0;flex:1;border:0;outline:0;background:transparent;color:#fff;font:500 12px ui-monospace,monospace}" +
+      ".fsb-terminal-shortcuts{display:flex;gap:6px;overflow:auto;padding:0 10px 10px}";
+    document.head.appendChild(style);
   }
-  function hostContext(host){
-    const shell=host.closest('.workspace-shell')||host.parentElement;
-    return {shell,editor:shell?.querySelector('.lab-code,.code'),answer:shell?.querySelector('.lab-answer')};
-  }
-  function syncEditor(s,ctx){
-    if(ctx.editor){
-      const name=s.activeFile||'index.html';
-      s.files[name]=ctx.editor.value;
+
+  function getSession(id, seed) {
+    if (!sessions[id]) {
+      var saved = getSaved()[id];
+      sessions[id] = saved || {
+        cwd: "/project",
+        activeFile: "index.html",
+        files: { "index.html": seed || "<!doctype html>\n<html><body><h1>FullStack Bible</h1></body></html>" },
+        history: []
+      };
     }
+    if (!sessions[id].files) sessions[id].files = {};
+    return sessions[id];
   }
-  function mount(host){
-    if(host.dataset.fsbMounted)return;
-    host.dataset.fsbMounted='1';
-    injectStyle();
-    const id=host.dataset.terminalHost||('terminal-'+Math.random().toString(36).slice(2));
-    host.dataset.terminalId=id;
-    const ctx=hostContext(host);
-    const seed=ctx.editor ? ctx.editor.value : ''||'';
-    const s=getSession(id,seed);
-    if(!s.files||!Object.keys(s.files).length)s.files={'index.html':seed};
-    if(!s.activeFile)s.activeFile=Object.keys(s.files)[0]||'index.html';
-    if(ctx.editor && !s.files[s.activeFile])s.files[s.activeFile]=ctx.editor.value;
-    host.innerHTML=markup(id,s);
-    refreshFiles(id);
-    renderOutput(id,'$ FullStack Bible terminal ready\nType help for commands.','muted');
-    if(ctx.editor)ctx.editor.addEventListener('input',()=>{syncEditor(s,ctx);saveSaved()});
+
+  function findRoot(id) {
+    var list = document.querySelectorAll("[data-fsb-terminal]");
+    var i;
+    for (i = 0; i < list.length; i++) {
+      if (list[i].getAttribute("data-fsb-terminal") === id) return list[i];
+    }
+    return null;
   }
-  function markup(id,s){
-    const files=Object.keys(s.files||{});
-    return '<div class="fsb-terminal" data-fsb-terminal="'+esc(id)+'">'+
-      '<div class="fsb-terminal-head"><strong>Terminal</strong><span>Browser sandbox</span></div>'+
-      '<div class="fsb-terminal-files" id="'+esc(id)+'-files"></div>'+
-      '<pre class="fsb-terminal-output" id="'+esc(id)+'-output"></pre>'+
-      '<div class="fsb-terminal-line"><b>$</b><input id="'+esc(id)+'-input" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="help"><button type="button" data-run="'+esc(id)+'">Run</button></div>'+
-      '<div class="fsb-terminal-shortcuts">'+
-      '<button type="button" data-cmd="'+esc(id)+'" data-command="help">help</button>'+
-      '<button type="button" data-cmd="'+esc(id)+'" data-command="ls">ls</button>'+
-      '<button type="button" data-cmd="'+esc(id)+'" data-command="pwd">pwd</button>'+
-      '<button type="button" data-cmd="'+esc(id)+'" data-command="cat '+esc(s.activeFile||'index.html')+'">cat</button>'+
-      '<button type="button" data-cmd="'+esc(id)+'" data-command="run">run</button>'+
-      '</div></div>';
+
+  function getEditor(host) {
+    var shell = host && host.closest(".workspace-shell");
+    return shell ? shell.querySelector(".lab-code,.code") : null;
   }
-  function find(id){return document.querySelector('[data-fsb-terminal="'+CSS.escape(id)+']')}
-  function outputEl(id){return document.getElementById(id+'-output')}
-  function renderOutput(id,text,kind){
-    const el=outputEl(id);if(!el)return;
-    const line=document.createElement('div');line.className=kind||'';
-    line.textContent=text;el.appendChild(line);el.scrollTop=el.scrollHeight;
+
+  function output(id, value, kind) {
+    var el = document.getElementById(id + "-output");
+    if (!el) return;
+    var line = document.createElement("div");
+    line.textContent = value;
+    if (kind === "ok") line.style.color = "#34c759";
+    if (kind === "err") line.style.color = "#ff6b63";
+    if (kind === "muted") line.style.color = "#8e8e93";
+    el.appendChild(line);
+    el.scrollTop = el.scrollHeight;
   }
-  function clearOutput(id){const el=outputEl(id);if(el)el.textContent=''}
-  function refreshFiles(id){
-    const root=find(id),bar=document.getElementById(id+'-files'),s=sessions.get(id);if(!root||!bar||!s)return;
-    bar.textContent='';
-    Object.keys(s.files).forEach(name=>{
-      const b=document.createElement('button');b.type='button';b.className='fsb-terminal-file'+(name===s.activeFile?' active':'');b.textContent=name;
-      b.addEventListener('click',()=>selectFile(id,name));bar.appendChild(b);
+
+  function clearOutput(id) {
+    var el = document.getElementById(id + "-output");
+    if (el) el.textContent = "";
+  }
+
+  function syncEditor(id) {
+    var root = findRoot(id);
+    var editor = getEditor(root);
+    var s = sessions[id];
+    if (editor && s) s.files[s.activeFile || "index.html"] = editor.value;
+  }
+
+  function refreshFiles(id) {
+    var root = findRoot(id);
+    var bar = document.getElementById(id + "-files");
+    var s = sessions[id];
+    if (!root || !bar || !s) return;
+    bar.textContent = "";
+    Object.keys(s.files).forEach(function (name) {
+      var button = document.createElement("button");
+      button.type = "button";
+      button.className = "fsb-terminal-file" + (name === s.activeFile ? " active" : "");
+      button.textContent = name;
+      button.onclick = function () { openFile(id, name); };
+      bar.appendChild(button);
     });
   }
-  function selectFile(id,name){
-    const s=sessions.get(id),ctx=hostContext(find(id));if(!s||!ctx.editor||!(name in s.files))return;
-    syncEditor(s,ctx);s.activeFile=name;ctx.editor.value=s.files[name];refreshFiles(id);saveSaved();
-    renderOutput(id,'Opened '+name,'muted');
+
+  function openFile(id, name) {
+    var root = findRoot(id);
+    var editor = getEditor(root);
+    var s = sessions[id];
+    if (!s || !editor || !Object.prototype.hasOwnProperty.call(s.files, name)) return;
+    syncEditor(id);
+    s.activeFile = name;
+    editor.value = s.files[name];
+    refreshFiles(id);
+    save();
+    output(id, "Opened " + name, "muted");
   }
-  function command(id,raw){
-    const s=sessions.get(id),ctx=hostContext(find(id));if(!s)return;
-    const cmd=String(raw||'').trim();if(!cmd)return;
-    syncEditor(s,ctx);s.history.push(cmd);saveSaved();renderOutput(id,'$ '+cmd);
-    if(cmd==='help'){renderOutput(id,'help | ls | pwd | cd <dir> | touch <file> | mkdir <dir> | cat <file> | write <file> <text> | run | node <file.js> | tsc <file.ts> | clear | reset','muted');return}
-    if(cmd==='pwd'){renderOutput(id,s.cwd);return}
-    if(cmd==='ls'){renderOutput(id,Object.keys(s.files).join('  ')||'(empty)');return}
-    if(cmd==='clear'){clearOutput(id);return}
-    if(cmd==='cd /project'||cmd==='cd .'){s.cwd='/project';renderOutput(id,s.cwd);return}
-    if(cmd.startsWith('cd ')){renderOutput(id,'cd: browser sandbox has one project directory: /project','err');return}
-    if(cmd.startsWith('cat ')){const name=cmd.slice(4).trim();renderOutput(id,(s.files[name] !== undefined ? s.files[name] : 'cat: '+name+': No such file'),'');return}
-    if(cmd.startsWith('touch ')){const name=cmd.slice(6).trim();if(!validFile(name)){renderOutput(id,'touch: invalid file name','err');return}s.files[name]=s.files[name]||'';s.activeFile=name;refreshFiles(id);saveSaved();syncEditor(s,ctx);if(ctx.editor)ctx.editor.value=s.files[name];renderOutput(id,'created '+name,'ok');return}
-    if(cmd.startsWith('mkdir ')){const name=cmd.slice(6).trim();if(!name||/[\\/]/.test(name)){renderOutput(id,'mkdir: invalid directory name','err');return}s.files[name+'/.keep']='';saveSaved();refreshFiles(id);renderOutput(id,'created '+name+'/','ok');return}
-    if(cmd.startsWith('write ')){const m=cmd.match(/^write\\s+(\\S+)\\s+([\\s\\S]*)$/);if(!m){renderOutput(id,'usage: write <file> <text>','err');return}s.files[m[1]]=m[2];s.activeFile=m[1];refreshFiles(id);if(ctx.editor)ctx.editor.value=s.files[s.activeFile];saveSaved();renderOutput(id,'wrote '+m[1],'ok');return}
-    if(cmd==='reset'){reset(id);return}
-    if(cmd==='run'){executeActive(id);return}
-    if(cmd.startsWith('node ')){executeJavaScript(id,cmd.slice(5).trim());return}
-    if(cmd.startsWith('tsc ')){typeCheck(id,cmd.slice(4).trim());return}
-    if(cmd==='npm test'||cmd==='npm run test'){renderOutput(id,'Built-in lab test runner: use the Lab Test tab for task-specific acceptance checks.','muted');return}
-    renderOutput(id,'command not found: '+cmd+'\nType help to see available commands.','err');
+
+  function markup(id) {
+    return '<div class="fsb-terminal">' +
+      '<div class="fsb-terminal-head"><strong>Terminal</strong><span>Browser sandbox</span></div>' +
+      '<div class="fsb-terminal-files" id="' + id + '-files"></div>' +
+      '<pre class="fsb-terminal-output" id="' + id + '-output"></pre>' +
+      '<div class="fsb-terminal-line"><b>$</b><input id="' + id + '-input" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="help"><button type="button" data-fsb-run="' + id + '">Run</button></div>' +
+      '<div class="fsb-terminal-shortcuts">' +
+      '<button type="button" data-fsb-cmd="' + id + '" data-command="help">help</button>' +
+      '<button type="button" data-fsb-cmd="' + id + '" data-command="ls">ls</button>' +
+      '<button type="button" data-fsb-cmd="' + id + '" data-command="pwd">pwd</button>' +
+      '<button type="button" data-fsb-cmd="' + id + '" data-command="cat index.html">cat</button>' +
+      '<button type="button" data-fsb-cmd="' + id + '" data-command="run">run</button>' +
+      '</div></div>';
   }
-  function validFile(name){return !!name&&!name.includes('..')&&!/^\\//.test(name)&&!/[<>]/.test(name)}
-  function executeActive(id){
-    const s=sessions.get(id);if(!s)return;
-    const name=s.activeFile||'index.html',code=s.files[name]||'';
-    if(/\\.html?$/i.test(name)||/<(!doctype|html|body)\\b/i.test(code)){executeHTML(id,code);return}
-    if(/\\.m?js$/i.test(name)||/\\.cjs$/i.test(name)){executeJavaScript(id,name);return}
-    if(/\\.ts$/i.test(name)){typeCheck(id,name);return}
-    renderOutput(id,'No browser runner for '+name+'. Try node '+name+' or tsc '+name+'.','err');
+
+  function mount(host) {
+    if (!host || host.getAttribute("data-fsb-mounted") === "1") return;
+    host.setAttribute("data-fsb-mounted", "1");
+    injectStyle();
+
+    var id = host.getAttribute("data-terminal-host") || "terminal-" + Date.now();
+    host.setAttribute("data-fsb-terminal", id);
+
+    var editor = getEditor(host);
+    var seed = editor ? editor.value : "";
+    var s = getSession(id, seed);
+
+    if (!s.files["index.html"] && seed) s.files["index.html"] = seed;
+    if (!s.activeFile) s.activeFile = Object.keys(s.files)[0] || "index.html";
+
+    host.innerHTML = markup(id);
+    refreshFiles(id);
+    output(id, "$ FullStack Bible terminal ready");
+    output(id, "Type help for commands.", "muted");
+
+    if (editor) {
+      editor.addEventListener("input", function () {
+        syncEditor(id);
+        save();
+      });
+    }
   }
-  function frameRun(id,srcdoc){
-    const root=find(id);if(!root)return;
-    const old=root.querySelector('iframe.fsb-runner');if(old)old.remove();
-    const frame=document.createElement('iframe');frame.className='fsb-runner';frame.hidden=true;frame.sandbox='allow-scripts';
-    const onMessage=e=>{if(e.source!==frame.contentWindow||e.data && e.data.fsbTerminalId!==id)return;renderOutput(id,(e.data.level==='error'?'✗ ':'✓ ')+e.data.message,e.data.level==='error'?'err':'ok')};
-    window.addEventListener('message',onMessage);
-    frame.addEventListener('load',()=>{setTimeout(()=>{window.removeEventListener('message',onMessage);frame.remove()},1200)},{once:true});
-    frame.srcdoc=srcdoc;root.appendChild(frame);
+
+  function validFile(name) {
+    return !!name && name.indexOf("..") === -1 && name.charAt(0) !== "/" && name.indexOf("<") === -1 && name.indexOf(">") === -1;
   }
-  function bridge(id){
-    return '<script>(function(){var id='+JSON.stringify(id)+';window.onerror=function(m,s,l,c,e){parent.postMessage({fsbTerminalId:id,level:"error",message:m+" (line "+l+")"},"*")};var o=console.log;console.log=function(){o.apply(console,arguments);parent.postMessage({fsbTerminalId:id,level:"log",message:Array.prototype.slice.call(arguments).join(" ")},"*")};var e=console.error;console.error=function(){e.apply(console,arguments);parent.postMessage({fsbTerminalId:id,level:"error",message:Array.prototype.slice.call(arguments).join(" ")},"*")};})();<\\/script>';
+
+  function runFrame(id, html) {
+    var root = findRoot(id);
+    if (!root) return;
+
+    var old = root.querySelector("iframe.fsb-runner");
+    if (old) old.remove();
+
+    var frame = document.createElement("iframe");
+    frame.className = "fsb-runner";
+    frame.hidden = true;
+    frame.sandbox = "allow-scripts";
+
+    var closeScript = "<" + "/script>";
+    var bridge =
+      "<script>" +
+      "(function(){var id=" + JSON.stringify(id) + ";" +
+      "window.onerror=function(message,source,line){parent.postMessage({fsbTerminalId:id,level:'error',message:String(message)+' (line '+line+')'},'*')};" +
+      "var oldLog=console.log;console.log=function(){oldLog.apply(console,arguments);parent.postMessage({fsbTerminalId:id,level:'ok',message:Array.prototype.slice.call(arguments).join(' ')},'*')};" +
+      "var oldError=console.error;console.error=function(){oldError.apply(console,arguments);parent.postMessage({fsbTerminalId:id,level:'error',message:Array.prototype.slice.call(arguments).join(' ')},'*')};" +
+      "})();" + closeScript;
+
+    var source = html;
+    var bodyClose = "</body>";
+    var lower = source.toLowerCase();
+    var bodyIndex = lower.indexOf(bodyClose);
+
+    if (bodyIndex !== -1) {
+      source = source.slice(0, bodyIndex) + bridge + source.slice(bodyIndex);
+    } else {
+      source += bridge;
+    }
+
+    function receive(event) {
+      if (!event.source || event.source !== frame.contentWindow || !event.data || event.data.fsbTerminalId !== id) return;
+      output(id, (event.data.level === "error" ? "✗ " : "✓ ") + event.data.message, event.data.level === "error" ? "err" : "ok");
+    }
+
+    window.addEventListener("message", receive);
+    frame.onload = function () {
+      setTimeout(function () {
+        window.removeEventListener("message", receive);
+        if (frame.parentNode) frame.parentNode.removeChild(frame);
+      }, 1800);
+    };
+
+    frame.srcdoc = source;
+    root.appendChild(frame);
+    output(id, "✓ Program started.", "ok");
   }
-  function executeHTML(id,code){
-    let html=code;
-    const b=bridge(id);
-    if(/<\\/body>/i.test(html))html=html.replace(/<\\/body>/i,b+'</body>');else html+=b;
-    frameRun(id,html);
-    renderOutput(id,'Preview executed. Check the page preview in the Lab/Project workspace.','ok');
+
+  function runJavaScript(id, name) {
+    var s = sessions[id];
+    if (!s || typeof s.files[name] !== "string") {
+      output(id, "node: " + name + ": No such file", "err");
+      return;
+    }
+    var code = s.files[name];
+    var safe = code.split("</script").join("<" + "\\/" + "script");
+    runFrame(id, "<!doctype html><html><body><script>" + safe + "<" + "/script></body></html>");
   }
-  function executeJavaScript(id,name){
-    const s=sessions.get(id),code=s?.files[name];if(code===undefined){renderOutput(id,'node: '+name+': No such file','err');return}
-    const safe=code.replace(/<\\/script/gi,'<\\\\/script');
-    frameRun(id,'<!doctype html><html><body>'+bridge(id)+'<script>'+safe+'<\\/script></body></html>');
-    renderOutput(id,'Running '+name+'...','muted');
+
+  function typeCheck(id, name) {
+    var s = sessions[id];
+    var code = s && s.files[name];
+    if (typeof code !== "string") {
+      output(id, "tsc: " + name + ": No such file", "err");
+      return;
+    }
+    var errors = [];
+    if (code.indexOf("type ") === -1 && code.indexOf("interface ") === -1 && code.indexOf("const ") === -1 && code.indexOf("function ") === -1) errors.push("No TypeScript declarations detected.");
+    if (code.indexOf(": any") !== -1) errors.push("explicit any detected; prefer a precise type or unknown.");
+    if (code.indexOf("@ts-ignore") !== -1) errors.push("@ts-ignore detected; fix the underlying type problem.");
+    if (errors.length) errors.forEach(function (item) { output(id, "✗ " + item, "err"); });
+    else output(id, "✓ TypeScript structural checks passed for " + name, "ok");
   }
-  function typeCheck(id,name){
-    const s=sessions.get(id),code=s?.files[name];if(code===undefined){renderOutput(id,'tsc: '+name+': No such file','err');return}
-    const errors=[];
-    if(!/\\b(type|interface|const|let|function|class)\\b/.test(code))errors.push('No TypeScript declarations detected.');
-    if(/: *any\\b/.test(code))errors.push('explicit any detected; prefer a precise type or unknown at an external boundary.');
-    if(/@ts-ignore/.test(code))errors.push('@ts-ignore detected; fix the underlying type problem.');
-    if(errors.length)errors.forEach(e=>renderOutput(id,'✗ '+e,'err'));else renderOutput(id,'✓ TypeScript structural checks passed for '+name,'ok');
+
+  function execute(id) {
+    var s = sessions[id];
+    if (!s) return;
+    syncEditor(id);
+
+    var name = s.activeFile || "index.html";
+    var source = s.files[name] || "";
+    var lower = name.toLowerCase();
+
+    if (lower.slice(-5) === ".html" || lower.slice(-4) === ".htm" || source.toLowerCase().indexOf("<html") !== -1 || source.toLowerCase().indexOf("<body") !== -1 || source.toLowerCase().indexOf("<!doctype") !== -1) {
+      runFrame(id, source);
+      return;
+    }
+    if (lower.slice(-3) === ".js" || lower.slice(-4) === ".mjs" || lower.slice(-4) === ".cjs") {
+      runJavaScript(id, name);
+      return;
+    }
+    if (lower.slice(-3) === ".ts") {
+      typeCheck(id, name);
+      return;
+    }
+    output(id, "No browser runner for " + name + ".", "err");
   }
-  function reset(id){
-    const s=sessions.get(id),ctx=hostContext(find(id));if(!s)return;
-    const seed=ctx.editor ? ctx.editor.defaultValue||'<!doctype html>\n<html><body><h1>FullStack Bible</h1></body></html>';
-    s.files={'index.html':seed};s.activeFile='index.html';refreshFiles(id);if(ctx.editor)ctx.editor.value=seed;saveSaved();renderOutput(id,'Workspace reset.','muted');
+
+  function reset(id) {
+    var root = findRoot(id);
+    var editor = getEditor(root);
+    var s = sessions[id];
+    if (!s) return;
+    var seed = editor ? (editor.defaultValue || editor.value) : "<!doctype html>\n<html><body><h1>FullStack Bible</h1></body></html>";
+    s.cwd = "/project";
+    s.activeFile = "index.html";
+    s.files = { "index.html": seed };
+    s.history = [];
+    if (editor) editor.value = seed;
+    refreshFiles(id);
+    clearOutput(id);
+    output(id, "Workspace reset.", "muted");
+    save();
   }
-  function run(id){const input=document.getElementById(id+'-input');command(id,input?.value||'');if(input)input.value=''}
-  function mountAll(){injectStyle();document.querySelectorAll('[data-terminal-host]').forEach(mount)}
-  document.addEventListener('click',e=>{
-    const runBtn=e.target.closest('[data-run]');if(runBtn){run(runBtn.dataset.run);return}
-    const cmd=e.target.closest('[data-cmd]');if(cmd)command(cmd.dataset.cmd,cmd.dataset.command);
+
+  function command(id, raw) {
+    var s = sessions[id];
+    var root = findRoot(id);
+    var editor = getEditor(root);
+    if (!s) return;
+
+    var cmd = String(raw || "").trim();
+    if (!cmd) return;
+
+    syncEditor(id);
+    s.history.push(cmd);
+    if (s.history.length > 40) s.history.shift();
+    save();
+    output(id, "$ " + cmd);
+
+    if (cmd === "help") {
+      output(id, "help | ls | pwd | cd /project | touch <file> | mkdir <dir> | cat <file> | write <file> <text> | run | node <file.js> | tsc <file.ts> | clear | reset", "muted");
+      return;
+    }
+    if (cmd === "pwd") { output(id, s.cwd); return; }
+    if (cmd === "ls") { output(id, Object.keys(s.files).join("  ") || "(empty)"); return; }
+    if (cmd === "clear") { clearOutput(id); return; }
+    if (cmd === "cd /project" || cmd === "cd .") { s.cwd = "/project"; output(id, s.cwd); return; }
+    if (cmd.indexOf("cd ") === 0) { output(id, "cd: only /project is available in this browser sandbox.", "err"); return; }
+
+    if (cmd.indexOf("cat ") === 0) {
+      var catName = cmd.slice(4).trim();
+      if (Object.prototype.hasOwnProperty.call(s.files, catName)) output(id, s.files[catName]);
+      else output(id, "cat: " + catName + ": No such file", "err");
+      return;
+    }
+
+    if (cmd.indexOf("touch ") === 0) {
+      var touchName = cmd.slice(6).trim();
+      if (!validFile(touchName)) { output(id, "touch: invalid file name", "err"); return; }
+      if (!Object.prototype.hasOwnProperty.call(s.files, touchName)) s.files[touchName] = "";
+      s.activeFile = touchName;
+      refreshFiles(id);
+      if (editor) editor.value = s.files[touchName];
+      save();
+      output(id, "created " + touchName, "ok");
+      return;
+    }
+
+    if (cmd.indexOf("mkdir ") === 0) {
+      var directory = cmd.slice(6).trim();
+      if (!directory || directory.indexOf("/") !== -1) { output(id, "mkdir: invalid directory name", "err"); return; }
+      s.files[directory + "/.keep"] = "";
+      refreshFiles(id);
+      save();
+      output(id, "created " + directory + "/", "ok");
+      return;
+    }
+
+    if (cmd.indexOf("write ") === 0) {
+      var text = cmd.slice(6).trim();
+      var split = text.indexOf(" ");
+      if (split === -1) { output(id, "usage: write <file> <text>", "err"); return; }
+      var fileName = text.slice(0, split);
+      var fileText = text.slice(split + 1);
+      if (!validFile(fileName)) { output(id, "write: invalid file name", "err"); return; }
+      s.files[fileName] = fileText;
+      s.activeFile = fileName;
+      refreshFiles(id);
+      if (editor) editor.value = fileText;
+      save();
+      output(id, "wrote " + fileName, "ok");
+      return;
+    }
+
+    if (cmd === "run") { execute(id); return; }
+    if (cmd.indexOf("node ") === 0) { runJavaScript(id, cmd.slice(5).trim()); return; }
+    if (cmd.indexOf("tsc ") === 0) { typeCheck(id, cmd.slice(4).trim()); return; }
+    if (cmd === "npm test" || cmd === "npm run test") {
+      output(id, "Use the Lab Test tab for the task-specific acceptance tests.", "muted");
+      return;
+    }
+
+    output(id, "command not found: " + cmd + "\nType help for available commands.", "err");
+  }
+
+  function run(id) {
+    var input = document.getElementById(id + "-input");
+    command(id, input ? input.value : "");
+    if (input) input.value = "";
+  }
+
+  document.addEventListener("click", function (event) {
+    var runButton = event.target.closest("[data-fsb-run]");
+    var commandButton = event.target.closest("[data-fsb-cmd]");
+    if (runButton) run(runButton.getAttribute("data-fsb-run"));
+    if (commandButton) command(commandButton.getAttribute("data-fsb-cmd"), commandButton.getAttribute("data-command"));
   });
-  document.addEventListener('keydown',e=>{
-    if(e.key!=='Enter')return;
-    const input=e.target.closest('.fsb-terminal-line input');if(input)run(input.id.replace(/-input$/,''));
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key !== "Enter") return;
+    var input = event.target.closest(".fsb-terminal-line input");
+    if (input) run(input.id.replace("-input", ""));
   });
-  window.FSBTerminal={mountAll,run,command,reset};
-  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',mountAll);else mountAll();
+
+  function mountAll() {
+    injectStyle();
+    var hosts = document.querySelectorAll("[data-terminal-host]");
+    var i;
+    for (i = 0; i < hosts.length; i++) mount(hosts[i]);
+  }
+
+  window.FSBTerminal = {
+    mountAll: mountAll,
+    run: run,
+    command: command,
+    reset: reset
+  };
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", mountAll);
+  else mountAll();
 })();
