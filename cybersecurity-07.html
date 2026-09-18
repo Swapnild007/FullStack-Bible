@@ -1,0 +1,261 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f5f7">
+<title>07 — Digital Forensics & Incident Response — FullStack Bible</title>
+<style>
+:root{--bg:#f5f5f7;--ink:#111113;--muted:#6e6e73;--blue:#007aff;--purple:#5856d6}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(65% 35% at 90% 0,#5856d622,transparent 70%),radial-gradient(55% 35% at 0 20%,#007aff18,transparent 70%),var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{width:min(1000px,calc(100% - 28px));margin:auto}.nav{position:sticky;top:10px;z-index:20;margin-top:10px;padding:9px 10px 9px 17px;border:1px solid #fff;border-radius:20px;background:#ffffffcc;backdrop-filter:blur(25px);display:flex;justify-content:space-between;align-items:center;box-shadow:0 12px 38px #0000000b}.brand{font-weight:800;letter-spacing:-.06em;text-decoration:none;color:inherit}.brand span{color:var(--blue)}.back{padding:10px 14px;border-radius:999px;background:#111;color:#fff;text-decoration:none;font-size:12px;font-weight:700}
+.hero{padding:68px 0 34px}.eyebrow{font-size:11px;letter-spacing:.16em;color:#999;font-weight:800}.hero h1{font-size:clamp(43px,8vw,78px);line-height:.94;letter-spacing:-.085em;margin:14px 0}.hero h1 span{background:linear-gradient(105deg,#111,#007aff,#5856d6);background-clip:text;-webkit-background-clip:text;color:transparent}.hero p{max-width:850px;color:var(--muted);font-size:17px;line-height:1.7}.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.pill{padding:7px 10px;border-radius:999px;background:#fff;border:1px solid #fff;color:#666;font-size:10px;font-weight:800}
+.lessonbar{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.lessonbar a{padding:9px 12px;border-radius:999px;background:#fff;border:1px solid #e8e8ec;color:#555;text-decoration:none;font-size:11px;font-weight:750}
+.section{margin:12px 0;padding:24px;border:1px solid #fff;border-radius:25px;background:#ffffffbd;box-shadow:0 18px 55px #00000009;scroll-margin-top:80px}.section h2{font-size:24px;letter-spacing:-.055em;margin:0 0 13px}.section h3{font-size:16px;letter-spacing:-.025em;margin:21px 0 8px}.section p,.section li{color:#555;font-size:13px;line-height:1.78}.section p{margin:9px 0}.section ul,.section ol{padding-left:21px}.section li{margin:6px 0}.callout{margin:15px 0;padding:15px 16px;border-radius:16px;background:#eef5ff;color:#36506c;font-size:12px;line-height:1.7}.warning{background:#fff5ed;color:#705038}.formula{margin:12px 0;padding:12px 14px;border-radius:13px;background:#f0f0f3;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:#444;overflow:auto}.compare{width:100%;border-collapse:collapse;margin:12px 0;font-size:11px}.compare th,.compare td{padding:10px;border-bottom:1px solid #e7e7ea;text-align:left;vertical-align:top}.qa{margin:9px 0;border:1px solid #e8e8ec;border-radius:15px;background:#fff;overflow:hidden}.qa summary{cursor:pointer;padding:13px 14px;font-size:12px;font-weight:750;list-style:none}.qa summary::-webkit-details-marker{display:none}.qa summary:after{content:"+";float:right;color:#888}.qa[open] summary:after{content:"−"}.answer{padding:0 14px 15px;color:#555;font-size:12px;line-height:1.75}.answer strong{color:#222}.sources{padding:22px;margin:14px 0 30px;border:1px solid #fff;border-radius:22px;background:#fff}.sources h2{font-size:19px;margin:0 0 10px}.sources a{display:block;color:#007aff;text-decoration:none;font-size:12px;margin:9px 0}.footer{text-align:center;color:#999;padding:45px 0 70px;font-size:11px}
+@media(max-width:650px){.hero{padding-top:55px}.hero p{font-size:15px}.section{padding:20px}.section h2{font-size:21px}.compare{font-size:10px}.compare th,.compare td{padding:8px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<nav class="nav wrap"><a class="brand" href="index.html">FullStack<span>Bible</span></a><a class="back" href="cybersecurity.html">Cybersecurity</a></nav>
+
+<header class="wrap hero">
+<div class="eyebrow">CYBERSECURITY · DISCIPLINE 07 · INTERMEDIATE → ADVANCED</div>
+<h1>Digital Forensics & <span>Incident Response.</span></h1>
+<p>Forensics explains what the evidence can tell you; incident response turns that evidence into controlled decisions. This chapter builds a rigorous mental model for acquisition, preservation, artifact interpretation, timeline construction, memory and disk evidence, network evidence, investigation, containment, recovery and continuous improvement.</p>
+<div class="meta"><span class="pill">Intermediate → Advanced</span><span class="pill">Deep theory</span><span class="pill">16 chapters</span><span class="pill">20 mastery answers</span><span class="pill">Theory only</span></div>
+</header>
+
+<main class="wrap">
+<div class="lessonbar">
+<a href="#mission">Mission</a><a href="#evidence">Evidence</a><a href="#acquisition">Acquisition</a><a href="#chain">Chain of custody</a><a href="#timeline">Timelines</a><a href="#windows">Windows</a><a href="#linux">Linux</a><a href="#memory">Memory</a><a href="#network">Network</a><a href="#ir">IR lifecycle</a><a href="#mastery">20 questions</a>
+</div>
+
+<section class="section" id="mission"><h2>01 · The forensic and response mission</h2>
+<p><strong>Digital forensics</strong> is the disciplined collection, preservation, examination and interpretation of digital evidence. <strong>Incident response</strong> is the broader organizational capability for preparing for, detecting, responding to and recovering from cybersecurity incidents.</p>
+<p>These disciplines overlap but are not identical. A response team may need to make a containment decision before every forensic question is answered. A forensic examiner may preserve evidence for a later investigation even after the operational incident has been contained.</p>
+<h3>The core reasoning chain</h3>
+<div class="formula">Observation → Evidence → Hypothesis → Test → Corroboration → Finding → Decision → Documentation</div>
+<p>A good investigation does not begin by deciding who attacked the system. It begins with observable facts, records the provenance of those facts, proposes hypotheses, seeks disconfirming evidence, and separates what is known from what is inferred.</p>
+<div class="callout"><strong>Current NIST model:</strong> NIST SP 800-61 Revision 3, finalized in April 2025, integrates incident response into CSF 2.0 risk management. It emphasizes preparation through the broader Govern, Identify and Protect functions, incident response through Detect, Respond and Recover, and continuous improvement across the cycle.</div>
+</section>
+
+<section class="section" id="evidence"><h2>02 · Evidence, artifacts and evidentiary value</h2>
+<h3>What counts as evidence?</h3>
+<p>Evidence is information that can help establish what happened, when it happened, what systems or identities were involved, and what impact resulted. Sources include files, filesystem metadata, operating-system records, authentication logs, application logs, network traffic, cloud audit records, memory and removable media.</p>
+<h3>Artifact versus finding</h3>
+<p>An <strong>artifact</strong> is an observable record: for example, an authentication event, a browser history entry or a process record. A <strong>finding</strong> is an interpretation supported by one or more artifacts. The distinction matters because artifacts can be incomplete, stale, transformed by software, or ambiguous.</p>
+<h3>Evidence quality</h3>
+<ul><li><strong>Authenticity:</strong> can you establish where the item came from?</li><li><strong>Integrity:</strong> can you detect unintended alteration?</li><li><strong>Provenance:</strong> can you explain collection, transfer and processing?</li><li><strong>Context:</strong> can the event be interpreted correctly?</li><li><strong>Corroboration:</strong> does another independent source support it?</li><li><strong>Reproducibility:</strong> can another qualified examiner understand how the conclusion was reached?</li></ul>
+<p>NIST SP 800-86 presents a practical forensic structure of <strong>collection, examination, analysis and reporting</strong>, while emphasizing that organizations must adapt procedures to their environment and applicable requirements.</p>
+</section>
+
+<section class="section" id="acquisition"><h2>03 · Acquisition strategy and volatile data</h2>
+<h3>Order of volatility</h3>
+<p>Some evidence changes quickly: live memory, active network connections, running processes and temporary state can disappear when a system is powered off or restarted. Other evidence, such as a disk image or retained centralized log, may persist much longer.</p>
+<p>The correct collection order depends on the incident and authority available. A useful decision is not simply “collect everything”; it is <em>which evidence will be destroyed or changed by the next action?</em></p>
+<table class="compare"><tr><th>Evidence class</th><th>Examples</th><th>Forensic concern</th></tr>
+<tr><td>Highly volatile</td><td>RAM, active connections, running processes</td><td>May disappear or change rapidly.</td></tr>
+<tr><td>System state</td><td>Loaded modules, services, scheduled activity</td><td>Changes as the host operates.</td></tr>
+<tr><td>Persistent host</td><td>Disk files, filesystem metadata, OS configuration</td><td>Usually persists, but can still be altered.</td></tr>
+<tr><td>Centralized</td><td>SIEM, identity, cloud and network logs</td><td>Retention, clock alignment and ingestion gaps matter.</td></tr>
+</table>
+<div class="callout warning"><strong>Operational rule:</strong> evidence preservation must not blindly override safety. If a live system is actively causing harm, response teams may need to contain it first. The decision, authority and trade-off should be documented.</div>
+</section>
+
+<section class="section" id="chain"><h2>04 · Integrity, hashing and chain of custody</h2>
+<h3>Integrity</h3>
+<p>Cryptographic hashes can provide a compact fingerprint for a digital object. If a file or image is later hashed with the same algorithm and the value differs, the data changed. A hash does not by itself prove that the original was authentic; it supports integrity verification when provenance and acquisition are also controlled.</p>
+<div class="formula">Evidence item → acquisition record → cryptographic digest → controlled storage → examination copy → verified result</div>
+<h3>Chain of custody</h3>
+<p>Chain of custody records who discovered, collected, transferred, stored and examined evidence, together with when and where those actions occurred. Access should be restricted and changes should be attributable.</p>
+<p>RFC 3227 is an older Internet Best Current Practice on evidence collection and archiving. Its concepts remain useful as a foundation, but local legal, regulatory and organizational procedures take precedence.</p>
+<h3>Working copy versus original</h3>
+<p>Where feasible, preserve a controlled source image and perform examination on a verified working copy. Record tool versions, processing steps, hashes and relevant timestamps so the examination can be reconstructed.</p>
+</section>
+
+<section class="section" id="timeline"><h2>05 · Timeline analysis and event correlation</h2>
+<p>Timeline analysis converts records from different systems into a common temporal model. The challenge is not merely sorting timestamps: clocks differ, events have different semantics, and some timestamps describe creation while others describe modification, access, ingestion or observation.</p>
+<h3>Normalize before interpreting</h3>
+<ul><li>Record timezone and UTC conversion rules.</li><li>Check host clock drift and time synchronization.</li><li>Distinguish event time from log-ingestion time.</li><li>Preserve original timestamps rather than overwriting them.</li><li>Record the source and confidence of each event.</li></ul>
+<h3>Correlation</h3>
+<p>A suspicious login becomes more meaningful when correlated with identity-provider records, endpoint process activity, network connections and application behavior. Correlation should reduce ambiguity rather than manufacture a narrative.</p>
+<div class="formula">Time window + principal + host + process + network peer + resource + outcome → correlated event set</div>
+<h3>Anti-pattern: single-artifact conclusions</h3>
+<p>A single timestamp or filename rarely proves intent. For example, a command-history entry may be absent, edited, generated by automation, or unrelated to the event under investigation. Seek independent evidence.</p>
+</section>
+
+<section class="section" id="windows"><h2>06 · Windows forensic artifacts</h2>
+<h3>Event Logs</h3>
+<p>Windows Event Logs provide structured records from the operating system and applications. Security events can describe authentication, account changes and other security-relevant activity; system and application logs add operational context. Collection policy and audit configuration determine what is actually available.</p>
+<h3>Registry</h3>
+<p>The Windows Registry contains configuration and state. Important forensic areas can include user and system hives, service configuration, startup-related settings and evidence of connected devices. Registry interpretation requires understanding the hive, key path, value semantics and modification context.</p>
+<h3>Execution and application artifacts</h3>
+<p>Common evidence sources include Prefetch, Amcache, Shimcache/AppCompatCache, UserAssist, LNK files, Jump Lists, browser artifacts and SRUM. These sources answer different questions and should not be treated as interchangeable proof of execution.</p>
+<table class="compare"><tr><th>Artifact family</th><th>Useful question</th><th>Caution</th></tr>
+<tr><td>Prefetch</td><td>What execution-related evidence exists on a supported Windows system?</td><td>Availability and behavior vary by Windows version and configuration.</td></tr>
+<tr><td>Amcache</td><td>What executable/application inventory evidence exists?</td><td>Presence is not identical to proof of execution at a specific time.</td></tr>
+<tr><td>LNK / Jump Lists</td><td>What files or applications did a user interact with?</td><td>Interpret in user and timestamp context.</td></tr>
+<tr><td>SRUM</td><td>What application/network/resource-use history is recorded?</td><td>Retention and configuration affect coverage.</td></tr>
+</table>
+<h3>PowerShell and process telemetry</h3>
+<p>When configured, PowerShell logging and endpoint telemetry can provide richer execution context. Process creation records are especially useful when they preserve parent-child relationships, command-line context and unique process identifiers.</p>
+</section>
+
+<section class="section" id="linux"><h2>07 · Linux and Unix-like host artifacts</h2>
+<h3>System logs</h3>
+<p>Depending on distribution and configuration, useful sources include systemd journal data, authentication logs, kernel messages, service logs, package-management records and application logs. Centralized logging may preserve records that a compromised host can no longer provide locally.</p>
+<h3>Filesystem and process state</h3>
+<p>Linux exposes process and system state through interfaces such as <code>/proc</code>. Forensics can examine process metadata, command-line context, open files, network state and loaded information, subject to permissions and system behavior.</p>
+<h3>Authentication and persistence artifacts</h3>
+<p>Investigators may examine SSH-related configuration, authorized keys, account changes, scheduled jobs, service definitions, shell configuration and package activity. The goal is to determine whether a change is expected, when it appeared, who could have made it and whether other evidence corroborates it.</p>
+<h3>Shell history is not ground truth</h3>
+<p>History files are user-controlled records and may be incomplete, disabled, shared across sessions, or missing commands executed by other mechanisms. Treat them as one evidence source among many.</p>
+<div class="callout"><strong>Cross-platform principle:</strong> learn the operating system's security model first. Artifact interpretation becomes much more reliable when you understand how the OS creates, updates and retains the record.</div>
+</section>
+
+<section class="section" id="memory"><h2>08 · Memory forensics</h2>
+<p>RAM can contain system state that is not represented on disk. Memory analysis can help reconstruct processes, loaded modules, network state, handles and other transient information. It is particularly valuable when investigating malicious activity that exists primarily in memory or when disk artifacts are incomplete.</p>
+<h3>What memory can answer</h3>
+<ul><li>Which processes were active?</li><li>What executable or module mappings existed?</li><li>Which network endpoints were associated with processes?</li><li>What kernel and user-space state was resident?</li><li>Does the observed memory state support or contradict the disk timeline?</li></ul>
+<h3>Memory is contextual</h3>
+<p>A memory image is a snapshot, not a complete history. It represents a particular instant and can contain partially updated structures. The acquisition method, operating-system version and analysis tooling affect interpretation.</p>
+<h3>Credential material</h3>
+<p>Memory may contain sensitive authentication material. Handling it requires strict authorization, access control, secure storage and appropriate legal/privacy procedures. A forensic examiner should collect only what the investigation requires.</p>
+</section>
+
+<section class="section" id="filesystem"><h2>09 · Filesystems, deleted data and metadata</h2>
+<h3>Filesystem structures</h3>
+<p>Forensic reasoning differs by filesystem. Investigators may need to understand allocation units, directory structures, metadata records, journaling, snapshots and file deletion behavior. The filesystem determines what evidence survives and how confidently it can be interpreted.</p>
+<h3>Timestamps</h3>
+<p>Common timestamp concepts include creation, modification, metadata-change and access times, but their exact meaning varies by operating system and filesystem. Copying, extraction, synchronization, backup and application behavior can also create or alter timestamps.</p>
+<h3>Deleted files</h3>
+<p>Deletion commonly removes references or marks storage reusable rather than instantly erasing every underlying byte. Recovery depends on filesystem behavior, storage technology, subsequent writes, encryption, trimming and the acquisition method.</p>
+<h3>Windows NTFS examples</h3>
+<p>NTFS investigations may use structures such as the Master File Table, USN Journal and filesystem metadata to understand file activity. These sources answer different questions and can be correlated with application and security logs.</p>
+<h3>Evidence versus reconstruction</h3>
+<p>Recovered fragments can be valuable but should be labelled as recovered or reconstructed evidence. Do not silently treat a partial artifact as if it were a complete original record.</p>
+</section>
+
+<section class="section" id="network"><h2>10 · Network and identity evidence</h2>
+<h3>Packet capture</h3>
+<p>PCAP preserves observed network packets when capture was available. It can provide protocol-level evidence about endpoints, ports, DNS activity, TLS handshakes and application traffic. Encryption limits content visibility but not necessarily all metadata.</p>
+<h3>Flow and network telemetry</h3>
+<p>Flow records, DNS logs, proxy logs, firewall logs and network detection platforms can provide broader coverage than packet capture. They often survive longer and can be centralized.</p>
+<h3>Identity evidence</h3>
+<p>Authentication systems can reveal successful and failed logins, MFA changes, token issuance, privilege changes, session activity and administrative actions. Identity evidence is especially important when an endpoint alone cannot distinguish a legitimate user from an attacker using valid credentials.</p>
+<table class="compare"><tr><th>Source</th><th>Strength</th><th>Limitation</th></tr>
+<tr><td>PCAP</td><td>Detailed protocol observation</td><td>Expensive to retain; may not exist for the required time.</td></tr>
+<tr><td>DNS logs</td><td>Broad domain-resolution visibility</td><td>Domain lookup does not prove malicious intent.</td></tr>
+<tr><td>Firewall/proxy</td><td>Centralized connection context</td><td>Often omits endpoint-level process attribution.</td></tr>
+<tr><td>Identity logs</td><td>Principal and authentication context</td><td>Valid credentials can make activity look legitimate.</td></tr>
+</table>
+</section>
+
+<section class="section" id="cloud"><h2>11 · Cloud, SaaS and modern evidence</h2>
+<p>Modern investigations often cross the boundary between endpoint evidence and provider-controlled evidence. Cloud control-plane logs can record API calls, configuration changes, identity events and resource operations that do not exist on a traditional server.</p>
+<h3>Evidence layers</h3>
+<ul><li><strong>Identity plane:</strong> sign-ins, token activity, MFA and privilege changes.</li><li><strong>Control plane:</strong> resource creation, deletion, policy changes and administrative API calls.</li><li><strong>Data plane:</strong> access to storage, databases, queues and applications.</li><li><strong>Workload plane:</strong> container, VM and application telemetry.</li><li><strong>Network plane:</strong> flow, DNS, firewall, load-balancer and proxy evidence.</li></ul>
+<h3>Provider retention matters</h3>
+<p>Retention periods, export configuration and account-level permissions determine whether historical evidence exists. Incident preparation therefore includes deciding what should be collected centrally before an incident occurs.</p>
+<h3>Multi-tenant caution</h3>
+<p>Provider logs can contain information about multiple identities, customers or resources. Collection and disclosure must respect authorization, contractual boundaries and applicable privacy requirements.</p>
+</section>
+
+<section class="section" id="ir"><h2>12 · Incident response lifecycle</h2>
+<p>NIST SP 800-61r3 is the current NIST incident-response publication and supersedes Revision 2. Its model places incident response within the broader CSF 2.0 functions rather than treating response as an isolated four-step checklist.</p>
+<div class="formula">Govern + Identify + Protect → Detect → Respond → Recover → Improvement across all functions</div>
+<h3>Preparation</h3>
+<p>Preparation includes roles, communication paths, logging, asset knowledge, access to evidence, legal/privacy contacts, backup strategy, recovery procedures and exercises. The best incident investigation is often enabled by decisions made before the incident.</p>
+<h3>Detection and analysis</h3>
+<p>Determine whether an event is a security incident, establish scope, preserve relevant evidence and develop a defensible timeline. Record confidence and unresolved questions.</p>
+<h3>Response</h3>
+<p>Contain the incident according to business and technical risk, eradicate the underlying cause, protect evidence and coordinate communications. Containment can be tactical or strategic: isolate a host, disable an identity, block a path, revoke a credential or restrict a service.</p>
+<h3>Recovery</h3>
+<p>Restore trusted services, validate security controls, monitor for recurrence and confirm that business functionality is stable. Recovery is not complete merely because systems are powered back on.</p>
+</section>
+
+<section class="section" id="investigation"><h2>13 · Investigation methodology and hypothesis testing</h2>
+<h3>Start with questions</h3>
+<p>Good questions are precise: “Was account A used from an unexpected source during window T?” is testable. “How did the attacker hack us?” is too broad and can encourage premature storytelling.</p>
+<h3>Build competing hypotheses</h3>
+<table class="compare"><tr><th>Hypothesis</th><th>Evidence that would support it</th><th>Evidence that would weaken it</th></tr>
+<tr><td>Compromised credentials</td><td>Authentication anomaly + token/session evidence + unusual resource access.</td><td>Trusted device and expected user activity across the same window.</td></tr>
+<tr><td>Malicious process</td><td>Unexpected process lineage + file/network correlation.</td><td>Known software deployment with matching change record.</td></tr>
+<tr><td>Configuration error</td><td>Change record + expected administrative actor + no hostile indicators.</td><td>Unauthorized identity activity or persistence evidence.</td></tr>
+</table>
+<h3>Confidence language</h3>
+<p>Use terms such as <strong>observed</strong>, <strong>supported</strong>, <strong>consistent with</strong>, <strong>unlikely</strong> and <strong>unknown</strong> carefully. Confidence should reflect evidence quality, not the investigator's intuition.</p>
+<h3>Root cause</h3>
+<p>Root cause is not necessarily the first malicious event. A useful root-cause analysis may identify a credential-control weakness, missing telemetry, excessive privilege, insecure configuration, vulnerable software, or process failure that allowed the incident to succeed or persist.</p>
+</section>
+
+<section class="section" id="containment"><h2>14 · Containment, eradication and recovery decisions</h2>
+<h3>Containment trade-offs</h3>
+<p>Isolation can stop an active incident but may destroy volatile evidence or disrupt critical operations. Before acting, responders should understand the asset's role, evidence requirements, safety implications and recovery path.</p>
+<h3>Eradication</h3>
+<p>Eradication removes the cause or persistence mechanism: compromised credentials, malicious software, unauthorized accounts, unsafe configuration or vulnerable components. Merely deleting one observed file does not establish eradication.</p>
+<h3>Recovery validation</h3>
+<ul><li>Confirm the restored asset is from a trusted source.</li><li>Reapply security configuration and identity controls.</li><li>Rotate affected secrets and credentials where required.</li><li>Validate logging and detection coverage.</li><li>Monitor for recurrence.</li><li>Document residual risk.</li></ul>
+<div class="callout warning"><strong>Do not confuse cleanup with understanding.</strong> An incident can appear resolved while the initial access path, credential exposure or persistence mechanism remains undiscovered.</div>
+</section>
+
+<section class="section" id="reporting"><h2>15 · Reporting, legal context and lessons learned</h2>
+<h3>Forensic report structure</h3>
+<p>A useful report normally states scope, authority, methods, evidence sources, relevant observations, analysis, limitations, findings, confidence and supporting material. Separate direct observations from interpretations.</p>
+<h3>Legal and privacy considerations</h3>
+<p>Digital evidence can contain personal, confidential or regulated information. Collection authority, employee monitoring rules, data-protection obligations, cross-border transfer requirements and litigation considerations vary by jurisdiction and organization. NIST SP 800-86 explicitly advises consultation with management and legal counsel regarding applicable requirements.</p>
+<h3>Lessons learned</h3>
+<p>Post-incident improvement should feed back into architecture, identity, logging, detection, response procedures, training and recovery. NIST's current incident-response model treats improvement as continuous rather than a one-time closing meeting.</p>
+<h3>Metrics that matter</h3>
+<ul><li>Time to detect and time to contain, interpreted with scope and incident type.</li><li>Percentage of critical assets with usable forensic telemetry.</li><li>Evidence retention coverage and collection health.</li><li>Detection fidelity and investigation rework.</li><li>Recovery validation success and recurrence rate.</li></ul>
+</section>
+
+<section class="section" id="advanced"><h2>16 · Advanced forensic reasoning</h2>
+<h3>Anti-forensic awareness</h3>
+<p>Attackers may attempt to delete, alter or avoid evidence, but investigators should avoid assuming that missing evidence proves deliberate concealment. Missing data can result from retention policy, logging gaps, clock errors, overwriting, system failure or normal administrative behavior.</p>
+<h3>Cross-source contradiction</h3>
+<p>Contradictions are valuable. If a local endpoint says a process ran at one time while a centralized telemetry source places it elsewhere, investigate clock synchronization, ingestion delay, process identity and collection semantics rather than selecting whichever record supports the preferred narrative.</p>
+<h3>Attribution versus investigation</h3>
+<p>Determining what happened on an affected system is different from identifying the person or organization responsible. Technical artifacts can support conclusions about behavior and infrastructure, but attribution often requires additional intelligence and evidence outside the host itself.</p>
+<h3>Forensic readiness</h3>
+<p>Forensic readiness means designing systems so evidence can be collected efficiently and lawfully when needed. It includes centralized logging, synchronized clocks, retention policies, asset inventories, documented authority, secure evidence storage and tested collection procedures.</p>
+<div class="formula">Forensic readiness = visibility + retention + integrity + authority + access + repeatability</div>
+</section>
+
+<section class="section" id="mastery"><h2>17 · Mastery review — 20 questions with answers</h2>
+<details class="qa"><summary>01 · What is the difference between digital forensics and incident response?</summary><div class="answer"><strong>Answer:</strong> Forensics focuses on collecting, preserving, examining and interpreting digital evidence; incident response is the broader capability for preparing, detecting, responding to and recovering from incidents.<br><br><strong>Why:</strong> A response decision may need to happen before every forensic question is resolved.</div></details>
+<details class="qa"><summary>02 · Why is evidence provenance important?</summary><div class="answer"><strong>Answer:</strong> Provenance explains where evidence came from, who handled it, when it was collected or transferred, and how it was processed.<br><br><strong>Why:</strong> Without provenance, even technically accurate data can be difficult to trust or reproduce.</div></details>
+<details class="qa"><summary>03 · What does a cryptographic hash prove?</summary><div class="answer"><strong>Answer:</strong> A matching hash supports the conclusion that the compared data has not changed relative to the hashed input under that algorithm.<br><br><strong>Why:</strong> A hash supports integrity; it does not independently establish authenticity or lawful provenance.</div></details>
+<details class="qa"><summary>04 · Why can volatile data matter?</summary><div class="answer"><strong>Answer:</strong> Memory, running processes and active connections may disappear or change when a system is shut down or continues operating.<br><br><strong>Why:</strong> Some incident questions can only be answered from transient state.</div></details>
+<details class="qa"><summary>05 · Why should a forensic timeline preserve source information?</summary><div class="answer"><strong>Answer:</strong> Each event has different timestamp semantics and reliability. Preserving the source allows investigators to interpret the event correctly and resolve contradictions.<br><br><strong>Why:</strong> A sorted list of timestamps without provenance can create false precision.</div></details>
+<details class="qa"><summary>06 · Is a Prefetch entry proof that an attacker executed a program?</summary><div class="answer"><strong>Answer:</strong> No. It is an execution-related artifact whose meaning depends on Windows version, configuration, timestamps and corroborating evidence.<br><br><strong>Why:</strong> Artifact presence should be interpreted rather than treated as a universal proof statement.</div></details>
+<details class="qa"><summary>07 · Why is shell history not ground truth?</summary><div class="answer"><strong>Answer:</strong> It can be incomplete, disabled, altered, shared across contexts or absent for commands executed through other mechanisms.<br><br><strong>Why:</strong> Host telemetry and independent logs provide corroboration.</div></details>
+<details class="qa"><summary>08 · What can memory forensics add to a disk investigation?</summary><div class="answer"><strong>Answer:</strong> Memory can show transient process, module, network and system state that may not be preserved on disk.<br><br><strong>Why:</strong> The two evidence classes describe different moments and layers of system state.</div></details>
+<details class="qa"><summary>09 · Why is a PCAP not the same as network telemetry?</summary><div class="answer"><strong>Answer:</strong> PCAP records observed packets, while flow, DNS, proxy and firewall telemetry can summarize or enrich network activity without retaining every packet.<br><br><strong>Why:</strong> Each source has different retention, detail and attribution characteristics.</div></details>
+<details class="qa"><summary>10 · What is the main value of identity logs during an endpoint investigation?</summary><div class="answer"><strong>Answer:</strong> They provide principal, authentication, session, privilege and policy context that may reveal whether activity was associated with a legitimate or compromised identity.<br><br><strong>Why:</strong> Endpoint evidence alone may not explain how access was obtained.</div></details>
+<details class="qa"><summary>11 · What is the current NIST incident-response publication?</summary><div class="answer"><strong>Answer:</strong> NIST SP 800-61 Revision 3, finalized in April 2025, is the current revision and supersedes Revision 2.<br><br><strong>Why:</strong> It aligns incident response with the NIST Cybersecurity Framework 2.0.</div></details>
+<details class="qa"><summary>12 · What are Detect, Respond and Recover in NIST CSF 2.0 incident response?</summary><div class="answer"><strong>Answer:</strong> Detect identifies cybersecurity events and incidents; Respond manages the incident and reduces its impact; Recover restores capabilities and improves resilience.<br><br><strong>Why:</strong> Preparation and improvement extend beyond these three response activities.</div></details>
+<details class="qa"><summary>13 · Why should investigators build competing hypotheses?</summary><div class="answer"><strong>Answer:</strong> Competing hypotheses reduce confirmation bias by requiring investigators to consider evidence that could support or weaken more than one explanation.<br><br><strong>Why:</strong> Incident evidence is often incomplete and ambiguous.</div></details>
+<details class="qa"><summary>14 · What is corroboration?</summary><div class="answer"><strong>Answer:</strong> Corroboration is independent or complementary evidence that supports an observation or interpretation.<br><br><strong>Why:</strong> Multiple consistent sources can reduce uncertainty when each source has different failure modes.</div></details>
+<details class="qa"><summary>15 · Why can containment conflict with forensic preservation?</summary><div class="answer"><strong>Answer:</strong> Isolation, shutdown or credential revocation can change or destroy volatile state while also preventing ongoing harm.<br><br><strong>Why:</strong> Responders must balance safety, business impact and evidence requirements and document the decision.</div></details>
+<details class="qa"><summary>16 · What is eradication?</summary><div class="answer"><strong>Answer:</strong> Eradication removes the underlying cause or persistence mechanism of the incident, not merely the first suspicious artifact discovered.<br><br><strong>Why:</strong> Deleting one file without addressing compromised credentials or vulnerable configuration may leave the attacker path open.</div></details>
+<details class="qa"><summary>17 · Why is recovery more than restoring a backup?</summary><div class="answer"><strong>Answer:</strong> Recovery includes restoring trusted service, validating security controls, restoring telemetry, rotating affected credentials where needed and monitoring for recurrence.<br><br><strong>Why:</strong> An operationally restored but still-compromised system is not a successful recovery.</div></details>
+<details class="qa"><summary>18 · What is forensic readiness?</summary><div class="answer"><strong>Answer:</strong> It is the preparation of systems, processes and governance so useful evidence can be collected efficiently, securely and lawfully when an incident occurs.<br><br><strong>Why:</strong> Evidence that was never retained cannot be reconstructed reliably after the fact.</div></details>
+<details class="qa"><summary>19 · Why should attribution be separated from technical investigation?</summary><div class="answer"><strong>Answer:</strong> Technical evidence may establish actions, accounts, hosts or infrastructure without proving the identity or organization ultimately responsible.<br><br><strong>Why:</strong> Attribution generally requires additional intelligence and careful confidence assessment.</div></details>
+<details class="qa"><summary>20 · What is the core forensic mental model?</summary><div class="answer"><strong>Answer:</strong> Preserve provenance, collect the right evidence, understand how each artifact is produced, correlate independent sources, test competing hypotheses, state limitations and document every important decision.<br><br><strong>Why:</strong> Forensics is evidence-based reasoning, not simply running a forensic tool.</div></details>
+<div class="callout"><strong>Completion standard:</strong> You should be able to explain evidence integrity and chain of custody, distinguish volatile from persistent evidence, reason about Windows/Linux artifacts, correlate endpoint/identity/network records, build a defensible timeline, and describe the current NIST incident-response model.</div>
+</section>
+
+<section class="sources"><h2>Primary references</h2>
+<a href="https://csrc.nist.gov/pubs/sp/800/61/r3/final" target="_blank" rel="noopener">NIST SP 800-61 Rev. 3 — Incident Response Recommendations and Considerations</a>
+<a href="https://csrc.nist.gov/pubs/sp/800/86/final" target="_blank" rel="noopener">NIST SP 800-86 — Guide to Integrating Forensic Techniques into Incident Response</a>
+<a href="https://www.nist.gov/publications/nist-cybersecurity-framework-csf-20" target="_blank" rel="noopener">NIST Cybersecurity Framework 2.0</a>
+<a href="https://www.rfc-editor.org/rfc/rfc3227" target="_blank" rel="noopener">RFC 3227 — Guidelines for Evidence Collection and Archiving</a>
+<a href="https://www.cisa.gov/resources-tools/resources/cybersecurity-incident-vulnerability-response-playbooks" target="_blank" rel="noopener">CISA Cybersecurity Incident & Vulnerability Response Playbooks</a>
+<a href="https://attack.mitre.org/" target="_blank" rel="noopener">MITRE ATT&CK</a>
+<a href="https://learn.microsoft.com/en-us/windows/security/operating-system-security/sysmon/overview" target="_blank" rel="noopener">Microsoft Sysmon documentation</a>
+<a href="https://learn.microsoft.com/en-us/windows/security/operating-system-security/windows-security-logging-and-auditing" target="_blank" rel="noopener">Microsoft Windows security auditing documentation</a>
+<a href="https://www.kernel.org/doc/html/latest/admin-guide/LSM/index.html" target="_blank" rel="noopener">Linux Security Module documentation</a>
+</section>
+</main>
+<footer class="wrap footer">Cybersecurity · Discipline 07 · Digital Forensics & Incident Response</footer>
+</body></html>
