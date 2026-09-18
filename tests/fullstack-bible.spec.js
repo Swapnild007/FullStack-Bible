@@ -25,7 +25,7 @@ test.describe('FullStack Bible site smoke', () => {
     await page.goto('index.html');
     await page.getByRole('button', { name: /open menu/i }).click();
     for (const [label, href] of Object.entries({
-      Learn:'site/shared/learn.html', Projects:'site/shared/projects.html', Practice:'site/shared/practice.html', AI:'site/ai/ai.html',
+      Learn:'site/shared/lessons.html', Projects:'site/shared/projects.html', Practice:'site/shared/practice.html', AI:'site/ai/ai.html',
       Progress:'site/shared/progress.html', Resources:'site/shared/resources.html', Settings:'site/shared/settings.html'
     })) {
       await expect(page.getByRole('link', { name: new RegExp('^'+label+'\\b') })).toHaveAttribute('href', href);
@@ -86,6 +86,7 @@ test.describe('FullStack Bible site smoke', () => {
   test('embedded terminal mounts and executes a browser lab command', async ({ page }) => {
     await page.goto('site/shared/practice.html?stage=1');
     await page.locator('.drill').first().getByRole('button', { name:/open full lab/i }).click();
+    await page.getByRole('button', { name:'Workspace' }).click();
     await expect(page.locator('[data-terminal-host]').first()).toBeVisible();
     const terminal = page.locator('.fsb-terminal').first();
     await expect(terminal).toContainText('Browser sandbox');
@@ -106,7 +107,8 @@ test.describe('FullStack Bible site smoke', () => {
     await expect(page.locator('.project #ptitle')).toHaveText('Blog CMS');
     await page.getByRole('button', { name:'Source code' }).click();
     await expect(page.locator('.code')).toBeVisible();
-    await expect(page.locator('.code')).toContainText('PostgreSQL');
+    await expect(page.locator('#pstack')).toContainText('PostgreSQL');
+    await expect(page.locator('.code')).toContainText('@prisma/client');
     await page.getByRole('button', { name:'Learn it' }).click();
     await expect(page.locator('.qa details').first()).toBeVisible();
   });
