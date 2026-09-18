@@ -21,7 +21,7 @@
 <div class="eyebrow">CYBERSECURITY · DISCIPLINE 09 · ADVANCED</div>
 <h1>Active Directory & <span>Enterprise Security.</span></h1>
 <p>Understand the Windows identity control plane: domains, forests, domain controllers, Kerberos, LDAP, Group Policy, trusts, delegation, privileged administration, enterprise certificates, credential exposure, monitoring, recovery and the architectural controls that contain domain compromise.</p>
-<div class="meta"><span class="pill">Advanced</span><span class="pill">Deep theory</span><span class="pill">16 chapters</span><span class="pill">20 mastery answers</span><span class="pill">Theory only</span></div>
+<div class="meta"><span class="pill">Advanced</span><span class="pill">Deep theory</span><span class="pill">18 chapters</span><span class="pill">20 mastery answers</span><span class="pill">Theory only</span></div>
 </header>
 
 <main class="wrap">
@@ -190,6 +190,24 @@
 <ul><li>Which system is authoritative for each identity attribute?</li><li>Which synchronization service can change cloud or on-premises identity state?</li><li>Which administrators can control synchronization?</li><li>Where are privileged credentials allowed to appear?</li><li>Can compromise of one plane influence the other?</li></ul>
 </section>
 
+<section class="section" id="replication"><h2>17 · Directory replication, SYSVOL and identity consistency</h2>
+<p>AD DS is a distributed directory: domain controllers maintain replicas and synchronize directory changes. This supports availability, but it also means security investigations must understand replication state and convergence.</p>
+<h3>Directory data and SYSVOL</h3>
+<p>Group Policy depends on both directory objects and files in SYSVOL. Modern Windows Server deployments use DFS Replication for SYSVOL. These two stores are related to Group Policy but are not the same replication mechanism.</p>
+<h3>Security significance</h3>
+<ul><li>Replication health affects whether security changes converge across controllers.</li><li>Unexpected replication behavior can complicate incident timelines and recovery.</li><li>Backups and restoration procedures must account for domain-controller state and replication.</li><li>Identity recovery should establish which controllers and supporting systems are trusted before normal administration resumes.</li></ul>
+<div class="callout"><strong>Key idea:</strong> AD security is distributed security. A correct decision on one controller is not enough if the identity state cannot be trusted across the domain.</div>
+</section>
+
+<section class="section" id="enterprise-model"><h2>18 · Enterprise Access Model and modern identity architecture</h2>
+<p>Microsoft's current Enterprise Access Model extends the older AD tier model to modern enterprises spanning on-premises systems, multiple clouds, user access and application access. The older Tier 0/1/2 model remains useful for AD-specific administration, but it is now a component of a broader control-plane architecture.</p>
+<table class="compare"><tr><th>Plane</th><th>Security question</th></tr><tr><td>Control plane</td><td>Who or what can change enterprise access decisions?</td></tr><tr><td>Management plane</td><td>Who can administer infrastructure and platforms?</td></tr><tr><td>Data/workload plane</td><td>Who can control business systems and data?</td></tr><tr><td>User/app access</td><td>Who or what can request access to resources?</td></tr></table>
+<h3>Intermediaries matter</h3>
+<p>Privileged access workstations, jump hosts, automation, synchronization services and management tools can become part of the control plane when they broker or enforce privileged access. Protecting the final target while leaving a privileged intermediary weak does not preserve the trust boundary.</p>
+<h3>Architecture review</h3>
+<ul><li>Identify every system that can influence privileged identity state.</li><li>Separate administrative identities by trust level and purpose.</li><li>Keep lower-trust devices from becoming credential entry points for higher-trust planes.</li><li>Review synchronization and federation as explicit privilege boundaries.</li><li>Continuously remove obsolete administrative paths.</li></ul>
+</section>
+
 <section class="section" id="mastery"><h2>Mastery review · 20 questions with answers</h2>
 <details class="qa"><summary>01 · What is Active Directory?</summary><div class="answer"><strong>Answer:</strong> AD DS is a directory and identity infrastructure that stores network objects and supports authentication, policy-based administration and access-control-related operations.<br><br><strong>Why:</strong> Its security importance comes from its role in controlling identities and access across many enterprise systems.</div></details>
 <details class="qa"><summary>02 · What is the difference between a domain and a forest?</summary><div class="answer"><strong>Answer:</strong> A domain is an AD administrative and identity scope; a forest is the larger collection of domains sharing schema and configuration.<br><br><strong>Why:</strong> Forest-level relationships and privileges can affect multiple domains.</div></details>
@@ -217,7 +235,11 @@
 <section class="sources"><h2>Primary references</h2>
 <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview" target="_blank" rel="noopener">Microsoft Learn — Active Directory Domain Services overview</a>
 <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices" target="_blank" rel="noopener">Microsoft Learn — Active Directory security best practices</a>
-<a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/tier-model" target="_blank" rel="noopener">Microsoft Learn — AD DS Tier Model for Privileged Access Security</a>
+<a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/tier-model" target="_blank" rel="noopener">Microsoft Learn — AD DS Tier Model</a>
+<a href="https://learn.microsoft.com/en-us/security/privileged-access-workstations/privileged-access-access-model" target="_blank" rel="noopener">Microsoft Learn — Enterprise Access Model</a>
+<a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/manage/group-policy/group-policy-overview" target="_blank" rel="noopener">Microsoft Learn — Group Policy overview</a>
+<a href="https://learn.microsoft.com/en-us/windows-server/security/kerberos/kerberos-authentication-overview" target="_blank" rel="noopener">Microsoft Learn — Kerberos authentication overview</a>
+<a href="https://learn.microsoft.com/en-us/windows-server/identity/manage-ldap-signing-group-policy" target="_blank" rel="noopener">Microsoft Learn — LDAP signing</a>
 <a href="https://learn.microsoft.com/en-us/security/privileged-access-workstations/privileged-access-access-model" target="_blank" rel="noopener">Microsoft Learn — Enterprise Access Model</a>
 <a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/implementing-secure-administrative-hosts" target="_blank" rel="noopener">Microsoft Learn — Implementing Secure Administrative Hosts</a>
 <a href="https://learn.microsoft.com/en-us/entra/identity/domain-services/overview" target="_blank" rel="noopener">Microsoft Learn — Microsoft Entra Domain Services overview</a>
