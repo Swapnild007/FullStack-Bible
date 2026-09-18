@@ -104,7 +104,7 @@ test.describe('FullStack Bible site smoke', () => {
     const projectCard = page.locator('.card[data-project-id="07"]');
     await expect(projectCard).toHaveCount(1);
     await projectCard.getByRole('button', { name:/read project/i }).click();
-    await expect(page.getByRole('heading', { name:/Blog CMS/i })).toBeVisible();
+    await expect(page.locator('.project #ptitle')).toHaveText('Blog CMS');
     await page.getByRole('button', { name:'Source code' }).click();
     await expect(page.locator('.code')).toBeVisible();
     await expect(page.locator('.code')).toContainText('PostgreSQL');
