@@ -1,0 +1,230 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f5f7">
+<title>09 — Active Directory & Enterprise Security — FullStack Bible</title>
+<style>
+:root{--bg:#f5f5f7;--ink:#111113;--muted:#6e6e73;--blue:#007aff;--purple:#5856d6}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(65% 35% at 90% 0,#5856d622,transparent 70%),radial-gradient(55% 35% at 0 20%,#007aff18,transparent 70%),var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{width:min(1000px,calc(100% - 28px));margin:auto}.nav{position:sticky;top:10px;z-index:20;margin-top:10px;padding:9px 10px 9px 17px;border:1px solid #fff;border-radius:20px;background:#ffffffcc;backdrop-filter:blur(25px);display:flex;justify-content:space-between;align-items:center;box-shadow:0 12px 38px #0000000b}.brand{font-weight:800;letter-spacing:-.06em;text-decoration:none;color:inherit}.brand span{color:var(--blue)}.back{padding:10px 14px;border-radius:999px;background:#111;color:#fff;text-decoration:none;font-size:12px;font-weight:700}
+.hero{padding:68px 0 34px}.eyebrow{font-size:11px;letter-spacing:.16em;color:#999;font-weight:800}.hero h1{font-size:clamp(43px,8vw,78px);line-height:.94;letter-spacing:-.085em;margin:14px 0}.hero h1 span{background:linear-gradient(105deg,#111,#007aff,#5856d6);background-clip:text;-webkit-background-clip:text;color:transparent}.hero p{max-width:850px;color:var(--muted);font-size:17px;line-height:1.7}.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.pill{padding:7px 10px;border-radius:999px;background:#fff;border:1px solid #fff;color:#666;font-size:10px;font-weight:800}
+.lessonbar{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.lessonbar a{padding:9px 12px;border-radius:999px;background:#fff;border:1px solid #e8e8ec;color:#555;text-decoration:none;font-size:11px;font-weight:750}
+.section{margin:12px 0;padding:24px;border:1px solid #fff;border-radius:25px;background:#ffffffbd;box-shadow:0 18px 55px #00000009;scroll-margin-top:80px}.section h2{font-size:24px;letter-spacing:-.055em;margin:0 0 13px}.section h3{font-size:16px;letter-spacing:-.025em;margin:21px 0 8px}.section p,.section li{color:#555;font-size:13px;line-height:1.78}.section p{margin:9px 0}.section ul,.section ol{padding-left:21px}.section li{margin:6px 0}.callout{margin:15px 0;padding:15px 16px;border-radius:16px;background:#eef5ff;color:#36506c;font-size:12px;line-height:1.7}.warning{background:#fff5ed;color:#705038}.formula{margin:12px 0;padding:12px 14px;border-radius:13px;background:#f0f0f3;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:#444;overflow:auto}.compare{width:100%;border-collapse:collapse;margin:12px 0;font-size:11px}.compare th,.compare td{padding:10px;border-bottom:1px solid #e7e7ea;text-align:left;vertical-align:top}.qa{margin:9px 0;border:1px solid #e8e8ec;border-radius:15px;background:#fff;overflow:hidden}.qa summary{cursor:pointer;padding:13px 14px;font-size:12px;font-weight:750;list-style:none}.qa summary::-webkit-details-marker{display:none}.qa summary:after{content:"+";float:right;color:#888}.qa[open] summary:after{content:"−"}.answer{padding:0 14px 15px;color:#555;font-size:12px;line-height:1.75}.answer strong{color:#222}.sources{padding:22px;margin:14px 0 30px;border:1px solid #fff;border-radius:22px;background:#fff}.sources h2{font-size:19px;margin:0 0 10px}.sources a{display:block;color:#007aff;text-decoration:none;font-size:12px;margin:9px 0}.footer{text-align:center;color:#999;padding:45px 0 70px;font-size:11px}
+@media(max-width:650px){.hero{padding-top:55px}.hero p{font-size:15px}.section{padding:20px}.section h2{font-size:21px}.compare{font-size:10px}.compare th,.compare td{padding:8px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<nav class="nav wrap"><a class="brand" href="index.html">FullStack<span>Bible</span></a><a class="back" href="cybersecurity.html">Cybersecurity</a></nav>
+
+<header class="wrap hero">
+<div class="eyebrow">CYBERSECURITY · DISCIPLINE 09 · ADVANCED</div>
+<h1>Active Directory & <span>Enterprise Security.</span></h1>
+<p>Understand the Windows identity control plane: domains, forests, domain controllers, Kerberos, LDAP, Group Policy, trusts, delegation, privileged administration, enterprise certificates, credential exposure, monitoring, recovery and the architectural controls that contain domain compromise.</p>
+<div class="meta"><span class="pill">Advanced</span><span class="pill">Deep theory</span><span class="pill">16 chapters</span><span class="pill">20 mastery answers</span><span class="pill">Theory only</span></div>
+</header>
+
+<main class="wrap">
+<div class="lessonbar">
+<a href="#architecture">AD architecture</a><a href="#objects">Objects & schema</a><a href="#dns">DNS & DC discovery</a><a href="#kerberos">Kerberos</a><a href="#ldap">LDAP</a><a href="#gpo">Group Policy</a><a href="#trusts">Trusts</a><a href="#delegation">Delegation</a><a href="#privilege">Privilege</a><a href="#adcs">AD CS</a><a href="#defense">Defense</a><a href="#mastery">20 questions</a>
+</div>
+
+<section class="section" id="architecture"><h2>01 · Active Directory as an enterprise control plane</h2>
+<p>Active Directory Domain Services (AD DS) is a directory service and identity infrastructure for Windows environments. It stores objects such as users, groups, computers and services, and provides authentication, authorization-related information, policy-based administration and service discovery.</p>
+<h3>The security significance</h3>
+<p>AD is not merely a user database. Domain controllers participate in authentication and maintain directory state that can control access across large portions of an enterprise. A compromise of identity-control infrastructure can therefore have a much larger blast radius than compromise of a single workstation.</p>
+<div class="formula">User/device → identity → policy → authentication → authorization → enterprise resource</div>
+<h3>Control-plane thinking</h3>
+<p>When analysing AD security, separate the identity control plane from ordinary workloads. Domain controllers, privileged identities and systems that can modify identity infrastructure deserve stronger trust boundaries and administrative controls than ordinary endpoints.</p>
+<div class="callout"><strong>Core mental model:</strong> protect the systems that can change who is trusted, what they can access and how authentication works. Those systems form the enterprise identity control plane.</div>
+</section>
+
+<section class="section" id="objects"><h2>02 · Domains, forests, objects and the schema</h2>
+<h3>Domain</h3>
+<p>A domain is a logical administrative and security boundary within AD DS. It has its own directory partition and domain controllers, and it participates in a forest-wide namespace and trust structure.</p>
+<h3>Forest</h3>
+<p>A forest is a collection of one or more domains sharing a common schema and configuration. Forest-level relationships and administrative privileges can have broad consequences because they can influence multiple domains.</p>
+<h3>Objects and attributes</h3>
+<p>Users, groups, computers, organizational units, service accounts and many other entities are represented as directory objects with attributes. The schema defines object classes and attribute types. Security depends on controlling which principals can read or modify sensitive objects and attributes.</p>
+<h3>OUs are administrative containers</h3>
+<p>Organizational units are commonly used to organize objects and apply delegated administration and Group Policy. An OU is not automatically a security boundary. Effective security depends on permissions, policy inheritance and administrative design.</p>
+<table class="compare"><tr><th>Concept</th><th>Security meaning</th></tr><tr><td>Domain</td><td>Identity and administrative scope with domain controllers and directory data.</td></tr><tr><td>Forest</td><td>Shared schema/configuration and broad trust/administrative relationships.</td></tr><tr><td>OU</td><td>Organization and delegation container; not inherently a hard security boundary.</td></tr><tr><td>Object ACL</td><td>Controls who may perform permitted operations on a directory object.</td></tr></table>
+</section>
+
+<section class="section" id="dns"><h2>03 · DNS, service discovery and domain controller location</h2>
+<p>AD relies heavily on DNS. Clients need to locate domain controllers and services, and domain controllers use DNS to publish service-location information.</p>
+<h3>Why DNS is security-critical</h3>
+<p>If name resolution is wrong, authentication and directory operations can fail. If name resolution is maliciously influenced, clients can potentially be directed toward unintended services. DNS therefore belongs in the enterprise identity threat model.</p>
+<h3>Service discovery</h3>
+<p>AD uses DNS service records to advertise capabilities such as LDAP and Kerberos. A secure architecture needs controlled DNS administration, appropriate update permissions, monitoring and reliable time synchronization.</p>
+<h3>Time matters</h3>
+<p>Kerberos authentication is sensitive to clock differences because tickets contain time-related validity information. Enterprise time architecture is therefore part of identity reliability, not just an operations detail.</p>
+<div class="callout"><strong>Security connection:</strong> identity infrastructure depends on supporting services. Protecting AD while leaving DNS or time administration broadly privileged can preserve an unintended path to identity failure.</div>
+</section>
+
+<section class="section" id="kerberos"><h2>04 · Kerberos authentication</h2>
+<p>Kerberos is a ticket-based authentication protocol widely used by AD. Instead of repeatedly sending a user's password to every service, the protocol uses a trusted Key Distribution Center (KDC) and cryptographic tickets.</p>
+<h3>The core ticket flow</h3>
+<div class="formula">Client → Authentication Service → TGT → Ticket Service → service ticket → application service</div>
+<p>The Ticket Granting Ticket (TGT) establishes a basis for requesting service tickets. A service ticket identifies the intended service and carries cryptographic proof that the service can validate.</p>
+<h3>Why SPNs matter</h3>
+<p>Service Principal Names associate services with security principals. Correct SPN registration is necessary for Kerberos service authentication. Misconfiguration can cause fallback behavior or unexpected identity mappings.</p>
+<h3>Security properties</h3>
+<ul><li>Tickets have defined lifetimes and are not simply permanent passwords.</li><li>Mutual authentication can be supported when the protocol and service use it correctly.</li><li>Compromise of privileged credentials or ticket-signing material can have broad consequences.</li><li>Authentication success does not itself prove that the caller is authorized for every resource.</li></ul>
+</section>
+
+<section class="section" id="kerberos-attacks"><h2>05 · Kerberos abuse and credential exposure</h2>
+<p>Defenders need to understand common Kerberos abuse patterns because they reveal where identity architecture becomes fragile. This section is conceptual and intended for authorized security analysis.</p>
+<h3>Ticket theft and replay</h3>
+<p>If an attacker obtains usable authentication material from a compromised system, they may attempt to reuse it without knowing the original password. Pass-the-ticket is the general concept of using stolen Kerberos ticket material to impersonate an already-authenticated security context.</p>
+<h3>Credential material exposure</h3>
+<p>Credential theft can target memory, cached secrets, service credentials, administrative sessions or poorly protected backup material. The strongest defence is not one detection rule; it is reducing where privileged credentials are allowed to appear.</p>
+<h3>Service-account risk</h3>
+<p>Long-lived service identities can become attractive targets when their privileges are broad or their credentials are weakly governed. Prefer managed identities or managed service-account designs where appropriate, narrow privileges, rotate secrets and monitor use.</p>
+<div class="callout warning"><strong>Defensive boundary:</strong> study these techniques to recognize and contain identity compromise. Testing against real enterprise accounts or systems requires explicit authorization and controlled scope.</div>
+</section>
+
+<section class="section" id="ldap"><h2>06 · LDAP, directory queries and access control</h2>
+<p>LDAP is a protocol used to access and manipulate directory information. AD exposes LDAP interfaces that allow clients and applications to query users, groups, computers and other directory objects.</p>
+<h3>Read access is still sensitive</h3>
+<p>Many directory attributes are intentionally readable to authenticated users, but directory enumeration can reveal organizational structure, group membership, naming conventions, service identities and security-relevant relationships. The question is not simply “can users read it?” but “what can an attacker infer by combining the readable data?”</p>
+<h3>LDAP security</h3>
+<p>Use secure transport and appropriate signing/binding protections according to the Windows environment and application requirements. Avoid treating encrypted transport as a replacement for authorization.</p>
+<h3>Directory permissions</h3>
+<p>Directory objects have security descriptors and access control entries. Delegated administration should grant only the rights required for a defined task. Broad write permissions on identity objects can create indirect privilege paths.</p>
+</section>
+
+<section class="section" id="gpo"><h2>07 · Group Policy and configuration control</h2>
+<p>Group Policy provides centralized configuration and policy management for Windows environments. It can influence security settings, software configuration, scripts, firewall behavior, auditing and many other host controls.</p>
+<h3>Why GPO is privileged</h3>
+<p>A policy that applies to many computers can change security posture at scale. A malicious or careless policy change can therefore become an enterprise-wide configuration event.</p>
+<h3>Security design</h3>
+<ul><li>Separate policy authorship from unnecessary administrative privilege.</li><li>Control who can create, link and modify GPOs.</li><li>Review inheritance, enforced links and scope filtering.</li><li>Monitor sensitive policy changes.</li><li>Back up and test policy configuration before major changes.</li></ul>
+<h3>GPO is not just configuration</h3>
+<p>From a security perspective, GPO is a distributed execution and enforcement mechanism. Treat its permissions and change paths with the same care applied to privileged application deployment systems.</p>
+</section>
+
+<section class="section" id="acls"><h2>08 · ACLs, delegation and unintended privilege paths</h2>
+<p>Active Directory security descriptors determine which principals can perform which operations on objects. Enterprise security becomes difficult when rights are delegated through multiple groups, inheritance relationships and nested memberships.</p>
+<h3>Effective access</h3>
+<p>A user may receive permissions through direct assignment, nested groups, inherited permissions or delegated rights. Security review must therefore reason about the effective permission graph rather than inspecting one membership at a time.</p>
+<div class="formula">Principal → group nesting → delegated right → object → sensitive operation → privilege consequence</div>
+<h3>Dangerous design pattern</h3>
+<p>A low-privilege administrator does not need direct membership in a highly privileged group to become security-critical. If that administrator can modify an object, group, policy or service that controls a privileged identity, the indirect path can be equally important.</p>
+<h3>Least privilege</h3>
+<p>Delegate narrowly scoped rights for defined administrative jobs. Periodically review stale delegations, nested groups, orphaned accounts and permissions that no longer correspond to business responsibilities.</p>
+</section>
+
+<section class="section" id="delegation"><h2>09 · Kerberos delegation</h2>
+<p>Kerberos delegation allows one service to act on behalf of a user when accessing another service. Delegation can be necessary for legitimate multi-tier applications, but it creates a powerful trust relationship between services.</p>
+<h3>Unconstrained delegation</h3>
+<p>Broad delegation models can expose authentication material to systems that do not need such a wide trust relationship. Modern designs should avoid unnecessary privilege and use constrained alternatives where supported.</p>
+<h3>Constrained delegation</h3>
+<p>Constrained delegation restricts which services a principal may access on behalf of users. Resource-based constrained delegation moves more of the authorization decision toward the resource service.</p>
+<h3>Security review questions</h3>
+<ul><li>Which service can impersonate users?</li><li>Which users can reach that service?</li><li>Which target services can be accessed?</li><li>Who can modify the delegation configuration?</li><li>What happens if the delegating host is compromised?</li></ul>
+</section>
+
+<section class="section" id="privilege"><h2>10 · Privileged access, Tier 0 and administrative workstations</h2>
+<p>Modern Microsoft guidance treats identity infrastructure as a privileged control plane. The AD DS tier model separates administrative scope into trust tiers so lower-trust endpoints do not become credential exposure points for higher-trust identities.</p>
+<table class="compare"><tr><th>Tier</th><th>Typical scope</th><th>Security objective</th></tr><tr><td>Tier 0</td><td>Identity control plane: domain controllers and systems/identities that can control it.</td><td>Prevent compromise of enterprise identity authority.</td></tr><tr><td>Tier 1</td><td>Enterprise servers and applications.</td><td>Contain workload/server administration.</td></tr><tr><td>Tier 2</td><td>End-user devices and support identities.</td><td>Contain endpoint and user administration.</td></tr></table>
+<h3>Privileged Access Workstations</h3>
+<p>A PAW is a hardened administrative workstation dedicated to privileged administration. The principle is simple: do not type a high-tier credential into a lower-trust workstation. Otherwise the credential is exposed to the lower-trust environment.</p>
+<h3>Enterprise Access Model evolution</h3>
+<p>Microsoft's newer Enterprise Access Model extends the older AD tier model to modern environments spanning on-premises systems, multiple clouds, users and applications. The central principle remains containment of privileged access and protection of the identity control plane.</p>
+</section>
+
+<section class="section" id="adcs"><h2>11 · Active Directory Certificate Services and PKI risk</h2>
+<p>AD CS provides certificate services that can support authentication, encryption, signing and other enterprise functions. Because certificates can represent identities, certificate configuration can become an identity-security boundary.</p>
+<h3>Why certificate templates matter</h3>
+<p>Certificate templates define enrollment and certificate properties. A template that allows an unintended principal to obtain a certificate usable for authentication can create an indirect identity escalation path.</p>
+<h3>Security review</h3>
+<ul><li>Inventory certificate authorities and templates.</li><li>Identify who can enroll, modify templates and manage CA configuration.</li><li>Separate certificate issuance authority from unnecessary administrative roles.</li><li>Review certificate purpose, subject/SAN handling and authentication mappings.</li><li>Monitor anomalous enrollment and privileged certificate use.</li></ul>
+<div class="callout"><strong>Key idea:</strong> if a certificate can authenticate as a powerful identity, the system that issues or controls that certificate is part of the identity control plane.</div>
+</section>
+
+<section class="section" id="ntlm"><h2>12 · NTLM, legacy authentication and protocol transition</h2>
+<p>NTLM is an older Windows authentication family that remains present for compatibility in some environments. Security architecture should distinguish legacy protocol requirements from modern authentication paths and reduce unnecessary dependence on weaker mechanisms.</p>
+<h3>Pass-the-hash</h3>
+<p>Pass-the-hash describes using an obtained NTLM credential representation to authenticate without first recovering the plaintext password. The defensive implication is important: protecting only passwords is insufficient if reusable credential material can be extracted from privileged systems.</p>
+<h3>Reduction strategy</h3>
+<p>Inventory applications that require legacy authentication, remove unnecessary NTLM dependencies, prefer Kerberos where appropriate, protect privileged credentials and monitor unexpected authentication paths.</p>
+<h3>Do not confuse compatibility with trust</h3>
+<p>A protocol being supported by a Windows environment does not mean it should be accepted everywhere. Authentication policy should reflect application requirements and the sensitivity of the target resource.</p>
+</section>
+
+<section class="section" id="defense"><h2>13 · Domain controller hardening and identity-plane defense</h2>
+<p>Domain controllers should be treated as high-value infrastructure. Microsoft guidance emphasizes reducing privileged accounts, securing administrative hosts, protecting domain controllers, patching, controlling application execution and monitoring critical assets.</p>
+<h3>Core controls</h3>
+<ul><li>Minimize permanent privileged membership.</li><li>Use separate administrative identities for privileged work.</li><li>Use hardened administrative hosts appropriate to the privilege tier.</li><li>Restrict interactive and remote access to domain controllers.</li><li>Apply supported security baselines and timely security updates.</li><li>Control software and services running on domain controllers.</li><li>Protect backups and test identity recovery.</li><li>Audit privileged changes and authentication events.</li></ul>
+<h3>Defense in depth</h3>
+<p>Identity security should not depend on a single control. Endpoint security, network segmentation, credential protections, policy controls, directory permissions, logging and recovery capabilities should reinforce one another.</p>
+</section>
+
+<section class="section" id="detection"><h2>14 · Enterprise detection and identity telemetry</h2>
+<p>AD security requires visibility into authentication, privilege changes, directory modifications, policy changes and unusual relationships between identities and systems.</p>
+<h3>High-value telemetry</h3>
+<ul><li>Authentication successes and failures, including unusual source/destination patterns.</li><li>Privileged group membership changes.</li><li>New or modified accounts and service identities.</li><li>Directory object and ACL changes.</li><li>Group Policy changes.</li><li>Certificate enrollment and CA/template changes.</li><li>Suspicious use of administrative protocols or remote management.</li><li>Changes to domain controller security configuration.</li></ul>
+<h3>Detection engineering</h3>
+<p>Good detections combine identity, host, network and directory context. A single failed login is weak evidence; a privileged account authenticating from an unusual workstation followed by group membership changes is a much richer investigation signal.</p>
+<h3>ATT&amp;CK mapping</h3>
+<p>MITRE ATT&amp;CK documents enterprise techniques relevant to credential access, discovery, lateral movement, privilege escalation and persistence. Mapping detections to behavior helps identify coverage gaps without reducing security monitoring to a list of tool signatures.</p>
+</section>
+
+<section class="section" id="recovery"><h2>15 · Domain compromise, containment and recovery</h2>
+<p>A suspected domain compromise is an identity incident, not simply a malware cleanup exercise. Recovery must answer whether privileged credentials, domain controllers, certificate infrastructure, policy controls or trust relationships were affected.</p>
+<h3>Containment reasoning</h3>
+<p>Containment should reduce attacker access while preserving enough evidence and operational capability to understand the incident. Actions must be coordinated because disabling identities or systems without understanding dependencies can interrupt critical business functions.</p>
+<h3>Recovery principles</h3>
+<ul><li>Establish a trusted administrative path.</li><li>Identify affected privileged identities and credentials.</li><li>Assess domain controller integrity and supporting infrastructure.</li><li>Review persistence through accounts, groups, policy, delegation and certificates.</li><li>Restore from known-good sources where required.</li><li>Reset or rotate credentials according to a documented recovery plan.</li><li>Validate security controls after restoration.</li></ul>
+<div class="callout warning"><strong>Recovery is a trust decision:</strong> restoring a server is not sufficient if the identity relationships that authenticate administrators to that server remain compromised.</div>
+</section>
+
+<section class="section" id="hybrid"><h2>16 · Hybrid identity and enterprise architecture</h2>
+<p>Modern enterprises may combine on-premises AD DS with Microsoft Entra ID and managed services. Hybrid identity creates additional synchronization, federation, provisioning and privileged-access paths.</p>
+<h3>Control-plane expansion</h3>
+<p>Microsoft's current Enterprise Access Model broadens the security view beyond classic domain boundaries. Identity systems, synchronization services, cloud management planes and administrative workstations can all influence access decisions.</p>
+<h3>Entra Domain Services is different from AD DS</h3>
+<p>Microsoft Entra Domain Services provides managed domain capabilities such as domain join, Group Policy, LDAP and Kerberos/NTLM for workloads that need legacy domain protocols. It is a managed service rather than a customer-operated domain-controller deployment.</p>
+<h3>Hybrid security questions</h3>
+<ul><li>Which system is authoritative for each identity attribute?</li><li>Which synchronization service can change cloud or on-premises identity state?</li><li>Which administrators can control synchronization?</li><li>Where are privileged credentials allowed to appear?</li><li>Can compromise of one plane influence the other?</li></ul>
+</section>
+
+<section class="section" id="mastery"><h2>Mastery review · 20 questions with answers</h2>
+<details class="qa"><summary>01 · What is Active Directory?</summary><div class="answer"><strong>Answer:</strong> AD DS is a directory and identity infrastructure that stores network objects and supports authentication, policy-based administration and access-control-related operations.<br><br><strong>Why:</strong> Its security importance comes from its role in controlling identities and access across many enterprise systems.</div></details>
+<details class="qa"><summary>02 · What is the difference between a domain and a forest?</summary><div class="answer"><strong>Answer:</strong> A domain is an AD administrative and identity scope; a forest is the larger collection of domains sharing schema and configuration.<br><br><strong>Why:</strong> Forest-level relationships and privileges can affect multiple domains.</div></details>
+<details class="qa"><summary>03 · Is an OU a hard security boundary?</summary><div class="answer"><strong>Answer:</strong> No. An OU is primarily an organizational, delegation and Group Policy container.<br><br><strong>Why:</strong> Effective security depends on ACLs, delegation, inheritance and administrative design.</div></details>
+<details class="qa"><summary>04 · Why is DNS important to AD security?</summary><div class="answer"><strong>Answer:</strong> AD uses DNS for service discovery and locating domain controllers.<br><br><strong>Why:</strong> Incorrect or maliciously influenced name resolution can disrupt or redirect identity-dependent operations.</div></details>
+<details class="qa"><summary>05 · What does Kerberos provide?</summary><div class="answer"><strong>Answer:</strong> Kerberos provides ticket-based network authentication using a trusted KDC and cryptographic credentials.<br><br><strong>Why:</strong> It reduces the need to repeatedly send passwords to services and supports strong service authentication patterns.</div></details>
+<details class="qa"><summary>06 · What is a TGT?</summary><div class="answer"><strong>Answer:</strong> A Ticket Granting Ticket is a Kerberos credential used as the basis for obtaining service tickets.<br><br><strong>Why:</strong> Possession of sensitive ticket material can represent significant authentication risk.</div></details>
+<details class="qa"><summary>07 · What is an SPN?</summary><div class="answer"><strong>Answer:</strong> A Service Principal Name associates a service instance with a security principal for Kerberos service authentication.<br><br><strong>Why:</strong> Correct SPN registration is important for reliable and secure Kerberos service identity.</div></details>
+<details class="qa"><summary>08 · What is pass-the-ticket?</summary><div class="answer"><strong>Answer:</strong> It is the concept of using stolen Kerberos ticket material to reuse an existing authenticated security context.<br><br><strong>Why:</strong> It shows why credential protection must include session and ticket material, not only passwords.</div></details>
+<details class="qa"><summary>09 · Why can LDAP exposure matter even when data is readable by design?</summary><div class="answer"><strong>Answer:</strong> Directory data can reveal identities, groups, systems, services and relationships that enable reconnaissance.<br><br><strong>Why:</strong> Security risk depends on what an attacker can infer from combined information, not only on whether each attribute is secret.</div></details>
+<details class="qa"><summary>10 · Why is Group Policy security-critical?</summary><div class="answer"><strong>Answer:</strong> GPO can change configuration and security behavior across many systems.<br><br><strong>Why:</strong> A privileged policy change can have enterprise-wide impact, so GPO permissions and changes need strong control and monitoring.</div></details>
+<details class="qa"><summary>11 · What makes delegated permissions dangerous?</summary><div class="answer"><strong>Answer:</strong> A delegated right can create an indirect path to a sensitive object or privileged operation without direct membership in a privileged group.<br><br><strong>Why:</strong> AD security must be analysed as an effective permission graph.</div></details>
+<details class="qa"><summary>12 · What is Kerberos delegation?</summary><div class="answer"><strong>Answer:</strong> It allows a service to act on behalf of a user when accessing another service.<br><br><strong>Why:</strong> Delegation creates an impersonation trust, so it should be constrained to the minimum required services and principals.</div></details>
+<details class="qa"><summary>13 · What is Tier 0?</summary><div class="answer"><strong>Answer:</strong> Tier 0 represents the identity control plane and assets or identities that can control enterprise identity authority.<br><br><strong>Why:</strong> Compromise of Tier 0 can undermine trust across lower tiers.</div></details>
+<details class="qa"><summary>14 · Why should privileged credentials not be used on ordinary workstations?</summary><div class="answer"><strong>Answer:</strong> A compromised lower-trust workstation can expose the higher-tier credentials typed or used there.<br><br><strong>Why:</strong> Administrative workstation security is part of the privileged identity boundary.</div></details>
+<details class="qa"><summary>15 · Why is AD CS part of identity security?</summary><div class="answer"><strong>Answer:</strong> Certificates can represent identities and may be used for authentication.<br><br><strong>Why:</strong> A certificate authority or template that can issue an authentication-capable certificate to an unintended principal can create a privilege path.</div></details>
+<details class="qa"><summary>16 · What is pass-the-hash?</summary><div class="answer"><strong>Answer:</strong> It is the reuse of obtained NTLM credential material to authenticate without first recovering the plaintext password.<br><br><strong>Why:</strong> It demonstrates why reusable credential material on privileged systems must be strongly protected.</div></details>
+<details class="qa"><summary>17 · Which changes deserve high-priority AD monitoring?</summary><div class="answer"><strong>Answer:</strong> Privileged group membership, sensitive directory permissions, accounts, Group Policy, certificate infrastructure, domain-controller security configuration and unusual privileged authentication are high-value areas.<br><br><strong>Why:</strong> These events can alter enterprise trust or indicate identity compromise.</div></details>
+<details class="qa"><summary>18 · What makes domain recovery different from ordinary server recovery?</summary><div class="answer"><strong>Answer:</strong> You must re-establish trusted identity and administrative control, not merely restore operating-system state.<br><br><strong>Why:</strong> A compromised identity plane can make restored systems unsafe even when their files appear intact.</div></details>
+<details class="qa"><summary>19 · What is the security challenge of hybrid identity?</summary><div class="answer"><strong>Answer:</strong> Hybrid identity introduces synchronization, federation and cloud-management paths that can connect multiple control planes.<br><br><strong>Why:</strong> Each path must be treated as a potential privilege boundary and monitored accordingly.</div></details>
+<details class="qa"><summary>20 · What is the core enterprise AD security model?</summary><div class="answer"><strong>Answer:</strong> Protect the identity control plane, minimize privileged access, isolate administrative trust tiers, constrain delegation, harden supporting infrastructure, monitor identity changes and maintain a tested recovery path.<br><br><strong>Why:</strong> Enterprise AD security is an architecture problem: reducing the blast radius of a compromised endpoint or identity is more durable than relying on one detection rule.</div></details>
+<div class="callout"><strong>Completion standard:</strong> You should be able to explain AD domains and forests, DNS dependency, Kerberos tickets, LDAP, GPO, ACL/delegation paths, privileged tiers, PAWs, AD CS, legacy authentication, identity telemetry and domain recovery. You should also be able to explain why a compromise of the identity control plane can propagate across otherwise healthy workloads.</div>
+</section>
+
+<section class="sources"><h2>Primary references</h2>
+<a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/get-started/virtual-dc/active-directory-domain-services-overview" target="_blank" rel="noopener">Microsoft Learn — Active Directory Domain Services overview</a>
+<a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices" target="_blank" rel="noopener">Microsoft Learn — Active Directory security best practices</a>
+<a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/tier-model" target="_blank" rel="noopener">Microsoft Learn — AD DS Tier Model for Privileged Access Security</a>
+<a href="https://learn.microsoft.com/en-us/security/privileged-access-workstations/privileged-access-access-model" target="_blank" rel="noopener">Microsoft Learn — Enterprise Access Model</a>
+<a href="https://learn.microsoft.com/en-us/windows-server/identity/ad-ds/plan/security-best-practices/implementing-secure-administrative-hosts" target="_blank" rel="noopener">Microsoft Learn — Implementing Secure Administrative Hosts</a>
+<a href="https://learn.microsoft.com/en-us/entra/identity/domain-services/overview" target="_blank" rel="noopener">Microsoft Learn — Microsoft Entra Domain Services overview</a>
+<a href="https://attack.mitre.org/" target="_blank" rel="noopener">MITRE ATT&amp;CK</a>
+<a href="https://attack.mitre.org/techniques/enterprise/" target="_blank" rel="noopener">MITRE ATT&amp;CK Enterprise techniques</a>
+<a href="https://www.microsoft.com/en-us/security/business/security-101/what-is-active-directory" target="_blank" rel="noopener">Microsoft Security — Active Directory security concepts</a>
+</section>
+</main>
+<footer class="wrap footer">Cybersecurity · Discipline 09 · Active Directory & Enterprise Security</footer>
+</body></html>
