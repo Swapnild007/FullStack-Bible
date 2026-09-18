@@ -217,7 +217,7 @@ const D=[
 
 function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]))}
 document.getElementById("index").innerHTML=D.map(m=>'<a href="#d'+m[0]+'">'+m[0]+' · '+esc(m[1])+'</a>').join("");
-document.getElementById("modules").innerHTML=D.map(m=>'<article class="module" id="d'+m[0]+'"><div class="module-head"><div class="num">'+m[0]+'</div><div><span class="level">'+esc(m[2])+'</span><h2>'+esc(m[1])+'</h2><p class="module-intro">'+esc(m[3][0][1][0])+'</p></div></div><div class="sections">'+m[3].map((s,i)=>'<details class="section" '+(i===0?'open':'')+'><summary>'+esc(s[0])+'</summary><div class="section-body">'+(Array.isArray(s[1])?s[1].map(p=>'<p>'+esc(p)+'</p>').join(""):'<p>'+esc(s[1])+'</p>')+'</div></details>').join("")+'</div><div class="discipline-link">'+(m[0]==='01'?'<a href="cybersecurity-01.html">Read full discipline →</a>':'')+'</div></article>').join("");
+document.getElementById("modules").innerHTML=D.map(m=>'<article class="module" id="d'+m[0]+'"><div class="module-head"><div class="num">'+m[0]+'</div><div><span class="level">'+esc(m[2])+'</span><h2>'+esc(m[1])+'</h2><p class="module-intro">'+esc(m[3][0][1][0])+'</p></div></div><div class="sections">'+m[3].map((s,i)=>'<details class="section" '+(i===0?'open':'')+'><summary>'+esc(s[0])+'</summary><div class="section-body">'+(Array.isArray(s[1])?s[1].map(p=>'<p>'+esc(p)+'</p>').join(""):'<p>'+esc(s[1])+'</p>')+'</div></details>').join("")+'</div><div class="discipline-link">'+(m[0]==='01'?'<a href="cybersecurity-01.html">Read full discipline →</a>':m[0]==='02'?'<a href="cybersecurity-02.html">Read full discipline →</a>':'')+'</div></article>').join("");
 </script>
 </body>
 </html>
