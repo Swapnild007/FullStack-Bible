@@ -52,7 +52,7 @@
     const id=host.dataset.terminalHost||('terminal-'+Math.random().toString(36).slice(2));
     host.dataset.terminalId=id;
     const ctx=hostContext(host);
-    const seed=ctx.editor?.value||'';
+    const seed=ctx.editor ? ctx.editor.value : ''||'';
     const s=getSession(id,seed);
     if(!s.files||!Object.keys(s.files).length)s.files={'index.html':seed};
     if(!s.activeFile)s.activeFile=Object.keys(s.files)[0]||'index.html';
@@ -108,7 +108,7 @@
     if(cmd==='clear'){clearOutput(id);return}
     if(cmd==='cd /project'||cmd==='cd .'){s.cwd='/project';renderOutput(id,s.cwd);return}
     if(cmd.startsWith('cd ')){renderOutput(id,'cd: browser sandbox has one project directory: /project','err');return}
-    if(cmd.startsWith('cat ')){const name=cmd.slice(4).trim();renderOutput(id,s.files[name]??'cat: '+name+': No such file','');return}
+    if(cmd.startsWith('cat ')){const name=cmd.slice(4).trim();renderOutput(id,(s.files[name] !== undefined ? s.files[name] : 'cat: '+name+': No such file'),'');return}
     if(cmd.startsWith('touch ')){const name=cmd.slice(6).trim();if(!validFile(name)){renderOutput(id,'touch: invalid file name','err');return}s.files[name]=s.files[name]||'';s.activeFile=name;refreshFiles(id);saveSaved();syncEditor(s,ctx);if(ctx.editor)ctx.editor.value=s.files[name];renderOutput(id,'created '+name,'ok');return}
     if(cmd.startsWith('mkdir ')){const name=cmd.slice(6).trim();if(!name||/[\\/]/.test(name)){renderOutput(id,'mkdir: invalid directory name','err');return}s.files[name+'/.keep']='';saveSaved();refreshFiles(id);renderOutput(id,'created '+name+'/','ok');return}
     if(cmd.startsWith('write ')){const m=cmd.match(/^write\\s+(\\S+)\\s+([\\s\\S]*)$/);if(!m){renderOutput(id,'usage: write <file> <text>','err');return}s.files[m[1]]=m[2];s.activeFile=m[1];refreshFiles(id);if(ctx.editor)ctx.editor.value=s.files[s.activeFile];saveSaved();renderOutput(id,'wrote '+m[1],'ok');return}
@@ -132,7 +132,7 @@
     const root=find(id);if(!root)return;
     const old=root.querySelector('iframe.fsb-runner');if(old)old.remove();
     const frame=document.createElement('iframe');frame.className='fsb-runner';frame.hidden=true;frame.sandbox='allow-scripts';
-    const onMessage=e=>{if(e.source!==frame.contentWindow||e.data?.fsbTerminalId!==id)return;renderOutput(id,(e.data.level==='error'?'✗ ':'✓ ')+e.data.message,e.data.level==='error'?'err':'ok')};
+    const onMessage=e=>{if(e.source!==frame.contentWindow||e.data && e.data.fsbTerminalId!==id)return;renderOutput(id,(e.data.level==='error'?'✗ ':'✓ ')+e.data.message,e.data.level==='error'?'err':'ok')};
     window.addEventListener('message',onMessage);
     frame.addEventListener('load',()=>{setTimeout(()=>{window.removeEventListener('message',onMessage);frame.remove()},1200)},{once:true});
     frame.srcdoc=srcdoc;root.appendChild(frame);
@@ -163,7 +163,7 @@
   }
   function reset(id){
     const s=sessions.get(id),ctx=hostContext(find(id));if(!s)return;
-    const seed=ctx.editor?.defaultValue||'<!doctype html>\n<html><body><h1>FullStack Bible</h1></body></html>';
+    const seed=ctx.editor ? ctx.editor.defaultValue||'<!doctype html>\n<html><body><h1>FullStack Bible</h1></body></html>';
     s.files={'index.html':seed};s.activeFile='index.html';refreshFiles(id);if(ctx.editor)ctx.editor.value=seed;saveSaved();renderOutput(id,'Workspace reset.','muted');
   }
   function run(id){const input=document.getElementById(id+'-input');command(id,input?.value||'');if(input)input.value=''}
