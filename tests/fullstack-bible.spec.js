@@ -60,7 +60,7 @@ test.describe('FullStack Bible site smoke', () => {
   test('landing, projects, invalid stages and keyboard focus work', async ({ page }) => {
     await page.goto('index.html');
     await expect(page).toHaveTitle(/FullStack Bible/i);
-    await expect(page.getByRole('link', { name:/start learning/i })).toHaveAttribute('href', /site/roadmap\.html/);
+    await expect(page.getByRole('link', { name:/start learning/i })).toHaveAttribute('href', /site/shared/roadmap\.html/);
     await page.goto('site/shared/projects.html?stage=03');
     await expect(page.locator('body')).toContainText(/Task Manager/i);
     await page.goto('site/shared/practice.html?stage=99');
