@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#f5f5f7">
+<title>02 — Operating System & Kernel Internals — FullStack Bible</title>
+<style>
+:root{--bg:#f5f5f7;--ink:#111113;--muted:#6e6e73;--blue:#007aff;--purple:#5856d6}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(65% 35% at 90% 0,#5856d622,transparent 70%),radial-gradient(55% 35% at 0 20%,#007aff18,transparent 70%),var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"SF Pro Display","Helvetica Neue",Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.wrap{width:min(1000px,calc(100% - 28px));margin:auto}.nav{position:sticky;top:10px;z-index:20;margin-top:10px;padding:9px 10px 9px 17px;border:1px solid #fff;border-radius:20px;background:#ffffffcc;backdrop-filter:blur(25px);display:flex;justify-content:space-between;align-items:center;box-shadow:0 12px 38px #0000000b}.brand{font-weight:800;letter-spacing:-.06em;text-decoration:none;color:inherit}.brand span{color:var(--blue)}.back{padding:10px 14px;border-radius:999px;background:#111;color:#fff;text-decoration:none;font-size:12px;font-weight:700}
+.hero{padding:68px 0 34px}.eyebrow{font-size:11px;letter-spacing:.16em;color:#999;font-weight:800}.hero h1{font-size:clamp(43px,8vw,78px);line-height:.94;letter-spacing:-.085em;margin:14px 0}.hero h1 span{background:linear-gradient(105deg,#111,#007aff,#5856d6);background-clip:text;-webkit-background-clip:text;color:transparent}.hero p{max-width:850px;color:var(--muted);font-size:17px;line-height:1.7}.meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}.pill{padding:7px 10px;border-radius:999px;background:#fff;border:1px solid #fff;color:#666;font-size:10px;font-weight:800}
+.lessonbar{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.lessonbar a{padding:9px 12px;border-radius:999px;background:#fff;border:1px solid #e8e8ec;color:#555;text-decoration:none;font-size:11px;font-weight:750}
+.section{margin:12px 0;padding:24px;border:1px solid #fff;border-radius:25px;background:#ffffffbd;box-shadow:0 18px 55px #00000009;scroll-margin-top:80px}.section h2{font-size:24px;letter-spacing:-.055em;margin:0 0 13px}.section h3{font-size:16px;letter-spacing:-.025em;margin:21px 0 8px}.section p,.section li{color:#555;font-size:13px;line-height:1.78}.section p{margin:9px 0}.section ul,.section ol{padding-left:21px}.section li{margin:6px 0}.term{color:#202024;font-weight:800}.callout{margin:15px 0;padding:15px 16px;border-radius:16px;background:#eef5ff;color:#36506c;font-size:12px;line-height:1.7}.warning{background:#fff5ed;color:#705038}.formula{margin:12px 0;padding:12px 14px;border-radius:13px;background:#f0f0f3;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:11px;color:#444;overflow:auto}.compare{width:100%;border-collapse:collapse;margin:12px 0;font-size:11px}.compare th,.compare td{padding:10px;border-bottom:1px solid #e7e7ea;text-align:left;vertical-align:top}.compare th{color:#333}.qa{margin:9px 0;border:1px solid #e8e8ec;border-radius:15px;background:#fff;overflow:hidden}.qa summary{cursor:pointer;padding:13px 14px;font-size:12px;font-weight:750;list-style:none}.qa summary::-webkit-details-marker{display:none}.qa summary:after{content:"+";float:right;color:#888}.qa[open] summary:after{content:"−"}.answer{padding:0 14px 15px;color:#555;font-size:12px;line-height:1.75}.answer strong{color:#222}.sources{padding:22px;margin:14px 0 30px;border:1px solid #fff;border-radius:22px;background:#fff}.sources h2{font-size:19px;margin:0 0 10px}.sources a{display:block;color:#007aff;text-decoration:none;font-size:12px;margin:9px 0}.footer{text-align:center;color:#999;padding:45px 0 70px;font-size:11px}
+@media(max-width:650px){.hero{padding-top:55px}.hero p{font-size:15px}.section{padding:20px}.section h2{font-size:21px}.compare{font-size:10px}.compare th,.compare td{padding:8px}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<nav class="nav wrap"><a class="brand" href="index.html">FullStack<span>Bible</span></a><a class="back" href="cybersecurity.html">Cybersecurity</a></nav>
+<header class="wrap hero">
+<div class="eyebrow">CYBERSECURITY · DISCIPLINE 02 · FOUNDATION → ADVANCED</div>
+<h1>Operating System & <span>Kernel Internals.</span></h1>
+<p>A deep theory chapter on the layer that turns hardware into a usable computing environment: processes, threads, virtual memory, system calls, filesystems, permissions, IPC, scheduling, drivers, namespaces, capabilities, debugging, Windows security architecture and host telemetry.</p>
+<div class="meta"><span class="pill">Foundation → Advanced</span><span class="pill">Deep theory</span><span class="pill">15 chapters</span><span class="pill">20 mastery answers</span><span class="pill">Theory only</span></div>
+</header>
+<main class="wrap">
+<div class="lessonbar"><a href="#objectives">Objectives</a><a href="#kernel">Kernel</a><a href="#process">Processes</a><a href="#memory">Memory</a><a href="#syscalls">System calls</a><a href="#files">Filesystems</a><a href="#linux">Linux security</a><a href="#windows">Windows</a><a href="#telemetry">Telemetry</a><a href="#review">Mastery</a></div>
+
+<section class="section" id="objectives"><div class="kicker">Before you begin</div><h2>Learning objectives</h2>
+<p class="lead">The operating system is the layer where software requests become privileged actions. To understand endpoint compromise, privilege escalation, persistence, credential theft or container isolation, you need to understand what the kernel controls and what applications are allowed to request.</p>
+<ul><li>Explain user mode, kernel mode and the system-call boundary.</li><li>Describe processes, threads, scheduling and inter-process communication.</li><li>Explain virtual memory, page tables, permissions and copy-on-write.</li><li>Understand filesystems, file descriptors, permissions, ACLs and device interfaces.</li><li>Explain Linux namespaces, capabilities, cgroups and common isolation assumptions.</li><li>Understand Windows SIDs, access tokens, ACLs, privileges, LSA/LSASS and UAC.</li><li>Reason about debugging interfaces and why they can cross security boundaries.</li><li>Design useful host telemetry from process, identity, filesystem and network events.</li></ul>
+<div class="callout"><strong>Mental model:</strong> an operating system is an authority broker. Applications ask for resources; the kernel validates requests, changes protected state and enforces isolation. Cybersecurity is largely the study of what happens when that authority boundary is misunderstood, misconfigured or bypassed.</div>
+</section>
+
+<section class="section" id="kernel"><div class="kicker">Chapter 01</div><h2>What the kernel actually does</h2>
+<p class="lead">The kernel is privileged software responsible for coordinating hardware and providing controlled abstractions to applications. It is not simply “the background part of the OS.” It is the enforcement layer for many of the machine's most important security boundaries.</p>
+<h3>1.1 Resource management</h3>
+<p>The kernel manages CPU time, memory, devices, filesystems, networking and process execution. Applications generally do not manipulate these resources directly; they use operating-system interfaces.</p>
+<h3>1.2 Privilege boundary</h3>
+<p>Modern systems separate <strong>user mode</strong> from privileged <strong>kernel mode</strong>. User-mode code has restricted access to hardware and kernel memory. A controlled transition is required for privileged operations.</p>
+<h3>1.3 Security consequence</h3>
+<p>A compromised ordinary application is potentially contained by the OS security boundary. A kernel compromise is fundamentally different because kernel code can generally access the resources that the kernel itself controls.</p>
+<p>This is why kernel vulnerabilities receive serious security attention: the vulnerable component is also an enforcement mechanism.</p>
+<h3>1.4 Kernel design styles</h3>
+<p>Operating systems use different architectural approaches, including monolithic kernels, microkernels and hybrid designs. The terminology describes where services and drivers execute, not a simple security ranking. The relevant security question is how much privileged code exists, how it is isolated and how failures propagate.</p>
+</section>
+
+<section class="section" id="process"><div class="kicker">Chapter 02</div><h2>Processes, threads and execution context</h2>
+<p class="lead">A process is a protected execution environment containing an address space and operating-system-managed resources. A thread is an execution path within that process.</p>
+<h3>2.1 Process</h3>
+<p>A process typically has a virtual address space, open handles or file descriptors, credentials/security context, environment and other kernel-managed state. The exact representation is OS-specific.</p>
+<h3>2.2 Thread</h3>
+<p>Threads share many process resources but maintain their own execution state, including registers and stack. Multiple threads can therefore execute concurrently within one process.</p>
+<h3>2.3 Scheduling</h3>
+<p>The scheduler decides which runnable thread receives CPU time. Context switching saves and restores execution state. Scheduling policy affects performance, responsiveness and sometimes security properties such as isolation and denial-of-service resistance.</p>
+<h3>2.4 Process creation</h3>
+<p>Unix-like systems commonly use fork/exec-style process creation, while Windows uses different process and thread creation APIs. The architectural idea is the same: the OS creates a new execution context and establishes its initial security state.</p>
+<h3>2.5 Parent-child relationships</h3>
+<p>Process ancestry is valuable security telemetry. Unexpected parent-child relationships can be suspicious, but ancestry alone is not proof of malicious behavior. Analysts need command lines, identities, signatures, network activity and surrounding context.</p>
+</section>
+
+<section class="section" id="memory"><div class="kicker">Chapter 03</div><h2>Virtual memory and page-based isolation</h2>
+<p class="lead">Virtual memory is one of the most important OS security mechanisms because it controls which address spaces exist and which memory regions can be accessed.</p>
+<h3>3.1 Address translation</h3>
+<p>A process uses virtual addresses. Hardware memory-management units translate them through page-table structures into physical memory locations. The OS creates and manages those mappings.</p>
+<div class="formula">virtual address → page-table translation → physical page + permissions</div>
+<h3>3.2 Page permissions</h3>
+<p>Page mappings can carry attributes such as readable, writable, executable and user/supervisor accessibility. These permissions support important defenses such as preventing ordinary user processes from executing kernel pages.</p>
+<h3>3.3 Copy-on-write</h3>
+<p>Copy-on-write lets multiple address spaces initially share physical pages until one needs to modify a page. The OS then creates a private copy. This improves efficiency while preserving isolation.</p>
+<h3>3.4 Memory-mapped files</h3>
+<p>Memory mapping lets a file or device region appear in a process's virtual address space. This can improve performance but also creates security concerns around permissions, lifetime, race conditions and untrusted content.</p>
+<h3>3.5 Swap and page reclamation</h3>
+<p>Operating systems may reclaim or move memory pages. Security-sensitive data can therefore have a more complicated lifetime than “it was in RAM.” Secure systems consider how credentials and secrets are handled across memory, crash dumps, hibernation and swap-related paths.</p>
+<p>Linux's current memory-management documentation covers physical memory, page tables, process addresses, page allocation, page cache, swap, memory reclamation and out-of-memory handling. citeturn0search8</p>
+</section>
+
+<section class="section" id="syscalls"><div class="kicker">Chapter 04</div><h2>System calls: crossing into privileged services</h2>
+<p class="lead">A system call is the controlled interface through which user-space software requests a kernel service.</p>
+<h3>4.1 Why system calls exist</h3>
+<p>An application cannot safely manipulate every hardware resource directly. Instead, it requests operations such as opening a file, creating a process, allocating mappings or sending network data through kernel APIs.</p>
+<h3>4.2 The boundary</h3>
+<p>A system-call transition changes execution context according to CPU and OS rules. The kernel validates arguments, checks permissions and performs or rejects the operation.</p>
+<h3>4.3 Input validation</h3>
+<p>Kernel code must treat user-provided pointers, lengths, identifiers and flags as untrusted. Bugs in this boundary can produce privilege escalation because a low-privilege process is interacting with highly privileged code.</p>
+<h3>4.4 Observability</h3>
+<p>Tools such as <strong>strace</strong> on Linux can expose system-call behavior. Similar tracing facilities exist on Windows. Security analysts can use system-call patterns to understand what a program actually requested rather than relying only on its filename or stated purpose.</p>
+</section>
+
+<section class="section" id="ipc"><div class="kicker">Chapter 05</div><h2>Inter-process communication and synchronization</h2>
+<p class="lead">Processes need controlled ways to exchange data and coordinate work. IPC mechanisms are therefore both functionality and security boundaries.</p>
+<h3>5.1 Common IPC models</h3>
+<p>Examples include pipes, Unix domain sockets, shared memory, message queues, signals, RPC mechanisms and network sockets. Windows provides named pipes, ALPC and other IPC facilities.</p>
+<h3>5.2 Shared memory</h3>
+<p>Shared memory is fast because processes can access the same underlying pages. The trade-off is synchronization and authorization complexity. A shared region must have an explicit ownership and access model.</p>
+<h3>5.3 Synchronization</h3>
+<p>Mutexes, semaphores, condition variables and atomic operations coordinate concurrent execution. Race conditions can become security vulnerabilities when a security decision and the protected state change are not atomic.</p>
+<h3>5.4 TOCTOU</h3>
+<p>A time-of-check-to-time-of-use race occurs when software checks a property and later uses the resource assuming the property remains unchanged. Between those moments, another actor may alter the resource.</p>
+<div class="callout"><strong>Security lesson:</strong> “I checked it” is not enough if the system can change between the check and the security-sensitive operation.</div>
+</section>
+
+<section class="section" id="files"><div class="kicker">Chapter 06</div><h2>Filesystems, file descriptors and permissions</h2>
+<h3>6.1 Files are more than documents</h3>
+<p>Operating systems expose many resources through file-like abstractions. On Unix-like systems, file descriptors can refer to regular files, directories, sockets, pipes, devices and other kernel objects.</p>
+<h3>6.2 Linux VFS</h3>
+<p>Linux's Virtual File System provides a common interface over multiple filesystem implementations. This lets applications use consistent operations while the kernel handles filesystem-specific behavior.</p>
+<h3>6.3 Permissions</h3>
+<p>Traditional Unix permissions express owner, group and other access for read, write and execute. ACLs can provide more detailed rules. Linux capabilities can separate selected privileged operations from the all-powerful root identity.</p>
+<h3>6.4 Windows object security</h3>
+<p>Windows uses security descriptors, access control entries and ACLs for securable objects including files, registry keys, processes, services and devices. Microsoft documents the model around SIDs, access tokens, security descriptors, ACLs and privileges. citeturn0search2turn0search4</p>
+<h3>6.5 Authorization versus auditing</h3>
+<p>A DACL controls who is allowed or denied access. A SACL can define auditing for selected access events. These are different purposes: preventing an action and recording an action are complementary controls.</p>
+</section>
+
+<section class="section" id="linux"><div class="kicker">Chapter 07</div><h2>Linux security architecture</h2>
+<h3>7.1 Users, groups and credentials</h3>
+<p>Linux processes operate with credentials that influence access decisions. User and group identities are foundational, but modern Linux also uses capabilities and security modules to express finer-grained policy.</p>
+<h3>7.2 Capabilities</h3>
+<p>Capabilities divide some traditional root powers into separate units. This supports least privilege by allowing a process to receive only selected privileged operations where appropriate.</p>
+<h3>7.3 Namespaces</h3>
+<p>Namespaces isolate views of kernel resources. Linux supports namespaces for areas including processes, mounts, networking, IPC, users and hostnames. They are a foundation of containers but should not be treated as an automatic guarantee of complete isolation. citeturn0search11</p>
+<h3>7.4 cgroups</h3>
+<p>Control groups organize processes and control/account for resources such as CPU and memory. They are important for resource governance and container isolation. Kernel documentation specifically discusses resource-control considerations when user namespaces are used. citeturn0search9</p>
+<h3>7.5 LSM</h3>
+<p>Linux Security Modules provide hooks through which security policy can be enforced. SELinux and AppArmor are important examples. Their models differ, but both can impose restrictions beyond traditional discretionary permissions.</p>
+</section>
+
+<section class="section" id="debug"><div class="kicker">Chapter 08</div><h2>ptrace, debugging and privileged observation</h2>
+<p class="lead">Debugging is inherently powerful because it lets one execution context inspect another. Security therefore requires controls around who may trace or modify processes.</p>
+<h3>8.1 What ptrace enables</h3>
+<p>On Linux, ptrace-related facilities can observe registers and memory and control execution under applicable policy. This is extremely useful for debugging and authorized security research.</p>
+<h3>8.2 Why it is security-sensitive</h3>
+<p>If an attacker can arbitrarily trace a privileged process, debugging capabilities may become a path to obtaining sensitive state or manipulating execution.</p>
+<h3>8.3 Policy matters</h3>
+<p>Linux systems can apply restrictions around process tracing. The Yama security module provides additional policy controls in supported configurations. The Linux documentation also notes that user namespaces interact with ptrace capabilities, demonstrating why isolation mechanisms must be understood as a system rather than individually. citeturn0search24</p>
+<h3>8.4 Windows debugging</h3>
+<p>Windows debugging also involves privileged process access rights. The security model treats processes and threads as securable objects, with access mediated by security descriptors and tokens. citeturn0search4</p>
+</section>
+
+<section class="section" id="windows"><div class="kicker">Chapter 09</div><h2>Windows security architecture</h2>
+<p class="lead">Windows security is built around identities, security contexts, securable objects, access checks and privileged system components.</p>
+<h3>9.1 SIDs</h3>
+<p>A <strong>Security Identifier (SID)</strong> identifies a security principal such as a user, group or computer. It is the identity value used throughout Windows authorization rather than a display name.</p>
+<h3>9.2 Access tokens</h3>
+<p>An access token describes the security context of a process or thread. Microsoft documents token contents including the user's SID, group SIDs, privileges, logon information and other authorization state. citeturn0search0</p>
+<h3>9.3 Access checks</h3>
+<p>When a thread accesses a securable object, Windows compares the thread's security context with the object's security descriptor and applicable ACL entries. This is how identity becomes an authorization decision. citeturn0search7</p>
+<h3>9.4 Privileges versus permissions</h3>
+<p>Permissions govern access to objects. Privileges authorize certain system-level operations. These concepts overlap in security impact but are not interchangeable.</p>
+<h3>9.5 UAC</h3>
+<p>User Account Control helps reduce the routine use of full administrative privileges. Microsoft documents that administrator accounts can operate with a standard user token and an elevated administrator token, with consent or credentials required for elevation depending on policy. citeturn0search12</p>
+</section>
+
+<section class="section" id="lsass"><div class="kicker">Chapter 10</div><h2>LSA, LSASS and credential protection</h2>
+<p class="lead">Identity infrastructure is a high-value operating-system security boundary because credentials and authentication state can provide access far beyond one process.</p>
+<h3>10.1 LSA and LSASS</h3>
+<p>The Local Security Authority manages local security policy and authentication-related functions. The Local Security Authority Subsystem Service, <strong>LSASS</strong>, is a protected Windows process involved in authentication and security policy.</p>
+<p>Microsoft documents that LSASS can maintain credential-related material for active sessions, including Kerberos tickets and other authentication information, depending on configuration and authentication method. citeturn0search1</p>
+<h3>10.2 Why credential theft is serious</h3>
+<p>Credential material can allow an attacker to impersonate users or access network resources. Therefore protecting the authentication subsystem is not simply endpoint hardening; it is identity protection.</p>
+<h3>10.3 LSA protection and Credential Guard</h3>
+<p>Modern Windows provides protections such as LSA protection and Credential Guard. Credential Guard uses virtualization-based security to isolate sensitive credential material from the normal operating-system environment. citeturn0search5turn0search6</p>
+<h3>10.4 Defensive principle</h3>
+<p>Protect privileged identity material, reduce credential exposure, separate administrative identities and monitor abnormal authentication activity. Endpoint security and identity security are tightly connected.</p>
+</section>
+
+<section class="section" id="drivers"><div class="kicker">Chapter 11</div><h2>Drivers, devices and kernel attack surface</h2>
+<h3>11.1 Why drivers are privileged</h3>
+<p>Drivers translate operating-system requests into device operations. Because many drivers run with high privilege, a driver vulnerability can have consequences far beyond a normal application bug.</p>
+<h3>11.2 Device objects and access control</h3>
+<p>Windows treats devices as securable objects. Microsoft explicitly notes that drivers must safeguard the security of the device objects they expose. citeturn0search4</p>
+<h3>11.3 Linux device model</h3>
+<p>Linux exposes hardware through kernel subsystems and device nodes. Permissions and policy determine which processes can interact with those interfaces. A device node that provides access to sensitive hardware therefore belongs in the threat model.</p>
+<h3>11.4 Vulnerable-driver problem</h3>
+<p>A legitimately signed driver can still contain vulnerabilities. This is another example of why authenticity and security are different properties: knowing who produced code does not prove that its behavior is safe.</p>
+</section>
+
+<section class="section" id="containers"><div class="kicker">Chapter 12</div><h2>Namespaces, containers and isolation boundaries</h2>
+<p class="lead">Containers are processes isolated through kernel mechanisms rather than miniature independent computers. This distinction is essential to understanding container security.</p>
+<h3>12.1 What namespaces isolate</h3>
+<p>Different namespaces provide different views of resources. A PID namespace changes process visibility; a network namespace provides an isolated network stack; a mount namespace changes filesystem mount visibility; user namespaces can map identities between namespace and host contexts.</p>
+<h3>12.2 What namespaces do not mean</h3>
+<p>Namespaces do not automatically isolate every kernel attack surface. Containers share the host kernel, so a kernel vulnerability can affect the host or neighboring workloads.</p>
+<h3>12.3 Capabilities and seccomp</h3>
+<p>Container security commonly combines namespaces with reduced capabilities and system-call filtering such as seccomp. The objective is to reduce what a compromised workload can ask the kernel to do.</p>
+<h3>12.4 Resource isolation</h3>
+<p>cgroups help limit and account for CPU, memory and other resources. Resource controls are security-relevant because uncontrolled consumption can become denial of service.</p>
+</section>
+
+<section class="section" id="telemetry"><div class="kicker">Chapter 13</div><h2>Host telemetry and security observability</h2>
+<p class="lead">An operating system produces a continuous stream of evidence. Good defensive engineering selects signals that answer security questions instead of collecting everything without a purpose.</p>
+<h3>13.1 Process telemetry</h3>
+<p>Useful fields can include process ID, parent process ID, executable path, command line, user identity, signer information, start time and hashes. Process creation becomes much more valuable when correlated with parent process, identity and network behavior.</p>
+<h3>13.2 File and persistence telemetry</h3>
+<p>Monitor security-sensitive locations, executable changes, service creation, scheduled tasks, startup locations, kernel-module changes and permission modifications according to the platform.</p>
+<h3>13.3 Identity telemetry</h3>
+<p>Authentication successes and failures, privilege changes, token/elevation events, remote logons and service-account activity help connect endpoint behavior to identity.</p>
+<h3>13.4 Network telemetry</h3>
+<p>Outbound connections, listening sockets, DNS activity and process-to-network relationships can reveal unexpected behavior. Network evidence should be correlated with process identity and timing.</p>
+<h3>13.5 Signal quality</h3>
+<p>A detection should have a reason to exist. Excessive low-quality alerts train analysts to ignore warnings. Good telemetry is tied to a hypothesis, has sufficient context and leads to an actionable investigation.</p>
+</section>
+
+<section class="section" id="hardening"><div class="kicker">Chapter 14</div><h2>Kernel and host hardening</h2>
+<h3>14.1 Reduce attack surface</h3>
+<p>Remove unnecessary services, drivers and packages. Restrict administrative access. Keep the kernel and critical components patched. Disable interfaces that are not required.</p>
+<h3>14.2 Enforce least privilege</h3>
+<p>Use ordinary user contexts for ordinary work. Grant capabilities and administrative rights only when required. Separate privileged administration from daily activity.</p>
+<h3>14.3 Protect credentials</h3>
+<p>Use strong authentication, hardware-backed protection where appropriate, credential isolation and short-lived credentials where practical. Avoid storing secrets in process arguments, source code or world-readable files.</p>
+<h3>14.4 Isolation</h3>
+<p>Use sandboxing, application controls, containers or virtual machines according to the threat model. Isolation is strongest when multiple independent controls support it.</p>
+<h3>14.5 Recovery</h3>
+<p>Host security includes restoration. Backups, trusted images, configuration management and tested rebuild procedures reduce the operational impact of compromise.</p>
+</section>
+
+<section class="section" id="advanced"><div class="kicker">Chapter 15</div><h2>Advanced reasoning: when OS mechanisms interact</h2>
+<p class="lead">Real incidents rarely involve one isolated mechanism. They happen when several assumptions interact.</p>
+<table class="compare"><tr><th>Situation</th><th>Underlying interaction</th><th>Security question</th></tr>
+<tr><td>Container escape</td><td>Application + namespace + kernel vulnerability</td><td>Can untrusted code cross the kernel boundary?</td></tr>
+<tr><td>Privilege escalation</td><td>Low-privilege process + vulnerable privileged component</td><td>Can attacker-controlled state influence privileged execution?</td></tr>
+<tr><td>Credential theft</td><td>Process access + authentication subsystem</td><td>Who can inspect or influence credential material?</td></tr>
+<tr><td>Persistence</td><td>Filesystem + service/task mechanism + identity</td><td>Which privileged component will execute attacker-controlled state?</td></tr>
+<tr><td>Defense evasion</td><td>Process + telemetry + permissions</td><td>Can the attacker alter or bypass the evidence used for detection?</td></tr></table>
+<p>The mature analyst follows the <strong>authority chain</strong>: identify the initial privilege, identify the resource being accessed, identify the kernel mechanism enforcing access, and determine what evidence remains after the event.</p>
+</section>
+
+<section class="section" id="review"><div class="kicker">Mastery review</div><h2>20 questions — with answers</h2>
+<p class="lead">Try each question before opening the answer. The explanations are part of the curriculum.</p>
+<details class="qa"><summary>01 · What is the primary security purpose of the user/kernel boundary?</summary><div class="answer"><strong>Answer:</strong> It separates ordinary application execution from privileged operations and protected system state.<br><br><strong>Why:</strong> A compromised application should not automatically gain unrestricted access to kernel memory, hardware or other processes.</div></details>
+<details class="qa"><summary>02 · What is the difference between a process and a thread?</summary><div class="answer"><strong>Answer:</strong> A process provides an execution environment and resources; a thread is an execution path within that process and has its own execution state.<br><br><strong>Why:</strong> Threads commonly share process memory and resources, so a security boundary between processes is different from a boundary between threads.</div></details>
+<details class="qa"><summary>03 · Why is virtual memory a security mechanism?</summary><div class="answer"><strong>Answer:</strong> It provides isolated address spaces and allows memory-access permissions to be enforced by the OS and hardware.<br><br><strong>Why:</strong> This helps prevent one process from arbitrarily reading or modifying another process's memory.</div></details>
+<details class="qa"><summary>04 · What does a system call do?</summary><div class="answer"><strong>Answer:</strong> It provides a controlled interface through which user-space software requests a kernel service.<br><br><strong>Why:</strong> The kernel can validate the request and apply authorization before performing a privileged operation.</div></details>
+<details class="qa"><summary>05 · Why are system-call arguments security-sensitive?</summary><div class="answer"><strong>Answer:</strong> They originate from less-trusted user-space code and are consumed by privileged kernel code.<br><br><strong>Why:</strong> Incorrect validation of pointers, lengths or flags can turn an ordinary user process into a path toward privilege escalation.</div></details>
+<details class="qa"><summary>06 · What is a race condition?</summary><div class="answer"><strong>Answer:</strong> It occurs when program behavior depends on timing or ordering between concurrent operations.<br><br><strong>Why:</strong> If security checks and state changes are separated incorrectly, another actor may change the state between them.</div></details>
+<details class="qa"><summary>07 · What is TOCTOU?</summary><div class="answer"><strong>Answer:</strong> Time-of-check-to-time-of-use occurs when software checks a resource and later uses it assuming the checked property remains unchanged.<br><br><strong>Why:</strong> A concurrent change can invalidate the original security decision.</div></details>
+<details class="qa"><summary>08 · What is the Linux VFS?</summary><div class="answer"><strong>Answer:</strong> The Virtual File System is an abstraction layer that provides common filesystem interfaces over different filesystem implementations.<br><br><strong>Why:</strong> It lets applications use consistent file operations while the kernel handles implementation-specific details.</div></details>
+<details class="qa"><summary>09 · What is the difference between permissions and capabilities on Linux?</summary><div class="answer"><strong>Answer:</strong> Traditional permissions control access based on user/group/other relationships, while capabilities divide selected privileged operations into narrower authorities.<br><br><strong>Why:</strong> Capabilities can support least privilege without giving a process the complete authority traditionally associated with root.</div></details>
+<details class="qa"><summary>10 · What do Linux namespaces provide?</summary><div class="answer"><strong>Answer:</strong> They provide isolated views of selected kernel resources such as processes, mounts, networking and users.<br><br><strong>Why:</strong> They are fundamental to containers, but containers still share the host kernel.</div></details>
+<details class="qa"><summary>11 · What is the role of cgroups?</summary><div class="answer"><strong>Answer:</strong> cgroups organize processes and control or account for resource consumption such as CPU and memory.<br><br><strong>Why:</strong> Resource limits help prevent one workload from consuming resources needed by others.</div></details>
+<details class="qa"><summary>12 · Why is ptrace security-sensitive?</summary><div class="answer"><strong>Answer:</strong> It can allow one process to inspect or control another process under applicable policy.<br><br><strong>Why:</strong> Debugging authority over a privileged process can expose sensitive state or alter execution.</div></details>
+<details class="qa"><summary>13 · What is a Windows SID?</summary><div class="answer"><strong>Answer:</strong> A Security Identifier uniquely identifies a Windows security principal such as a user, group or computer.<br><br><strong>Why:</strong> Authorization decisions use security identities such as SIDs rather than relying only on display names.</div></details>
+<details class="qa"><summary>14 · What is an access token?</summary><div class="answer"><strong>Answer:</strong> It is a security context attached to a Windows process or thread containing identity and authorization information such as SIDs and privileges.<br><br><strong>Why:</strong> Windows uses that context when deciding whether an operation against a securable object is permitted.</div></details>
+<details class="qa"><summary>15 · What is the difference between a DACL and a SACL?</summary><div class="answer"><strong>Answer:</strong> A DACL defines access-control decisions, while a SACL defines auditing rules for selected access events.<br><br><strong>Why:</strong> Authorization and evidence collection are different security functions and often need both.</div></details>
+<details class="qa"><summary>16 · Why is LSASS a high-value security component?</summary><div class="answer"><strong>Answer:</strong> LSASS participates in Windows authentication and maintains security-related state and credential material for active sessions depending on configuration.<br><br><strong>Why:</strong> Compromise of authentication infrastructure can affect multiple identities and network resources.</div></details>
+<details class="qa"><summary>17 · Why doesn't a signed driver automatically mean a safe driver?</summary><div class="answer"><strong>Answer:</strong> A signature establishes authenticity relative to a trusted signer; it does not prove the driver contains no vulnerabilities.<br><br><strong>Why:</strong> A legitimate but vulnerable privileged driver can still create a serious kernel attack surface.</div></details>
+<details class="qa"><summary>18 · Why are containers not identical to virtual machines?</summary><div class="answer"><strong>Answer:</strong> Containers generally isolate processes using the host kernel, while a virtual machine provides a separate guest operating-system environment behind a hypervisor boundary.<br><br><strong>Why:</strong> A container workload can still be affected by vulnerabilities in the shared host kernel.</div></details>
+<details class="qa"><summary>19 · What makes host telemetry useful for detection?</summary><div class="answer"><strong>Answer:</strong> Telemetry is useful when it captures enough context to test a security hypothesis, such as process identity, parent process, user, command line, file changes and network relationships.<br><br><strong>Why:</strong> A single isolated event is often ambiguous; correlated evidence produces stronger conclusions.</div></details>
+<details class="qa"><summary>20 · What is the most important mental model for OS security?</summary><div class="answer"><strong>Answer:</strong> Think in terms of <strong>authority, boundary, state and evidence</strong>: who has authority, what boundary is supposed to restrict it, what protected state can change, and what evidence remains when it does.<br><br><strong>Why:</strong> This model connects kernel internals to real security problems such as privilege escalation, credential theft, persistence, container escape and detection.</div></details>
+<div class="callout"><strong>Completion standard:</strong> You should now be able to explain how an application request becomes a kernel action, how the OS isolates memory and identities, where Linux and Windows enforce authorization, why privileged components are high-value targets, and how host telemetry can expose changes in system state.</div>
+</section>
+
+<section class="sources"><h2>Primary references</h2>
+<a href="https://www.kernel.org/doc/html/latest/" target="_blank" rel="noopener">Linux kernel documentation</a>
+<a href="https://www.kernel.org/doc/html/latest/mm/" target="_blank" rel="noopener">Linux kernel — Memory Management</a>
+<a href="https://docs.kernel.org/admin-guide/namespaces/index.html" target="_blank" rel="noopener">Linux kernel — Namespaces</a>
+<a href="https://learn.microsoft.com/en-us/windows/security/" target="_blank" rel="noopener">Microsoft Learn — Windows Security</a>
+<a href="https://learn.microsoft.com/en-us/windows/win32/secauthz/access-tokens" target="_blank" rel="noopener">Microsoft Learn — Access Tokens</a>
+<a href="https://learn.microsoft.com/en-us/windows-server/security/windows-authentication/credentials-processes-in-windows-authentication" target="_blank" rel="noopener">Microsoft Learn — Credentials Processes in Windows Authentication</a>
+<a href="https://learn.microsoft.com/en-us/windows/security/identity-protection/credential-guard/how-it-works" target="_blank" rel="noopener">Microsoft Learn — Credential Guard</a>
+</section>
+</main>
+<footer class="wrap footer">Cybersecurity · Discipline 02 · Deep Theory Chapter</footer>
+</body>
+</html>
