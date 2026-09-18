@@ -1,9 +1,9 @@
 const { test, expect } = require('@playwright/test');
 
 const pages = [
-  'index.html','roadmap.html','curriculum.html','learn.html','lessons.html',
-  'projects.html','practice.html','ai.html','progress.html','resources.html','settings.html',
-  ...Array.from({length:17},(_,i)=>`module-${String(i+1).padStart(2,'0')}.html`)
+  'index.html','site/roadmap.html','site/curriculum.html','site/learn.html','site/lessons.html',
+  'site/projects.html','site/practice.html','site/ai.html','site/progress.html','site/resources.html','site/settings.html',
+  ...Array.from({length:17},(_,i)=>`site/module-${String(i+1).padStart(2,'0')}.html`)
 ];
 
 test.describe('FullStack Bible site smoke', () => {
@@ -25,15 +25,15 @@ test.describe('FullStack Bible site smoke', () => {
     await page.goto('index.html');
     await page.getByRole('button', { name: /open menu/i }).click();
     for (const [label, href] of Object.entries({
-      Learn:'learn.html', Projects:'projects.html', Practice:'practice.html', AI:'ai.html',
-      Progress:'progress.html', Resources:'resources.html', Settings:'settings.html'
+      Learn:'site/learn.html', Projects:'site/projects.html', Practice:'site/practice.html', AI:'site/ai.html',
+      Progress:'site/progress.html', Resources:'site/resources.html', Settings:'site/settings.html'
     })) {
       await expect(page.getByRole('link', { name: new RegExp('^'+label+'\\b') })).toHaveAttribute('href', href);
     }
   });
 
   test('practice contains all 17 stages and 85 drills', async ({ page }) => {
-    await page.goto('practice.html');
+    await page.goto('site/practice.html');
     await expect(page.locator('.module')).toHaveCount(17);
     await expect(page.locator('.drill')).toHaveCount(85);
     await expect(page.locator('#summary')).toContainText('0 / 17');
@@ -52,7 +52,7 @@ test.describe('FullStack Bible site smoke', () => {
     await page.goto('module-13.html');
     const first = page.locator('#checks input').first();
     await first.check();
-    await page.goto('progress.html');
+    await page.goto('site/progress.html');
     const stage13 = page.locator('.stage').filter({ hasText:'System Design & Distributed Systems' });
     await expect(stage13).toContainText('1/18 checklist items');
   });
@@ -99,7 +99,7 @@ test.describe('FullStack Bible site smoke', () => {
   });
 
   test('projects open real learning source and explanation', async ({ page }) => {
-    await page.goto('projects.html');
+    await page.goto('site/projects.html');
     const projectCard = page.locator('.card[data-project-id="07"]');
     await expect(projectCard).toHaveCount(1);
     await projectCard.getByRole('button', { name:/read project/i }).click();
