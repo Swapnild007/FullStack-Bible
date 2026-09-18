@@ -7,7 +7,8 @@ const pages = [
 ];
 
 test.describe('FullStack Bible site smoke', () => {
-  test('every public HTML page loads with a primary heading', async ({ page }) => {
+  test('every public HTML page loads with a primary heading', async ({ page, browserName }) => {
+    test.skip(browserName !== 'chromium', 'Full page inventory runs once on Chromium to keep CI fast; targeted smoke tests cover the other engines.');
     for (const path of pages) {
       const response = await page.goto(path, { waitUntil: 'domcontentloaded' });
       expect(response && response.ok(), path).toBeTruthy();
