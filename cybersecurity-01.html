@@ -14,128 +14,274 @@
 @media(max-width:650px){.hero{padding-top:55px}.hero p{font-size:15px}.toc-grid{grid-template-columns:1fr}.section{padding:20px}.section h2{font-size:21px}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 </style>
+<style>
+.lessonbar{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}.lessonbar a{padding:9px 12px;border-radius:999px;background:#fff;border:1px solid #e8e8ec;color:#555;text-decoration:none;font-size:11px;font-weight:750}
+.section .lead{font-size:15px;line-height:1.85;color:#3d3d42}.concept{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:14px 0}.concept div{padding:14px;border-radius:16px;background:#f4f4f7}.concept b{display:block;margin-bottom:5px;font-size:12px}.concept span{font-size:12px;line-height:1.6;color:#666}
+.kicker{font-size:10px;text-transform:uppercase;letter-spacing:.12em;color:#8a8a90;font-weight:800;margin-bottom:7px}.mini{font-size:12px!important;color:#666!important}.check{margin-top:14px;padding:15px 16px;border-radius:16px;background:#f7f7f9;border:1px solid #ececf0}.check strong{font-size:12px}.check ul{margin-bottom:0}
+@media(max-width:650px){.concept{grid-template-columns:1fr}}
+</style>
 </head>
 <body>
 <nav class="nav wrap"><a class="brand" href="index.html">FullStack<span>Bible</span></a><a class="back" href="cybersecurity.html">Cybersecurity</a></nav>
 <header class="wrap hero">
 <div class="eyebrow">CYBERSECURITY · DISCIPLINE 01 · FOUNDATION</div>
 <h1>Hardware, Firmware & <span>Bare-Metal Architecture.</span></h1>
-<p>Security starts below the operating system. This discipline explains how processors, memory, buses, firmware, boot chains, hardware roots of trust and physical interfaces create the foundation on which every higher software security control depends.</p>
-<div class="meta"><span class="pill">Foundation</span><span class="pill">10 theory sections</span><span class="pill">No lab required</span><span class="pill">First principles</span></div>
+<p>This is a full theory chapter, not a quick reference sheet. You will build a mental model from electrical signals and processor state through memory, privilege, firmware, boot, roots of trust, debugging interfaces and platform recovery — then connect each layer to the security decisions made above it.</p>
+<div class="meta"><span class="pill">Foundation</span><span class="pill">Deep theory</span><span class="pill">First principles</span><span class="pill">16 chapters</span><span class="pill">Theory only</span></div>
 </header>
 <main class="wrap">
-<nav class="toc"><strong>In this discipline</strong><div class="toc-grid">
-<a href="#architecture">01 · Computer architecture</a><a href="#memory">02 · Memory hierarchy</a><a href="#execution">03 · Instruction execution</a><a href="#memory-safety">04 · Memory safety</a><a href="#firmware">05 · Firmware & UEFI</a><a href="#secure-boot">06 · Secure Boot</a><a href="#tpm">07 · TPM & measured boot</a><a href="#interfaces">08 · Hardware interfaces</a><a href="#supply">09 · Supply chain</a><a href="#engineering">10 · Security engineering</a>
-</div></nav>
+<div class="lessonbar"><a href="#objectives">Learning objectives</a><a href="#architecture">Architecture</a><a href="#memory">Memory</a><a href="#boot">Boot</a><a href="#tpm">Trust</a><a href="#interfaces">Interfaces</a><a href="#supply">Supply chain</a><a href="#review">Review</a></div>
 
-<section class="section" id="architecture"><h2>01 · Computer architecture and security boundaries</h2>
-<p>A computer is a collection of components that execute instructions, store state and communicate with devices. At the security boundary, the important question is not simply <em>what component exists?</em> but <strong>what authority does it have and what state can it influence?</strong></p>
-<h3>CPU, registers and execution state</h3>
-<p>The CPU executes instructions using architectural state such as general-purpose registers, an instruction pointer, flags and control registers. On x86-64, the instruction pointer is <span class="term">RIP</span>; on 32-bit x86 it is <span class="term">EIP</span>. Other CPU architectures use different register names and execution models.</p>
-<p>Registers are not ordinary RAM. They are part of the processor's immediate execution state. Security-relevant bugs can occur when software unintentionally changes a value that later controls a memory address, branch target, privilege decision or system call.</p>
-<h3>Privilege levels</h3>
-<p>Modern processors provide mechanisms that let operating systems distinguish privileged code from less-privileged code. The exact mechanism varies by architecture. The operating system uses these facilities to prevent an ordinary application from freely manipulating kernel memory, device state or security-critical configuration.</p>
-<div class="callout"><strong>Security principle:</strong> every higher layer depends on the lower layer maintaining its security assumptions. If an attacker can replace trusted firmware or gain equivalent privileged hardware control, application-level authentication and authorization cannot restore trust in that machine.</div>
+<section class="section" id="objectives"><div class="kicker">Before you begin</div><h2>Learning objectives</h2>
+<p class="lead">A cybersecurity engineer does not need to become an electrical engineer to understand platform security. You do, however, need to know what the machine is doing underneath the operating system and where security assumptions enter the execution chain.</p>
+<div class="concept">
+<div><b>Explain the machine</b><span>CPU state, privilege, memory hierarchy, buses, devices and persistent storage.</span></div>
+<div><b>Trace execution</b><span>Power-on → firmware → boot policy → loader → kernel → user space.</span></div>
+<div><b>Reason about trust</b><span>Roots of trust, signatures, measurements, TPMs, attestation and trust boundaries.</span></div>
+<div><b>Recognize platform risk</b><span>Memory corruption, firmware compromise, debug exposure and supply-chain failure.</span></div>
+</div>
+<div class="callout"><strong>How to study:</strong> do not memorize the component names in isolation. For every mechanism, ask four questions: <strong>What state does it protect? Who can change that state? What evidence tells us it changed? How does the platform recover?</strong></div>
 </section>
 
-<section class="section" id="memory"><h2>02 · Memory hierarchy and caches</h2>
-<p>Memory is hierarchical because fast storage close to the CPU is expensive and limited while larger storage is slower. A simplified path is registers → CPU caches → main memory → persistent storage.</p>
-<h3>Cache hierarchy</h3>
-<p>CPU caches keep recently used data closer to execution units. L1 is typically smaller and faster than L2, while L3 is generally larger and shared more broadly on many processors. The exact organization is architecture-specific.</p>
-<p>A <span class="term">cache hit</span> retrieves data from the expected cache level. A <span class="term">cache miss</span> requires fetching data from a lower level. These timing differences can become security-relevant because an observer may sometimes infer information from how long an operation takes.</p>
-<h3>Side channels</h3>
-<p>A side channel leaks information through an observable property that is not the intended output of a computation: timing, cache state, power consumption, electromagnetic emissions or other physical effects. A cryptographic algorithm can be mathematically correct and still leak secrets through its implementation.</p>
-<p>Defenses depend on the channel. Constant-time implementations reduce timing leakage for sensitive operations; isolation, hardware features and careful system design can reduce cross-tenant leakage. No single mitigation eliminates every side channel.</p>
+<section class="section" id="architecture"><div class="kicker">Chapter 01</div><h2>Computer architecture: what a computer actually is</h2>
+<p class="lead">At the simplest level, a computer repeatedly transforms state. Instructions are fetched, decoded and executed; data is read and written; devices generate events; and privileged software changes the rules under which less-privileged software runs.</p>
+<h3>1.1 The major pieces</h3>
+<p>A conventional computing platform contains one or more <strong>processors</strong>, volatile memory, persistent storage, device controllers, buses/interconnects and firmware. Modern systems also contain security-oriented hardware such as a TPM, secure enclave or platform security controller depending on the design.</p>
+<p>The processor has architectural state: general-purpose registers, an instruction pointer, flags/status registers and control state. Memory contains instructions and data. Devices expose registers or queues through which software controls hardware. Persistent storage retains information after power is removed.</p>
+<h3>1.2 State and authority</h3>
+<p>Security becomes clearer when architecture is described in terms of <strong>authority</strong>. A register that controls memory translation is more security-sensitive than an application variable. A firmware update mechanism has more authority than an ordinary file write. A device capable of DMA may access memory outside the normal CPU instruction path.</p>
+<p>Therefore, a threat model should identify not just components but <strong>who can cause state transitions</strong>. An attacker who controls a low-level component may bypass assumptions made by higher layers.</p>
+<h3>1.3 Privilege is a hardware-assisted concept</h3>
+<p>Processors provide mechanisms that operating systems use to separate privileged execution from ordinary application execution. The exact names differ between architectures. The principle is consistent: security-sensitive operations require a higher authority level, while applications execute with fewer privileges.</p>
+<p>A system call is therefore not simply a normal function call. It is a controlled transition from a less-privileged execution context into the kernel's privileged context. The kernel validates the request, performs the operation if authorized, and returns control to the application.</p>
+<h3>1.4 Why this matters to cybersecurity</h3>
+<p>If an attacker obtains kernel-level control, ordinary application-level security assumptions can fail. If firmware is compromised, the operating system may start from an already-untrusted platform. This is why platform security is a foundation rather than a separate niche.</p>
+<div class="check"><strong>Check your understanding</strong><ul><li>Why is “who can change this state?” often more useful than simply asking “what component is this?”</li><li>Why does an application not normally get unrestricted access to CPU control state or physical devices?</li></ul></div>
 </section>
 
-<section class="section" id="execution"><h2>03 · Instruction execution, endianness and calling conventions</h2>
-<h3>Instruction pointer and control flow</h3>
-<p>The instruction pointer identifies the next instruction in the architectural execution stream. Branches, calls, returns, exceptions and interrupts change control flow. Security researchers care about control flow because memory-corruption vulnerabilities can sometimes corrupt data that influences where execution proceeds.</p>
-<h3>Endianness</h3>
-<p><span class="term">Endianness</span> describes the order in which the bytes of a multi-byte value are represented in memory. Little-endian systems store the least-significant byte at the lowest address; big-endian systems store the most-significant byte first. Network protocols often specify their own byte order, commonly called network byte order.</p>
-<h3>Calling conventions</h3>
-<p>A calling convention defines how functions receive arguments, return values and preserve registers. It also establishes how stack frames and alignment are handled. Understanding calling conventions is essential when reading assembly, debugging crashes and analyzing binary interfaces.</p>
-<h3>Why this matters to security</h3>
-<p>Binary exploitation and reverse engineering depend on these details because a crash is ultimately a change in machine state. To distinguish a harmless crash from a control-flow vulnerability, an analyst must understand which values were corrupted, which instruction consumed them and what privilege the affected process had.</p>
+<section class="section" id="memory"><div class="kicker">Chapter 02</div><h2>Memory hierarchy, virtual memory and caches</h2>
+<p class="lead">Memory is not one uniform thing. A security engineer must understand the difference between architectural addresses, virtual addresses, physical memory, caches and persistent storage.</p>
+<h3>2.1 The hierarchy</h3>
+<p>Registers are closest to execution. CPU caches provide faster access than main memory but have limited capacity. Main memory holds active program state. Persistent storage provides durable state. The exact cache levels and topology depend on the processor.</p>
+<p>This hierarchy exists because speed, capacity, cost and physical distance cannot all be optimized simultaneously. The operating system and hardware cooperate to make this hierarchy appear much simpler to applications than it really is.</p>
+<h3>2.2 Virtual memory</h3>
+<p>Most modern operating systems give each process a <strong>virtual address space</strong>. A memory-management unit translates virtual addresses into physical locations, usually through page tables maintained by the operating system and consulted by hardware.</p>
+<p>Virtual memory provides isolation: two processes can use the same virtual address without referring to the same physical memory. It also enables permissions such as readable, writable and executable mappings.</p>
+<h3>2.3 Pages and permissions</h3>
+<p>Memory is commonly managed in pages. A page-table entry can encode attributes controlling whether a page is present, writable, executable, accessible from user mode and more. These permissions are security controls, not merely performance settings.</p>
+<h3>2.4 Caches and timing</h3>
+<p>Caches remember recently used data. This creates timing differences between cache hits and misses. When secret-dependent operations influence cache state, an attacker who can observe timing may sometimes infer information without directly reading the secret.</p>
+<p>This class of weakness is called a <strong>side channel</strong>: the information is leaked through an observable property of the system rather than through the intended program output. Similar channels can arise from power, electromagnetic emissions, branch prediction and other implementation details.</p>
+<h3>2.5 Security engineering response</h3>
+<p>Mitigation depends on the threat model. Cryptographic code may use constant-time techniques; operating systems may isolate workloads; processors may provide architectural protections; cloud platforms may reduce cross-tenant exposure. The correct lesson is not “caches are insecure.” The lesson is that <strong>performance mechanisms can become security-relevant state</strong>.</p>
 </section>
 
-<section class="section" id="memory-safety"><h2>04 · Stack, heap and memory safety</h2>
-<h3>Stack</h3>
-<p>The stack commonly stores function call state, local variables and saved execution information. Its exact layout depends on architecture, compiler and calling convention. A stack buffer overflow occurs when a program writes beyond the intended bounds of an object located on or associated with the stack.</p>
-<h3>Heap</h3>
-<p>The heap supports dynamically allocated objects whose lifetime is controlled by the program or its runtime. Security failures include <span class="term">use-after-free</span>, double-free, out-of-bounds access and allocator metadata corruption.</p>
-<h3>Common vulnerability classes</h3>
-<ul><li><strong>Out-of-bounds read:</strong> data is read beyond the intended object, potentially disclosing information.</li><li><strong>Out-of-bounds write:</strong> data is written outside the intended object, potentially corrupting adjacent state.</li><li><strong>Use-after-free:</strong> a program continues using an object after its storage has been released.</li><li><strong>Double-free:</strong> the same allocation is released more than once, potentially corrupting allocator state.</li><li><strong>Integer overflow:</strong> arithmetic wraps or truncates and can produce an incorrectly sized allocation or bounds check.</li></ul>
-<h3>Mitigation layers</h3>
-<p>Stack canaries can detect some stack overwrites. <span class="term">DEP/NX</span> can prevent execution from selected writable memory. <span class="term">ASLR</span> randomizes important addresses. Control-flow protections and hardened allocators add further barriers. These mechanisms raise the cost of exploitation; they do not make memory-unsafe code safe.</p>
-<div class="callout"><strong>Engineering lesson:</strong> the strongest long-term mitigation is eliminating memory-safety errors where practical through memory-safe languages, safer APIs, compiler hardening, fuzzing, sanitizers and disciplined ownership/lifetime design.</div>
+<section class="section" id="execution"><div class="kicker">Chapter 03</div><h2>Instruction execution, control flow and binary state</h2>
+<p class="lead">Source code is an abstraction. Eventually the processor executes machine instructions and manipulates registers and memory. Reverse engineering, debugging and vulnerability research require moving comfortably between these levels.</p>
+<h3>3.1 Fetch, decode, execute</h3>
+<p>A processor obtains instructions from memory, interprets their encoding and performs the requested operation. Modern CPUs are internally far more complex — pipelines, speculative execution, out-of-order execution and multiple execution units may all be involved — but the architectural model remains useful: an instruction consumes state and produces new state.</p>
+<h3>3.2 Instruction pointer</h3>
+<p>The instruction pointer identifies the architectural location associated with the next instruction in the control-flow sequence. Calls, returns, conditional branches, exceptions and interrupts alter the sequence.</p>
+<p>That makes control-flow integrity a security concern. If a memory-safety flaw lets an attacker influence a control-flow target, the attacker may attempt to redirect execution. Modern mitigations attempt to make such redirection harder or detectable.</p>
+<h3>3.3 Endianness</h3>
+<p>Endianness describes how a multi-byte value is laid out in memory. In little-endian representation, the least-significant byte occupies the lowest address. In big-endian representation, the most-significant byte occupies the lowest address. Protocol specifications may define their own byte order.</p>
+<h3>3.4 Calling conventions</h3>
+<p>A calling convention defines how compiled functions exchange values: where arguments are placed, where return values appear, which registers must be preserved and how stack alignment is handled. The ABI adds broader binary-compatibility rules.</p>
+<p>Knowing the ABI explains why a debugger can show a function's arguments, why a crash report contains particular register values and why binaries compiled by different tools can interoperate.</p>
+<h3>3.5 Exceptions and interrupts</h3>
+<p>An exception is an event associated with instruction execution or processor state; an interrupt is an externally signaled event that requests processor attention. The processor transitions into an appropriate handler under privileged control. These mechanisms are essential for system calls, faults, timers and device I/O.</p>
 </section>
 
-<section class="section" id="firmware"><h2>05 · Firmware and UEFI</h2>
-<h3>What firmware does</h3>
-<p>Firmware is software stored in non-volatile platform components that initializes hardware and provides low-level functionality before or alongside the operating system. Platform firmware can configure processors, memory, devices and the boot environment.</p>
-<p>UEFI defines a standardized interface between platform firmware and operating-system loaders and can provide boot and runtime services. The UEFI Forum currently lists <strong>UEFI Specification 2.11</strong> as its latest UEFI specification and <strong>Platform Initialization 1.10</strong> as its latest PI specification. citeturn0search5</p>
-<h3>Why firmware is high impact</h3>
-<p>Firmware operates earlier and often with more privilege than the operating system. A persistent firmware compromise can survive operating-system replacement and can interfere with security software. NIST SP 800-193 therefore frames platform firmware security around <strong>protect, detect and recover</strong> from unauthorized changes. citeturn0search3</p>
-<h3>Firmware security properties</h3>
-<ul><li>Authenticity of firmware images and updates.</li><li>Integrity of the boot chain.</li><li>Protection of firmware configuration.</li><li>Controlled update and rollback behavior.</li><li>Recovery from failed or malicious firmware updates.</li><li>Auditable provenance of components and firmware versions.</li></ul>
+<section class="section" id="memory-safety"><div class="kicker">Chapter 04</div><h2>Stack, heap, object lifetime and memory safety</h2>
+<p class="lead">Many high-impact software vulnerabilities begin with an incorrect relationship between a program's idea of an object and the bytes that actually occupy memory.</p>
+<h3>4.1 The stack</h3>
+<p>The call stack commonly contains function-local state, saved registers and return information. Its exact layout is compiler-, ABI- and architecture-dependent. A stack buffer overflow occurs when an operation writes beyond the intended bounds of an object associated with stack storage.</p>
+<h3>4.2 The heap</h3>
+<p>Dynamic allocation allows objects to live beyond a single function invocation. Allocators manage regions of memory and maintain metadata needed to satisfy allocations and releases.</p>
+<p>Important vulnerability classes include <strong>use-after-free</strong>, where code accesses an object after its lifetime ended; <strong>double-free</strong>, where an allocation is released more than once; and <strong>out-of-bounds access</strong>, where code reads or writes outside an object's valid region.</p>
+<h3>4.3 Integer errors</h3>
+<p>Integer overflow and truncation can become memory-safety problems when arithmetic is used to calculate allocation sizes or bounds. A value that looks mathematically correct may not fit in the chosen integer representation. The resulting smaller allocation can then be followed by a larger copy.</p>
+<h3>4.4 Mitigation stack</h3>
+<table class="compare"><tr><th>Layer</th><th>Purpose</th><th>Limit</th></tr>
+<tr><td>Bounds/lifetime-safe design</td><td>Prevent invalid memory states</td><td>Requires correct engineering and suitable language/runtime</td></tr>
+<tr><td>Compiler sanitizers</td><td>Detect classes of memory errors during testing</td><td>Not normally a production replacement for prevention</td></tr>
+<tr><td>Stack canaries</td><td>Detect some stack corruption</td><td>Does not prevent every memory bug</td></tr>
+<tr><td>DEP/NX</td><td>Restrict execution from selected memory</td><td>Does not stop non-executable corruption</td></tr>
+<tr><td>ASLR</td><td>Randomize important addresses</td><td>Can be weakened by information disclosure and implementation limits</td></tr>
+<tr><td>Control-flow protections</td><td>Constrain unexpected execution paths</td><td>Coverage depends on platform and compiler support</td></tr></table>
+<p>The strongest architectural lesson is that mitigations are <strong>layers</strong>. A secure system assumes that one control can fail and adds independent barriers.</p>
 </section>
 
-<section class="section" id="secure-boot"><h2>06 · Secure Boot and the chain of trust</h2>
-<h3>Secure Boot</h3>
-<p>Secure Boot establishes a policy for which boot components are trusted to execute. The platform validates signatures or trust relationships before allowing a boot component to run. The objective is to prevent unauthorized modification of the boot path from silently becoming trusted execution.</p>
-<p>Secure Boot is not equivalent to “the computer is secure.” It primarily protects the <strong>authenticity of the boot chain</strong>. Once a trusted component is running, vulnerabilities in that component can still compromise the system.</p>
-<h3>Chain of trust</h3>
-<p>A chain of trust begins with an assumed root of trust and extends verification to later components. A simplified model is:</p>
-<div class="formula">hardware / platform root → firmware → boot manager → operating-system loader → kernel → system components</div>
-<p>Each link must make a defensible decision about what it is willing to trust. If a trusted signing key is compromised or a trusted component has a vulnerability, the chain can still be abused.</p>
-<h3>Secure Boot versus measured boot</h3>
-<table class="compare"><tr><th>Property</th><th>Secure Boot</th><th>Measured Boot</th></tr><tr><td>Primary purpose</td><td>Enforce an execution trust policy</td><td>Record measurements of boot components</td></tr><tr><td>Main question</td><td>“May this component execute?”</td><td>“What component/configuration actually executed?”</td></tr><tr><td>Typical trust mechanism</td><td>Signatures and platform policy</td><td>Measurements extended into protected registers and event logs</td></tr></table>
+<section class="section" id="firmware"><div class="kicker">Chapter 05</div><h2>Firmware: the software that starts before your software</h2>
+<p class="lead">Firmware occupies an unusual security position. It is software, but it initializes and controls hardware before the normal operating system is running.</p>
+<h3>5.1 What firmware means</h3>
+<p>Firmware is low-level software associated with a device or platform and commonly stored in non-volatile memory. It can configure hardware, initialize devices, establish boot policy and provide runtime services.</p>
+<p>Firmware exists in many places: platform firmware, storage controllers, network adapters, embedded controllers, GPUs, routers, printers and other devices. Therefore “firmware security” is broader than BIOS security.</p>
+<h3>5.2 UEFI</h3>
+<p>UEFI provides a standardized firmware interface and boot environment. The UEFI Forum currently lists UEFI Specification <strong>2.11</strong>, released in December 2024. Its Platform Initialization specification is listed at version <strong>1.10</strong>, released July 2026. citeturn0search0</p>
+<p>UEFI defines interfaces and data structures, but an implementation is still software and can contain defects. The security engineer therefore evaluates the implementation, configuration, update path and trust anchors — not merely whether a platform says “UEFI.”</p>
+<h3>5.3 Firmware persistence</h3>
+<p>Persistent firmware can survive an operating-system reinstall. That makes firmware compromise materially different from an ordinary malicious file. NIST SP 800-193 treats platform firmware as a foundational part of system operation and organizes resilience around mechanisms that <strong>protect, detect and recover</strong> from unauthorized changes. citeturn0search1</p>
+<h3>5.4 Firmware update security</h3>
+<p>A secure update system needs authenticity, integrity, version control, authorization, rollback policy and recovery. A signature alone is not the entire update architecture: the platform also needs a policy for which signer is trusted, which versions are acceptable and what happens if an update is interrupted or later found vulnerable.</p>
 </section>
 
-<section class="section" id="tpm"><h2>07 · TPM 2.0, measured boot and roots of trust</h2>
-<h3>What a TPM is</h3>
-<p>A <span class="term">Trusted Platform Module (TPM)</span> is a security component designed to provide protected cryptographic and platform-trust capabilities. The TPM 2.0 specification defines cryptographic algorithms, authorization mechanisms and management facilities. The Trusted Computing Group lists TPM 2.0 Library Specification version 185, released March 2026, as its current library specification. citeturn0search12</p>
-<h3>Measurements and PCRs</h3>
-<p>Measured boot records measurements of boot-related components and extends them into <span class="term">Platform Configuration Registers (PCRs)</span>. A PCR is not simply a writable database entry: the extend operation combines the previous PCR value with a new measurement, creating a cumulative history representation.</p>
+<section class="section" id="boot"><div class="kicker">Chapter 06</div><h2>Boot architecture and the chain of trust</h2>
+<p class="lead">Boot security is about deciding what is allowed to become the next layer of authority.</p>
+<h3>6.1 A simplified boot sequence</h3>
+<div class="formula">Power → immutable/early hardware state → platform firmware → boot policy → boot manager/loader → operating-system kernel → system services → applications</div>
+<p>The real sequence varies by architecture and platform, but the security concept is stable: earlier stages influence what later stages are permitted to execute.</p>
+<h3>6.2 Secure Boot</h3>
+<p>Secure Boot establishes a policy for authenticating boot components before execution. The platform checks whether a component is authorized according to its trust database and policy, then permits or rejects execution.</p>
+<p>This answers a specific question: <strong>“Is this boot component authorized to execute?”</strong> It does not prove that the component is bug-free or that the operating system is safe after boot.</p>
+<h3>6.3 Trust anchors and keys</h3>
+<p>A signature verifies that a piece of data corresponds to a trusted signing key. The difficult security question is how that trust is established and maintained. Key compromise, unauthorized enrollment, poor revocation and weak update policy can undermine a technically correct signature check.</p>
+<h3>6.4 Secure Boot limitations</h3>
+<ul><li>A trusted component can still contain a vulnerability.</li><li>A compromised trusted signing key can authorize malicious software.</li><li>Misconfiguration can weaken the intended policy.</li><li>Runtime attacks after boot are outside Secure Boot's primary purpose.</li></ul>
+</section>
+
+<section class="section" id="measurements"><div class="kicker">Chapter 07</div><h2>Measured boot: recording what actually happened</h2>
+<p class="lead">Secure Boot and measured boot solve different problems. One can enforce an execution policy; the other can create evidence about the sequence of measurements observed during boot.</p>
+<h3>7.1 Measurement versus verification</h3>
+<p>A measurement is normally a cryptographic digest of data or state. Measuring a component does not automatically declare it safe. It creates a value that can later be compared against an expected state or used as part of an attestation protocol.</p>
+<h3>7.2 PCR extension</h3>
+<p>TPM Platform Configuration Registers are commonly updated through an extend operation that combines the previous PCR value and a new measurement:</p>
 <div class="formula">PCR_new = H(PCR_old || measurement)</div>
-<p>The measurement itself does not automatically prove that a component is malicious or benign. Its value comes from comparing the resulting state against an expected or policy-approved state and from preserving the associated event log.</p>
-<h3>Attestation</h3>
-<p>Attestation can allow a verifier to obtain cryptographic evidence about platform measurements. This can support decisions such as whether a workload should receive access to a sensitive resource. Attestation is a trust mechanism; it does not replace application authorization or vulnerability management.</p>
-<h3>Root of trust</h3>
-<p>A root of trust is a component or mechanism whose correct behavior is assumed or independently protected strongly enough to anchor further security decisions. Hardware roots of trust can improve assurance because some secrets and measurements are protected outside ordinary application memory.</p>
+<p>This creates a cumulative history. Changing an earlier measurement changes subsequent PCR values, which makes the final state sensitive to the measured sequence.</p>
+<h3>7.3 Event logs</h3>
+<p>A PCR value alone does not tell a human analyst which individual components produced it. A measurement log can provide the events needed to interpret the resulting state. Security architecture therefore treats the protected measurement value and the associated evidence as complementary.</p>
+<h3>7.4 Remote attestation</h3>
+<p>Attestation extends this idea to a verifier. A platform can provide cryptographic evidence about selected state, and a relying system can make a policy decision from that evidence. For example, a service might require a known platform state before releasing a sensitive credential.</p>
 </section>
 
-<section class="section" id="interfaces"><h2>08 · UART, JTAG, SPI, I2C and physical attack surface</h2>
-<h3>UART</h3>
-<p>UART is a common asynchronous serial interface. Embedded devices may expose UART for manufacturing, debugging or console access. An exposed diagnostic console can become a security issue if it provides privileged access without strong controls.</p>
-<h3>JTAG</h3>
-<p>JTAG is a standardized family of test/debug interfaces used for boundary scan and hardware debugging. Development interfaces can expose powerful capabilities, so production devices should control, disable or authenticate them according to the device's security requirements.</p>
-<h3>SPI</h3>
-<p>SPI is a synchronous serial bus commonly used to connect flash memory and peripherals. Firmware storage on SPI flash makes the bus and flash contents part of the platform security boundary.</p>
-<h3>I2C</h3>
-<p>I2C is a multi-device serial bus used extensively in embedded systems. Devices communicate through addresses and shared signaling. The security of an I2C-connected component depends on physical access, bus configuration and the privileges of the firmware controlling it.</p>
-<div class="warning"><strong>Important:</strong> hardware debugging tools can be legitimate research instruments, but connecting to or modifying equipment you do not own or have explicit authorization to test is not a valid security exercise.</div>
+<section class="section" id="tpm"><div class="kicker">Chapter 08</div><h2>TPM 2.0 and hardware roots of trust</h2>
+<p class="lead">A TPM is not a magic “security chip.” It is a defined security component with protected operations and state that can support key protection, measurements, authorization and attestation.</p>
+<h3>8.1 Current specification baseline</h3>
+<p>The Trusted Computing Group lists <strong>TPM 2.0 Library Specification Version 185, March 2026</strong> as the current library specification, with parts covering introduction, architecture, structures and commands. citeturn0search3turn0search12</p>
+<h3>8.2 What a TPM contributes</h3>
+<ul><li>Protected cryptographic operations.</li><li>Platform measurement support.</li><li>Key and authorization mechanisms.</li><li>Hardware-backed identity and attestation capabilities.</li><li>Protected state that is harder to manipulate like ordinary application memory.</li></ul>
+<h3>8.3 What a TPM does not do</h3>
+<p>A TPM does not automatically make an operating system patched. It does not decide whether a user should access a business application. It does not remove the need for endpoint detection, application security or incident response.</p>
+<h3>8.4 Root of trust</h3>
+<p>A root of trust is a foundation whose behavior is sufficiently trusted to anchor later security decisions. NIST IR 8320 describes hardware-enabled security as the first layer of a layered approach and discusses technologies including TPMs, hardware security modules, secure enclaves, trusted execution environments and virtualization. citeturn0search4</p>
 </section>
 
-<section class="section" id="supply"><h2>09 · Hardware and firmware supply-chain security</h2>
-<h3>Why supply chain matters</h3>
-<p>A modern platform depends on silicon vendors, motherboard manufacturers, firmware suppliers, device drivers, update services and component libraries. Security therefore begins before the organization receives the machine.</p>
-<h3>Threats</h3>
-<ul><li>Counterfeit or substituted components.</li><li>Compromised firmware build systems.</li><li>Unsigned or weakly authenticated firmware updates.</li><li>Malicious or vulnerable third-party firmware components.</li><li>Compromised signing keys.</li><li>Insufficient inventory and inability to determine affected versions.</li></ul>
-<h3>Controls</h3>
-<p>Useful controls include component inventories, provenance requirements, signed firmware, protected signing infrastructure, secure update mechanisms, rollback/recovery plans, vendor assurance, vulnerability disclosure processes and lifecycle tracking.</p>
-<p>NIST IR 8320 describes hardware-enabled security as a foundational layer for cloud and edge platforms and discusses technologies including roots of trust, TPMs, secure enclaves and hardware security modules. citeturn0search9</p>
+<section class="section" id="interfaces"><div class="kicker">Chapter 09</div><h2>Physical interfaces: UART, JTAG, SPI and I²C</h2>
+<p class="lead">A device can be secure in software and still be exposed through a physical interface. Debugging and manufacturing interfaces are powerful because they often exist precisely to observe or control low-level state.</p>
+<h3>9.1 UART</h3>
+<p>UART is a serial communication mechanism frequently used for device consoles and diagnostics. A production device that exposes a privileged console through an accessible header has created an additional trust boundary that must be controlled.</p>
+<h3>9.2 JTAG</h3>
+<p>JTAG-related interfaces support hardware test and debugging. Depending on the platform, debug access can provide capabilities far beyond an ordinary application interface. Production designs therefore commonly restrict, authenticate or disable debug functionality according to their threat model.</p>
+<h3>9.3 SPI</h3>
+<p>SPI is a synchronous serial bus frequently used for flash storage and peripheral communication. If platform firmware is stored on SPI-attached flash, the storage path becomes part of the firmware security architecture.</p>
+<h3>9.4 I²C</h3>
+<p>I²C is a shared serial bus widely used for sensors, controllers and configuration devices. Security depends on which devices are connected, what commands they accept and what authority the controlling firmware has.</p>
+<h3>9.5 Physical security is not “just physical”</h3>
+<p>Physical access can cross software security boundaries. An attacker who can modify boot media, connect to an exposed debug port or replace a component may bypass assumptions that were safe under a remote-only threat model.</p>
+<div class="warning"><strong>Authorized research rule:</strong> hardware debugging and firmware analysis should be performed only on devices you own or are explicitly authorized to test.</div>
 </section>
 
-<section class="section" id="engineering"><h2>10 · Bare-metal security engineering</h2>
-<h3>Threat-model the platform</h3>
-<p>Start with assets, adversaries, physical access assumptions, trust boundaries, recovery capabilities and acceptable failure modes. A laptop used in a controlled office has different physical assumptions from an exposed industrial controller or an internet-connected edge device.</p>
-<h3>Layer the controls</h3>
-<ul><li><strong>Physical:</strong> restrict access to devices, debug ports and removable components.</li><li><strong>Firmware:</strong> signed updates, secure configuration and recovery mechanisms.</li><li><strong>Boot:</strong> Secure Boot and measured boot where supported.</li><li><strong>Hardware trust:</strong> TPM or other roots of trust appropriate to the platform.</li><li><strong>Operating system:</strong> least privilege, isolation, patching and endpoint controls.</li><li><strong>Application:</strong> memory safety, authentication, authorization, validation and secure updates.</li><li><strong>Operations:</strong> inventory, telemetry, incident response and recovery testing.</li></ul>
-<h3>What a security engineer should be able to explain</h3>
-<p>By the end of this discipline, you should be able to trace a machine from power-on through firmware and boot into the operating system; explain where trust is established; distinguish Secure Boot from measured boot; describe what a TPM contributes; explain why memory hierarchy and physical interfaces matter; identify firmware and hardware supply-chain risks; and connect these low-level mechanisms to higher-level application security.</p>
-<div class="callout"><strong>Core mental model:</strong> security is a chain of assumptions. The job is to identify the assumptions, protect the trust anchors, detect when assumptions fail, and design recovery when prevention is not enough.</div>
+<section class="section" id="dma"><div class="kicker">Chapter 10</div><h2>Devices, DMA and I/O trust</h2>
+<p class="lead">Not every memory access is caused by a CPU instruction. Devices can sometimes perform direct memory access (DMA), allowing hardware to transfer data to or from system memory.</p>
+<h3>10.1 Why DMA matters</h3>
+<p>DMA improves performance by allowing devices to transfer buffers without requiring the CPU to copy every byte. From a security perspective, however, a device with broad DMA authority becomes part of the memory-protection boundary.</p>
+<h3>10.2 IOMMUs</h3>
+<p>An I/O memory management unit can constrain and translate device memory accesses. This allows the system to assign a device a limited set of memory regions rather than treating the entire physical address space as available.</p>
+<h3>10.3 Threat-model implication</h3>
+<p>The security question becomes: <strong>which devices can access which memory, under which policy, and who controls that policy?</strong> This is especially important in servers, virtualization and high-performance peripheral environments.</p>
+</section>
+
+<section class="section" id="supply"><div class="kicker">Chapter 11</div><h2>Hardware and firmware supply-chain security</h2>
+<p class="lead">Trust begins before the device reaches the organization. Modern platforms depend on silicon, board vendors, firmware developers, signing infrastructure, update services, drivers and manufacturing processes.</p>
+<h3>11.1 The dependency graph</h3>
+<p>A platform can inherit risk from a component that the final operator never directly sees. The practical challenge is inventory: if you cannot identify the component, firmware version, signer and update path, you cannot reliably determine exposure or recovery options.</p>
+<h3>11.2 Common failure modes</h3>
+<ul><li>Counterfeit or substituted components.</li><li>Compromised build or release infrastructure.</li><li>Stolen firmware-signing credentials.</li><li>Unsigned or weakly authenticated updates.</li><li>Untracked third-party firmware.</li><li>Unclear vulnerability disclosure and patch ownership.</li><li>No tested recovery image or rollback strategy.</li></ul>
+<h3>11.3 Security controls</h3>
+<p>Controls include asset inventories, provenance requirements, reproducible or controlled builds where practical, protected signing keys, signed firmware, secure update channels, version policy, vulnerability management, supplier assurance and tested recovery procedures.</p>
+<p>NIST's hardware-enabled security guidance emphasizes the platform as the foundation on which higher-layer controls depend. citeturn0search4</p>
+</section>
+
+<section class="section" id="resilience"><div class="kicker">Chapter 12</div><h2>Firmware resilience: protect, detect, recover</h2>
+<p class="lead">Prevention is only one part of platform security. A mature design assumes that an unauthorized change may eventually occur and asks how the platform will detect it and return to a trustworthy state.</p>
+<h3>12.1 Protect</h3>
+<p>Protection can include access controls around firmware storage, authenticated updates, hardware write protections, signing policies and separation of update authority from ordinary operating-system users.</p>
+<h3>12.2 Detect</h3>
+<p>Detection can involve integrity measurements, authenticated state, update records, configuration monitoring and external management telemetry. Detection is useful only when the organization can interpret the signal and act on it.</p>
+<h3>12.3 Recover</h3>
+<p>Recovery requires a trusted source from which the platform can restore firmware and configuration. Recovery paths themselves must be protected; otherwise an attacker may compromise the recovery mechanism and turn it into another persistence layer.</p>
+<h3>12.4 Why recovery belongs in the threat model</h3>
+<p>A platform that can detect compromise but cannot recover safely may still have a serious operational weakness. NIST SP 800-193 explicitly addresses protection, detection and secure recovery for platform firmware resilience. citeturn0search1</p>
+</section>
+
+<section class="section" id="virtualization"><div class="kicker">Chapter 13</div><h2>Virtualization, isolation and the hardware boundary</h2>
+<p class="lead">Cloud and modern enterprise systems place another layer between physical hardware and applications: virtualization. This creates powerful isolation mechanisms but also creates a new security boundary.</p>
+<h3>13.1 Hypervisor role</h3>
+<p>A hypervisor manages virtual machines and mediates access to hardware resources. A guest operating system believes it has processors, memory and devices; the hypervisor maps those abstractions onto the physical platform.</p>
+<h3>13.2 Why the hypervisor matters</h3>
+<p>A vulnerability in a guest application may be contained by the guest operating system. A vulnerability that crosses the guest/hypervisor boundary can have much broader impact because the hypervisor manages resources shared by multiple workloads.</p>
+<h3>13.3 Hardware-assisted isolation</h3>
+<p>Modern processors provide virtualization extensions and memory-translation features that help enforce isolation. NIST IR 8320 discusses virtualization alongside TPMs, trusted execution environments, secure enclaves and other hardware-enabled mechanisms as part of layered platform security. citeturn0search4</p>
+</section>
+
+<section class="section" id="threat-model"><div class="kicker">Chapter 14</div><h2>Platform threat modeling</h2>
+<p class="lead">Threat modeling turns architecture into security decisions. Start with assets, trust boundaries and adversary capabilities rather than jumping directly to a list of vulnerabilities.</p>
+<h3>14.1 Identify assets</h3>
+<ul><li>Firmware and boot configuration.</li><li>Cryptographic keys and device identity.</li><li>Operating-system integrity.</li><li>Sensitive workload memory.</li><li>Recovery images and update credentials.</li><li>Device telemetry and forensic evidence.</li></ul>
+<h3>14.2 Identify adversary access</h3>
+<p>Consider remote attackers, malicious software already running on the host, privileged insiders, supply-chain compromise and physical attackers. These are different threat models and should not be mixed casually.</p>
+<h3>14.3 Map trust boundaries</h3>
+<p>Draw boundaries between hardware and firmware, firmware and bootloader, bootloader and kernel, kernel and user space, host and device, guest and hypervisor, and management plane and data plane. For every boundary, document the mechanism that enforces it.</p>
+<h3>14.4 Ask the failure questions</h3>
+<p>For every critical control, ask: What happens if it is disabled? What happens if its key is compromised? What evidence remains? Can the platform detect the change? Can it recover? Who is authorized to perform recovery?</p>
+</section>
+
+<section class="section" id="engineering"><div class="kicker">Chapter 15</div><h2>Putting the layers together</h2>
+<p class="lead">The value of this discipline is the ability to reason across layers rather than memorizing isolated technologies.</p>
+<table class="compare"><tr><th>Layer</th><th>Security question</th><th>Representative controls</th></tr>
+<tr><td>Physical</td><td>Who can touch or replace the platform?</td><td>Access control, tamper evidence, device lifecycle</td></tr>
+<tr><td>Hardware</td><td>What establishes the initial trust boundary?</td><td>Roots of trust, isolation, IOMMU, secure elements</td></tr>
+<tr><td>Firmware</td><td>What runs before the OS and who may update it?</td><td>Signed updates, rollback policy, recovery</td></tr>
+<tr><td>Boot</td><td>Which components are authorized to execute?</td><td>Secure Boot, boot policy, measurements</td></tr>
+<tr><td>Kernel</td><td>Which code may access privileged resources?</td><td>CPU privilege, memory isolation, kernel hardening</td></tr>
+<tr><td>User space</td><td>Which process may access which resource?</td><td>Permissions, sandboxing, identity, MAC</td></tr>
+<tr><td>Application</td><td>Can untrusted input violate intended behavior?</td><td>Memory safety, validation, authentication, authorization</td></tr>
+<tr><td>Operations</td><td>Can compromise be detected and recovered?</td><td>Telemetry, inventory, incident response, recovery testing</td></tr></table>
+<h3>15.1 The key mental model</h3>
+<p>Think of platform security as a chain of evidence and authority. A later layer should not blindly trust an earlier layer; it should rely on an explicit mechanism appropriate to the threat model.</p>
+<div class="callout"><strong>Example reasoning:</strong> “The application validates the user” is not enough to establish platform trust. First ask whether the application itself is running on an authentic operating system, whether the boot path was protected, whether secrets were protected, and whether the platform can detect meaningful integrity changes.</div>
+</section>
+
+<section class="section" id="review"><div class="kicker">Chapter 16</div><h2>Mastery review</h2>
+<p class="lead">If you can answer these without looking back, you have moved beyond vocabulary and into architectural understanding.</p>
+<h3>Foundation questions</h3>
+<ol>
+<li>What architectural state does a CPU maintain that is directly relevant to control flow?</li>
+<li>Why is virtual memory a security mechanism as well as a convenience?</li>
+<li>What is the difference between a cache and main memory?</li>
+<li>Why can timing become a security signal?</li>
+<li>What is a calling convention and why does reverse engineering depend on it?</li>
+<li>What distinguishes a stack buffer overflow from a use-after-free?</li>
+<li>Why are ASLR, NX and stack canaries complementary rather than interchangeable?</li>
+<li>Why is firmware security different from ordinary application security?</li>
+<li>What does Secure Boot actually establish?</li>
+<li>Why does a valid signature not prove that software is bug-free?</li>
+<li>What is the difference between measured boot and Secure Boot?</li>
+<li>What does PCR extension achieve conceptually?</li>
+<li>What does a TPM contribute to a platform trust model?</li>
+<li>Why can an exposed debug interface become a security boundary?</li>
+<li>Why does DMA make device trust relevant to memory isolation?</li>
+<li>Why must firmware recovery be protected too?</li>
+<li>What is a root of trust?</li>
+<li>Why is a hypervisor a high-value security boundary?</li>
+<li>How does a supply-chain compromise differ from a local software vulnerability?</li>
+<li>What four questions should you ask about every critical platform security mechanism?</li>
+</ol>
+<h3>Architecture exercise — answer in your own words</h3>
+<p>Imagine a laptop starts with an untrusted firmware image. Explain why a perfectly implemented web application cannot, by itself, establish that the machine is trustworthy. Then explain the additional layers that can establish and continuously evaluate trust: firmware authenticity, boot policy, measurements, protected keys, operating-system isolation, application security and operational recovery.</p>
+<h3>Terms you should now recognize</h3>
+<p class="mini"><strong>ABI · ASLR · cache · calling convention · DMA · DEP/NX · firmware · I²C · IOMMU · JTAG · kernel · measured boot · memory hierarchy · PCR · privilege · root of trust · Secure Boot · SPI · TPM · UART · UEFI · virtual memory</strong></p>
+<div class="callout"><strong>Completion standard:</strong> do not aim to recite definitions. Aim to explain the relationship between components, authority, evidence and recovery. That is the foundation required before moving into operating-system and kernel internals.</div>
 </section>
 
 <section class="sources"><h2>Primary references</h2>
@@ -143,9 +289,10 @@
 <a href="https://trustedcomputinggroup.org/resource/tpm-library-specification/" target="_blank" rel="noopener">Trusted Computing Group — TPM 2.0 Library Specification</a>
 <a href="https://csrc.nist.gov/pubs/sp/800/193/final" target="_blank" rel="noopener">NIST SP 800-193 — Platform Firmware Resiliency Guidelines</a>
 <a href="https://csrc.nist.gov/pubs/ir/8320/final" target="_blank" rel="noopener">NIST IR 8320 — Hardware-Enabled Security</a>
-<a href="https://docs.kernel.org/core-api/index.html" target="_blank" rel="noopener">Linux kernel documentation — core APIs and low-level hardware</a>
+<a href="https://docs.kernel.org/core-api/index.html" target="_blank" rel="noopener">Linux kernel documentation — Core API and low-level facilities</a>
+<a href="https://docs.kernel.org/mm/" target="_blank" rel="noopener">Linux kernel documentation — Memory Management</a>
 </section>
 </main>
-<footer class="wrap footer">Cybersecurity · Discipline 01 · Theory</footer>
+<footer class="wrap footer">Cybersecurity · Discipline 01 · Deep Theory Chapter</footer>
 </body>
 </html>
