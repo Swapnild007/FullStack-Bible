@@ -50,7 +50,7 @@ function renderProject(){
   $("plevel").textContent="PROJECT "+current.id+" · "+current.level.toUpperCase();
   $("ptitle").textContent=current.title;
   $("pstack").textContent=current.stack;
-  $("tabs").innerHTML=tabs.map(t=>'<button class="tab '+(tab===t?"active":"")+'" onclick="selectTab(\\''+t+'\\')">'+t+'</button>').join("");
+  $("tabs").innerHTML=tabs.map(t=>'<button class="tab '+(tab===t?"active":"")+'" data-tab="'+t+'" onclick="selectTab(this.dataset.tab)">'+t+'</button>').join("");
   let b="";
   if(tab==="Overview"){
     b='<div class="status">CORE SOURCE '+Object.keys(current.files).length+' FILES · LEARNING REFERENCE</div><div class="cols"><div class="box"><h3>What you build</h3><p>'+current.purpose+'</p><h3>Outcome</h3><p>'+(guide.outcome||"Build the project and understand every boundary.")+'</p><h3>Prerequisites</h3><p>'+(guide.prerequisites||"Follow the roadmap stage linked to this project.")+'</p></div><div class="box"><h3>How to run</h3><ol>'+((guide.run||["Install the project dependencies.","Start the appropriate development server.","Verify the main user flow."]).map(x=>'<li>'+x+'</li>').join(""))+'</ol><h3>Study method</h3><ol><li>Read the flow.</li><li>Open the entry file.</li><li>Trace one user action.</li><li>Open every imported boundary.</li><li>Run the project and test a failure path.</li><li>Rebuild one feature without copying.</li></ol></div></div>';
