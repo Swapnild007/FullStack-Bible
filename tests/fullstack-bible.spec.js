@@ -1,9 +1,9 @@
 const { test, expect } = require('@playwright/test');
 
 const pages = [
-  'index.html','roadmap.html','curriculum.html','learn.html','lessons.html',
-  'projects.html','practice.html','ai.html','progress.html','resources.html','settings.html',
-  ...Array.from({length:17},(_,i)=>`module-${String(i+1).padStart(2,'0')}.html`)
+  'index.html','site/shared/roadmap.html','site/shared/curriculum.html','site/shared/learn.html','site/shared/lessons.html',
+  'site/shared/projects.html','site/shared/practice.html','site/ai/ai.html','site/shared/progress.html','site/shared/resources.html','site/shared/settings.html',
+  ...Array.from({length:17},(_,i)=>`site/fullstack/module-${String(i+1).padStart(2,'0')}.html`)
 ];
 
 test.describe('FullStack Bible site smoke', () => {
@@ -25,22 +25,22 @@ test.describe('FullStack Bible site smoke', () => {
     await page.goto('index.html');
     await page.getByRole('button', { name: /open menu/i }).click();
     for (const [label, href] of Object.entries({
-      Learn:'learn.html', Projects:'projects.html', Practice:'practice.html', AI:'ai.html',
-      Progress:'progress.html', Resources:'resources.html', Settings:'settings.html'
+      Learn:'site/shared/lessons.html', Projects:'site/shared/projects.html', Practice:'site/shared/practice.html', AI:'site/ai/ai.html',
+      Progress:'site/shared/progress.html', Resources:'site/shared/resources.html', Settings:'site/shared/settings.html'
     })) {
       await expect(page.getByRole('link', { name: new RegExp('^'+label+'\\b') })).toHaveAttribute('href', href);
     }
   });
 
   test('practice contains all 17 stages and 85 drills', async ({ page }) => {
-    await page.goto('practice.html');
+    await page.goto('site/shared/practice.html');
     await expect(page.locator('.module')).toHaveCount(17);
     await expect(page.locator('.drill')).toHaveCount(85);
     await expect(page.locator('#summary')).toContainText('0 / 17');
   });
 
   test('practice drill completion persists after reload', async ({ page }) => {
-    await page.goto('practice.html?stage=17');
+    await page.goto('site/shared/practice.html?stage=17');
     const drill = page.locator('.drill').first();
     await expect(drill).toBeVisible();
     await drill.getByRole('button', { name:'Mark complete' }).click();
@@ -49,10 +49,10 @@ test.describe('FullStack Bible site smoke', () => {
   });
 
   test('progress understands the advanced module checklist keys', async ({ page }) => {
-    await page.goto('module-13.html');
+    await page.goto('site/fullstack/module-13.html');
     const first = page.locator('#checks input').first();
     await first.check();
-    await page.goto('progress.html');
+    await page.goto('site/shared/progress.html');
     const stage13 = page.locator('.stage').filter({ hasText:'System Design & Distributed Systems' });
     await expect(stage13).toContainText('1/18 checklist items');
   });
@@ -60,12 +60,12 @@ test.describe('FullStack Bible site smoke', () => {
   test('landing, projects, invalid stages and keyboard focus work', async ({ page }) => {
     await page.goto('index.html');
     await expect(page).toHaveTitle(/FullStack Bible/i);
-    await expect(page.getByRole('link', { name:/start learning/i })).toHaveAttribute('href', /roadmap\.html/);
-    await page.goto('projects.html?stage=03');
+    await expect(page.getByRole('link', { name:/start learning/i })).toHaveAttribute('href', 'site/shared/roadmap.html');
+    await page.goto('site/shared/projects.html?stage=03');
     await expect(page.locator('body')).toContainText(/Task Manager/i);
-    await page.goto('practice.html?stage=99');
+    await page.goto('site/shared/practice.html?stage=99');
     await expect(page.locator('body')).toBeVisible();
-    await page.goto('projects.html?stage=99');
+    await page.goto('site/shared/projects.html?stage=99');
     await expect(page.locator('body')).toBeVisible();
     await page.goto('index.html');
     await page.keyboard.press('Tab');
@@ -73,7 +73,7 @@ test.describe('FullStack Bible site smoke', () => {
   });
 
   test('module checklist survives reload', async ({ page }) => {
-    await page.goto('module-02.html');
+    await page.goto('site/fullstack/module-02.html');
     await page.evaluate(() => localStorage.clear());
     await page.reload();
     const first = page.locator('#checks input').first();
@@ -84,8 +84,9 @@ test.describe('FullStack Bible site smoke', () => {
   });
 
   test('embedded terminal mounts and executes a browser lab command', async ({ page }) => {
-    await page.goto('practice.html?stage=1');
+    await page.goto('site/shared/practice.html?stage=1');
     await page.locator('.drill').first().getByRole('button', { name:/open full lab/i }).click();
+    await page.getByRole('button', { name:'Workspace' }).click();
     await expect(page.locator('[data-terminal-host]').first()).toBeVisible();
     const terminal = page.locator('.fsb-terminal').first();
     await expect(terminal).toContainText('Browser sandbox');
@@ -99,16 +100,17 @@ test.describe('FullStack Bible site smoke', () => {
   });
 
   test('projects open real learning source and explanation', async ({ page }) => {
-    await page.goto('projects.html');
+    await page.goto('site/shared/projects.html');
     const projectCard = page.locator('.card[data-project-id="07"]');
     await expect(projectCard).toHaveCount(1);
     await projectCard.getByRole('button', { name:/read project/i }).click();
     await expect(page.locator('.project #ptitle')).toHaveText('Blog CMS');
     await page.getByRole('button', { name:'Source code' }).click();
     await expect(page.locator('.code')).toBeVisible();
-    await expect(page.locator('.code')).toContainText('PostgreSQL');
-    await page.getByRole('button', { name:'Explain' }).click();
-    await expect(page.locator('.concept')).toHaveCount(6);
+    await expect(page.locator('#pstack')).toContainText('PostgreSQL');
+    await expect(page.locator('.code')).toContainText('db.post.findMany');
+    await page.getByRole('button', { name:'Learn it' }).click();
+    await expect(page.locator('.qa details').first()).toBeVisible();
   });
 
 });

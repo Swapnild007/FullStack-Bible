@@ -8,7 +8,7 @@ const menu = [
   ['Lessons', '/lessons.html'],
   ['Projects', '/projects.html'],
   ['Practice', '/practice.html'],
-  ['AI', '/ai.html'],
+  ['AI Academy', '/ai-academy'],
   ['Progress', '/progress.html'],
   ['Resources', '/resources.html'],
 ];
