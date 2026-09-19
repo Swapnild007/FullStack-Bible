@@ -1,6 +1,6 @@
 'use client';
 import {useState} from 'react';
-import {projects} from '../../../data';
+import {projects} from '../../data';
 
 const phases=['Plan','Data','Core feature','AI/ML layer','Evaluation','Security','Deployment'];
 
