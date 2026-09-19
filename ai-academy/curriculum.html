@@ -25,7 +25,7 @@ const stages=[
 ["16","AI Product Engineering, Systems & Deployment","Product requirements, architecture, UX, APIs, deployment, cost and operational reliability."],
 ["17","Research, Advanced Topics & End-to-End AI Engineering Capstone","Research methods, papers, experiments, ablations and a production-grade capstone."]
 ];
-const grid=document.getElementById("stages"),search=document.getElementById("search");
-function render(){const q=search.value.toLowerCase();grid.innerHTML=stages.filter(s=>(s[1]+" "+s[2]).toLowerCase().includes(q)).map(s=>'<article class="stage"><small>STAGE '+s[0]+'</small><h3>'+s[1]+'</h3><p>'+s[2]+'</p></article>').join("")}
+const slugs=["foundations","python-algorithms","data-statistics","statistical-learning","machine-learning","deep-learning-vision","nlp-transformers","generative-ai","llm-engineering","rag-search","mlops-cloud","reinforcement-learning-agents","mcp-multi-agent","enterprise-ai","ai-security","evaluation-quality","product-engineering","research-capstone"];\nconst grid=document.getElementById("stages"),search=document.getElementById("search");
+function render(){const q=search.value.toLowerCase();grid.innerHTML=stages.filter(s=>(s[1]+" "+s[2]).toLowerCase().includes(q)).map((s,i)=>'<article class="stage"><small>STAGE '+s[0]+'</small><h3>'+s[1]+'</h3><p>'+s[2]+'</p><a class="open" href="'+slugs[i]+'/index.html">Enter stage →</a></article>').join("")}
 search.addEventListener("input",render);render();
 </script></body></html>
