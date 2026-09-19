@@ -24,7 +24,7 @@
 </style>
 </head>
 <body>
-<nav class="nav wrap"><a class="brand" href="../../index.html">FullStack<span>Bible</span></a><a class="back" href="lessons.html">Your journey</a></nav>
+<nav class="nav wrap"><a class="brand" href="index.html">FullStack<span>Bible</span></a><a class="back" href="learn.html">Your journey</a></nav>
 <header class="wrap hero">
 <div class="eyebrow">LEARNING HUB · PROJECTS</div>
 <h1>Learn by reading <span>real code.</span></h1>
@@ -46,7 +46,7 @@ function esc(s){return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").
 function renderFilters(){const fs=["All","Beginner","Intermediate","Advanced","Professional"];$("filters").innerHTML=fs.map(x=>'<button class="'+(x==="All"?"active":"")+'" data-level="'+x+'" onclick="filterLevel(this.dataset.level)">'+x+'</button>').join("")}
 function filterLevel(level){document.querySelectorAll("#filters button").forEach(b=>b.classList.toggle("active",b.dataset.level===level));render(level==="All"?FSBProjects:FSBProjects.filter(p=>p.level.includes(level)))}
 function render(list=FSBProjects){$("grid").innerHTML=list.map(p=>{const done=FSBProgress.stage(p.id).project;return '<article class="card" data-project-id="'+p.id+'"><div class="level">PROJECT '+p.id+' · '+p.level.toUpperCase()+'</div><h2>'+p.title+'</h2><div class="stack">'+p.stack+'</div><p>'+p.purpose+'</p><div class="tags">'+p.concepts.map(x=>'<span class="tag">'+x+'</span>').join("")+'</div><div class="actions"><button class="open" onclick="openProject(\''+p.id+'\')">Read project →</button><button class="complete '+(done?"done":"")+'" onclick="toggleComplete(\''+p.id+'\')">'+(done?"Completed ✓":"Mark complete")+'</button></div></article>'}).join("")}
-function openProject(id){const project=FSBProjects.find(p=>p.id===id);current=project?{...project,guide:(window.FSBProjectGuides&&window.FSBProjectGuides[id])||{}}:null;if(!current)return;tab="Overview";file=Object.keys(current.files)[0];$("backdrop").classList.add("show");renderProject()}
+function openProject(id){current=FSBProjects.find(p=>p.id===id);tab="Overview";file=Object.keys(current.files)[0];$("backdrop").classList.add("show");renderProject()}
 function closeProject(){$("backdrop").classList.remove("show");current=null}
 function renderProject(){
   const guide=current.guide||{};
