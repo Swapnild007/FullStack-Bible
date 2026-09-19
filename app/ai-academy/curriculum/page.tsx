@@ -32,6 +32,7 @@ export default function CurriculumEngine(){
     <div className="curriculum-number">{s.id}</div>
     <div className="curriculum-main"><div className="curriculum-stage-top"><span>{s.level}</span><small>{s.projects.length} project{s.projects.length===1?'':'s'}</small></div>
      <h2>{s.title}</h2>
+     <a className="lesson-launch" href={"/ai-academy/learn/"+s.id}>Open interactive lesson →</a>
      <div className="curriculum-topics">{s.topics.map(t=><span key={t}>{t}</span>)}</div>
      {s.projects.length>0&&<div className="linked-projects"><b>Build evidence</b>{s.projects.map(id=>{const p=projects.find(x=>x.id===id);return p?<a key={id} href={'/ai-academy/projects/'+p.id}>Project {String(id).padStart(2,'0')} · {p.title} →</a>:null})}</div>}
     </div>
