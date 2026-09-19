@@ -108,7 +108,7 @@ test.describe('FullStack Bible site smoke', () => {
     await page.getByRole('button', { name:'Source code' }).click();
     await expect(page.locator('.code')).toBeVisible();
     await expect(page.locator('#pstack')).toContainText('PostgreSQL');
-    await expect(page.locator('.code')).toContainText('@prisma/client');
+    await expect(page.locator('.code')).toContainText('db.post.findMany');
     await page.getByRole('button', { name:'Learn it' }).click();
     await expect(page.locator('.qa details').first()).toBeVisible();
   });
