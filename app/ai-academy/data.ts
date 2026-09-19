@@ -1,4 +1,4 @@
-export type AcademyStage={id:string;title:string;topics:string[];projects:string[];level:string};
+export type AcademyStage={id:string;title:string;topics:string[];projects:number[];level:string};
 export type AcademyProject={id:number;title:string;track:string;capstone?:boolean;skills:string[]};
 
 export const stages:AcademyStage[]=[
