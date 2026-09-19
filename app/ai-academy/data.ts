@@ -42,7 +42,7 @@ export const projects:AcademyProject[]=[
 {id:17,title:"Customer Order Analysis with Python",track:"Python / Analytics",skills:["Python","Data analysis","Visualization"]},
 {id:18,title:"Sales Forecasting",track:"Machine Learning",skills:["Time series","Forecasting","Evaluation"],capstone:true},
 {id:19,title:"MLOps Predictive Modeling & Deployment",track:"MLOps",skills:["MLflow","Deployment","Monitoring"]},
-{id:20,title:"Loan Default Prediction with Deep Learning",track:"Deep Learning",skills:["Neural networks","Classification","Evaluation"]}
+{id:20,title:"Loan Default Prediction with Deep Learning",track:"Deep Learning",skills:["Neural networks","Classification","Evaluation"]},
 {id:21,title:"Customer Churn Prediction & Intervention",track:"Applied Machine Learning",skills:["Classification","Feature engineering","Explainability"]},
 {id:22,title:"Vision Model Serving & Monitoring",track:"Deep Learning / MLOps",skills:["CNN","Serving","Monitoring"]},
 {id:23,title:"Enterprise Document Intelligence",track:"NLP / Transformers",skills:["Transformers","Extraction","Evaluation"]},
