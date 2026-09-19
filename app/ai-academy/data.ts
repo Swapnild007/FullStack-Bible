@@ -38,6 +38,27 @@ export const projects:AcademyProject[]=[
 {id:18,title:"Sales Forecasting",track:"Machine Learning",skills:["Time series","Forecasting","Evaluation"],capstone:true},
 {id:19,title:"MLOps Predictive Modeling & Deployment",track:"MLOps",skills:["MLflow","Deployment","Monitoring"]},
 {id:20,title:"Loan Default Prediction with Deep Learning",track:"Deep Learning",skills:["Neural networks","Classification","Evaluation"]}
+{id:21,title:"Customer Churn Prediction & Intervention",track:"Applied Machine Learning",skills:["Classification","Feature engineering","Explainability"]},
+{id:22,title:"Vision Model Serving & Monitoring",track:"Deep Learning / MLOps",skills:["CNN","Serving","Monitoring"]},
+{id:23,title:"Enterprise Document Intelligence",track:"NLP / Transformers",skills:["Transformers","Extraction","Evaluation"]},
+{id:24,title:"Secure GenAI Design Studio",track:"Generative AI / Safety",skills:["LLMs","Structured output","AI security"]},
+{id:25,title:"Enterprise Knowledge Agent",track:"RAG / Agentic AI",skills:["RAG","MCP","Evaluation","Security"],capstone:true}
 ];
 
-export const tools=["Python","NumPy","Pandas","SciPy","SymPy","Scikit-learn","Matplotlib","Seaborn","Plotly","TensorFlow","Keras","PyTorch","OpenCV","NLTK","spaCy","Gensim","Librosa","Pydub","Hugging Face","OpenAI","LangChain","MLflow","FastAPI","Gradio","Chroma","DVC","Grafana","GitHub Actions","GitHub Copilot","Google Colab","VS Code","CrewAI","AutoGen","FastMCP"];
+export const tools=["Python","NumPy","Pandas","SciPy","SymPy","Scikit-learn","Matplotlib","Seaborn","Plotly","TensorFlow","Keras","PyTorch","OpenCV","NLTK","spaCy","Gensim","Librosa","Pydub","Hugging Face","OpenAI","LangChain","MLflow","FastAPI","Gradio","Chroma","DVC","Grafana","GitHub Actions","GitHub Copilot","Google Colab","VS Code","CrewAI","AutoGen","FastMCP","Azure AI Search","Microsoft Foundry","Azure Blob Storage","OneLake"];
+
+
+export type CurriculumBenchmark={id:string;externalTheme:string;academyStage:string;evidence:string;implementation:string};
+export const benchmark:CurriculumBenchmark[]=[
+{id:"B01",externalTheme:"Programming + AI-assisted coding",academyStage:"01",evidence:"Python engineering, AI-assisted coding and review",implementation:"Lesson → coding lab → reviewed project commit"},
+{id:"B02",externalTheme:"Data science + statistics",academyStage:"02–03",evidence:"Data preparation, EDA, statistics and visualization",implementation:"Notebook evidence + reproducible analysis"},
+{id:"B03",externalTheme:"Machine learning",academyStage:"04",evidence:"Supervised, unsupervised and model evaluation workflows",implementation:"Model card + evaluation report + API"},
+{id:"B04",externalTheme:"Deep learning + vision",academyStage:"05",evidence:"CNNs, transfer learning and deployment",implementation:"Training run + inference service + monitoring"},
+{id:"B05",externalTheme:"NLP + transformers",academyStage:"06",evidence:"Text processing, transformers and speech foundations",implementation:"Evaluation dataset + model experiment"},
+{id:"B06",externalTheme:"Generative AI + prompt engineering",academyStage:"07",evidence:"LLMs, prompts, structured outputs and safety",implementation:"Prompt tests + output schema + safety cases"},
+{id:"B07",externalTheme:"RAG + LLM applications",academyStage:"08–09",evidence:"Retrieval, embeddings, vector stores and grounded answers",implementation:"Retrieval trace + citation checks + eval set"},
+{id:"B08",externalTheme:"MLOps + cloud",academyStage:"10",evidence:"Experiment tracking, deployment, monitoring and governance",implementation:"CI/CD + model registry + production runbook"},
+{id:"B09",externalTheme:"Agentic AI + MCP",academyStage:"11–12",evidence:"Agents, tools, protocolized access and guardrails",implementation:"Tool permission matrix + agent evals + audit log"},
+{id:"B10",externalTheme:"Enterprise AI",academyStage:"13–16",evidence:"Knowledge systems, security, evaluation and production operations",implementation:"Enterprise reference architecture + release gates"},
+{id:"B11",externalTheme:"Capstone",academyStage:"17",evidence:"End-to-end AI product delivery",implementation:"Architecture review + working demo + portfolio evidence"}
+];
