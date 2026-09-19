@@ -1,0 +1,31 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AI Academy Curriculum — FullStack Bible</title><link rel="stylesheet" href="styles.css"></head><body>
+<nav class="nav wrap"><a class="brand" href="../learn.html">FullStack<span>Bible</span></a><div class="menu"><a href="index.html">Academy</a><a class="active" href="curriculum.html">Curriculum</a><a href="#projects">Projects</a><a href="#mastery">Mastery</a><a class="home" href="../learn.html">Learning Hub</a></div></nav>
+<header class="wrap curriculum-hero"><div class="eyebrow">AI ACADEMY · CURRICULUM</div><h1>From foundations<br>to <span style="color:var(--accent2)">AI engineering.</span></h1><p>18 stages form one continuous progression. Each stage will expand into dedicated modules, deep lessons, laboratories, assessments and project application. This page is the academic map, not the lesson content.</p></header>
+<main class="wrap section" style="padding-top:20px"><input class="search" id="search" placeholder="Search stages, topics or disciplines…" aria-label="Search curriculum"><div class="stage-grid" id="stages"></div>
+<section class="section" id="projects"><div class="section-head"><h2>25 projects.</h2><p>Projects move from analysis and classical ML to computer vision, GenAI, LLM applications, enterprise knowledge systems and production AI.</p></div><div class="card"><p>Project catalogue is part of the Academy build and will be connected to individual project briefs, datasets, implementation requirements, evaluation criteria and completion evidence.</p></div></section>
+<section class="section" id="mastery"><div class="callout"><div class="eyebrow">MASTERY ARCHITECTURE</div><h2>Knowledge is not completion.</h2><p>Each serious lesson is designed around objectives, prerequisites, intuition, formal definitions, mathematics where appropriate, worked examples, implementation, execution traces, under-the-hood behavior, complexity, failure modes, exercises, labs, AI/ML connections, knowledge checks, coding assessment and a mastery gate.</p></div></section></main><footer class="wrap footer"><a href="index.html">← Back to AI Academy</a></footer>
+<script>
+const stages=[
+["00","AI/ML Foundations & Orientation","Computational thinking, mathematical foundations, AI/ML mental models and problem formulation."],
+["01","Python, Algorithms & Computational Engineering","Python internals, data structures, algorithms, complexity, numerical computing and software engineering."],
+["02","Data Engineering, Statistics & Visualization","Data representation, cleaning, probability, statistics, inference and visual reasoning."],
+["03","Statistical Learning & Feature Engineering","Statistical learning, feature design, preprocessing, leakage and model-ready data."],
+["04","Machine Learning Foundations & Algorithms","Supervised and unsupervised learning, optimization, trees, ensembles, clustering and evaluation."],
+["05","Deep Learning & Computer Vision","Neural networks, backpropagation, CNNs, representation learning and vision systems."],
+["06","NLP, Speech & Transformers","Language representation, sequence modeling, attention, transformers and speech foundations."],
+["07","Generative AI, Foundation Models & Prompt Engineering","Foundation models, generation, prompting, multimodality and model behavior."],
+["08","LLM Application Engineering","LLM APIs, structured outputs, tool use, application architecture and reliability."],
+["09","RAG, Search, Knowledge & Information Retrieval","Retrieval, ranking, embeddings, vector search, hybrid search, grounding and knowledge systems."],
+["10","MLOps, Distributed AI & Cloud","Training/deployment pipelines, experiment tracking, serving, observability, distributed systems and cloud."],
+["11","Reinforcement Learning & Agentic AI","MDPs, value functions, policy learning, planning and agent architectures."],
+["12","MCP, Multi-Agent Systems & AI Protocols","Tool protocols, MCP concepts, multi-agent coordination and interoperable AI systems."],
+["13","Enterprise AI Architecture & Microsoft Foundry Patterns","Enterprise architectures, governance boundaries, orchestration and production platform patterns."],
+["14","AI Security, Safety, Privacy & Responsible AI","Threat modeling, prompt injection, data protection, safety controls and responsible deployment."],
+["15","AI Evaluation, Statistical Learning Theory & Quality Engineering","Evaluation design, uncertainty, generalization, benchmarks, red teaming and quality systems."],
+["16","AI Product Engineering, Systems & Deployment","Product requirements, architecture, UX, APIs, deployment, cost and operational reliability."],
+["17","Research, Advanced Topics & End-to-End AI Engineering Capstone","Research methods, papers, experiments, ablations and a production-grade capstone."]
+];
+const grid=document.getElementById("stages"),search=document.getElementById("search");
+function render(){const q=search.value.toLowerCase();grid.innerHTML=stages.filter(s=>(s[1]+" "+s[2]).toLowerCase().includes(q)).map(s=>'<article class="stage"><small>STAGE '+s[0]+'</small><h3>'+s[1]+'</h3><p>'+s[2]+'</p></article>').join("")}
+search.addEventListener("input",render);render();
+</script></body></html>
